@@ -1,0 +1,49 @@
+# ============================================================
+# netlify.toml — Configuration Netlify pour enzaduhem.be
+# ============================================================
+
+[build]
+  publish = "."    # Les fichiers HTML sont à la racine du dossier
+
+# ============================================================
+# En-têtes de sécurité HTTP
+# ============================================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Sécurité — empêche le clickjacking
+    X-Frame-Options = "DENY"
+
+    # Empêche la détection de type MIME
+    X-Content-Type-Options = "nosniff"
+
+    # Protection XSS pour anciens navigateurs
+    X-XSS-Protection = "1; mode=block"
+
+    # Politique de référent
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Permissions navigateur (désactiver les fonctions non utilisées)
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+    # Content Security Policy
+    # Autorise : propres ressources + Google Fonts + Netlify Forms
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; form-action 'self';"
+
+    # HTTPS strict (HSTS) — activer après test en production
+    # Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+# ============================================================
+# Redirections
+# ============================================================
+# Redirection www → sans www (à activer si domaine configuré)
+# [[redirects]]
+#   from   = "https://www.enzaduhem.be/*"
+#   to     = "https://enzaduhem.be/:splat"
+#   status = 301
+
+# Page 404 personnalisée (créer un fichier 404.html si souhaité)
+# [[redirects]]
+#   from   = "/*"
+#   to     = "/index.html"
+#   status = 404
