@@ -2,459 +2,397 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ressources &amp; Articles — Enza Duhem, Musicothérapeute</title>
-  <meta name="description" content="Articles et ressources sur la musicothérapie par Enza Duhem, musicothérapeute à Vaulx (Tournai). Périnatalité, gériatrie, soins palliatifs, bien-être.">
+  <meta name="description" content="Articles et ressources sur la musicothérapie par Enza Duhem, musicothérapeute à Vaulx (Tournai).">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="logo_Enza.svg">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" defer></script>
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
     :root {
-      --green-dark:  #2a5a43;
-      --green:       #3d7558;
-      --green-mid:   #5a9478;
-      --green-light: #8bbfa4;
-      --green-pale:  #e8f2ec;
-      --green-bg:    #f0f5f2;
-      --slate-dark:  #0f172a;
-      --slate:       #334155;
-      --slate-mid:   #64748b;
-      --slate-light: #94a3b8;
-      --bg:          #fafaf8;
-      --white:       #ffffff;
-      --font-heading: 'Cormorant Garamond', Georgia, serif;
-      --font-body:    'DM Sans', -apple-system, sans-serif;
-      --transition: 0.3s ease;
-      --radius:     8px;
-      --radius-lg:  16px;
-      --shadow:     0 2px 16px rgba(15,23,42,0.08);
-      --shadow-hover: 0 8px 32px rgba(15,23,42,0.14);
+      --green: #7A9E7E;
+      --green-light: #A8C5AB;
+      --green-pale: #E8F0E9;
+      --green-dark: #4A6B4E;
+      --slate: #3D4A52;
+      --slate-mid: #6B7C85;
+      --slate-light: #C2CDD2;
+      --cream: #F7F5F0;
+      --white: #FDFCFA;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--font-body); color: var(--slate); background: var(--bg); line-height: 1.75; -webkit-font-smoothing: antialiased; }
-    img  { max-width: 100%; display: block; }
-    a    { color: inherit; text-decoration: none; }
-    ul   { list-style: none; }
+    html { scroll-behavior: smooth }
 
-    h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 400; line-height: 1.2; }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-
-    /* NAV — identique à index.html */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      padding: 1.25rem 0; transition: all var(--transition);
-      background: rgba(255,255,255,0.96);
-      box-shadow: 0 1px 20px rgba(15,23,42,0.08);
-      backdrop-filter: blur(8px);
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      background: var(--cream);
+      color: var(--slate-mid);
+      font-size: 0.88rem;
+      line-height: 1.85
     }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
-    .nav-logo  { display: flex; align-items: center; gap: 0.75rem; }
-    .nav-logo img { height: 42px; width: auto; }
-    .nav-logo-text { font-family: var(--font-heading); font-size: 1.35rem; color: var(--slate-dark); }
-    .nav-links { display: flex; align-items: center; gap: 2rem; }
-    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--slate); transition: color var(--transition); }
-    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 4rem;
+      transition: background 0.4s, box-shadow 0.4s
+    }
+    nav.scrolled {
+      background: rgba(253,252,250,0.95);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--slate-light)
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.65rem;
+      text-decoration: none; color: var(--slate);
+      transition: color 0.4s
+    }
+    .nav-logo-icon {
+      width: 30px; height: 38px; flex-shrink: 0; object-fit: contain;
+      filter: invert(62%) sepia(18%) saturate(430%) hue-rotate(88deg) brightness(94%) contrast(88%);
+      transition: filter 0.4s
+    }
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 1.35rem; letter-spacing: 0.08em
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none }
+    .nav-links a {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em;
+      text-decoration: none; color: var(--slate-mid); transition: color 0.3s
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--green) }
     .nav-cta {
-      padding: 0.6rem 1.4rem !important;
-      background: var(--green) !important;
-      color: white !important;
-      border-radius: 50px;
-      font-weight: 600 !important;
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em;
+      padding: 0.55rem 1.2rem;
+      border: 1px solid var(--green); color: var(--green);
+      text-decoration: none; transition: background 0.3s, color 0.3s
     }
-    .nav-cta:hover { background: var(--green-mid) !important; }
-    .nav-hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      cursor: pointer; padding: 4px; background: none; border: none;
-    }
-    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--slate); border-radius: 2px; }
+    .nav-cta:hover { background: var(--green); color: var(--white) }
 
-    /* Mobile nav */
-    .nav-mobile {
-      display: none; position: fixed; inset: 0;
-      background: white; z-index: 999;
-      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
-    }
-    .nav-mobile.open { display: flex; }
-    .nav-mobile a { font-family: var(--font-heading); font-size: 2.25rem; color: var(--slate-dark); }
-    .nav-mobile a:hover { color: var(--green); }
-    .nav-mobile-close {
-      position: absolute; top: 1.5rem; right: 1.5rem;
-      font-size: 2rem; cursor: pointer; background: none; border: none; color: var(--slate);
-    }
-
-    /* HERO BLOG */
+    /* PAGE HERO */
     .page-hero {
-      padding: 10rem 0 5rem;
-      background: linear-gradient(150deg, #0c1812 0%, #1a3028 45%, #2e6349 100%);
-      text-align: center;
-      color: white;
+      background: var(--slate);
+      padding: 10rem 4rem 5rem;
+      text-align: center
     }
     .page-hero .section-tag {
+      color: var(--green-light);
+      border-color: var(--green-light)
+    }
+    .page-hero .section-tag::before { background: var(--green-light) }
+    .page-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      color: var(--cream); line-height: 1.2; margin-top: 1rem
+    }
+    .page-hero h1 em { font-style: italic; color: var(--green-light) }
+    .page-hero p {
+      color: var(--slate-light);
+      max-width: 520px; margin: 1rem auto 0; font-size: 0.92rem
+    }
+
+    /* SECTION TAG */
+    .section-tag {
       display: inline-block;
-      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--green-light); margin-bottom: 0.75rem;
+      font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.25em;
+      color: var(--green); border: 1px solid var(--green);
+      padding: 0.35rem 0.9rem; margin-bottom: 1.5rem;
+      position: relative; padding-top: 0.8rem
     }
-    .page-hero h1 { font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 300; font-style: italic; }
-    .page-hero p  { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 55ch; margin: 1rem auto 0; }
-
-    /* ARTICLES */
-    main { padding: 5rem 0; }
-
-    /* Filtres par catégorie */
-    .filters {
-      display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 3rem;
-    }
-    .filter-btn {
-      padding: 0.5rem 1.25rem; border-radius: 50px;
-      border: 1.5px solid var(--green-pale);
-      font-size: 0.85rem; font-weight: 500;
-      cursor: pointer; background: white; color: var(--slate);
-      transition: all var(--transition);
-    }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--green); color: white; border-color: var(--green);
+    .section-tag::before {
+      content: ''; position: absolute; top: 0;
+      left: 50%; transform: translateX(-50%);
+      width: 24px; height: 1px; background: currentColor
     }
 
-    /* Grille articles */
+    /* ARTICLES SECTION */
+    .sec-articles { padding: 5rem 0 }
+    .articles-wrap { max-width: 1200px; margin: 0 auto; padding: 0 4rem }
+    .articles-intro { text-align: center; max-width: 580px; margin: 0 auto }
+    .articles-intro h2 {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--slate); line-height: 1.25; margin-bottom: 1rem
+    }
+    .articles-intro h2 em { font-style: italic }
+    .articles-intro p { color: var(--slate-mid); font-size: 0.88rem }
+
     .articles-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px; background: var(--slate-light);
+      margin-top: 3rem
     }
-
     .article-card {
-      background: white;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: all var(--transition);
-      display: flex; flex-direction: column;
+      background: var(--white);
+      display: flex; flex-direction: column; overflow: hidden;
+      transition: transform 0.3s
     }
-    .article-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+    .article-card:hover { transform: translateY(-4px) }
 
     .article-img {
       aspect-ratio: 16/9;
       background: var(--green-pale);
       display: flex; align-items: center; justify-content: center;
-      font-size: 3rem;
-      position: relative;
-      overflow: hidden;
+      color: var(--green); overflow: hidden
     }
-    .article-img img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .article-img i { font-size: 3.5rem; opacity: 0.55 }
 
-    .article-body { padding: 1.75rem; flex: 1; display: flex; flex-direction: column; }
-    .article-category {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--green); margin-bottom: 0.6rem;
+    .article-body {
+      padding: 1.8rem; flex: 1;
+      display: flex; flex-direction: column
     }
-    .article-body h2 {
-      font-family: var(--font-heading); font-size: 1.4rem;
-      color: var(--slate-dark); margin-bottom: 0.75rem; line-height: 1.3;
-    }
-    .article-body p { font-size: 0.9rem; color: var(--slate-mid); flex: 1; margin: 0; max-width: none; }
     .article-meta {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 1.25rem; padding-top: 1.25rem;
-      border-top: 1px solid var(--green-pale);
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--slate-light); margin-bottom: 0.8rem
     }
-    .article-date { font-size: 0.8rem; color: var(--slate-light); }
+    .article-meta .tag {
+      color: var(--green);
+      border: 1px solid var(--green-light);
+      padding: 0.2rem 0.6rem
+    }
+    .article-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 300;
+      color: var(--slate); line-height: 1.3; margin-bottom: 0.8rem
+    }
+    .article-excerpt {
+      font-size: 0.84rem; color: var(--slate-mid);
+      line-height: 1.75; flex: 1; margin-bottom: 1.2rem
+    }
     .article-link {
-      font-size: 0.85rem; font-weight: 600; color: var(--green);
-      transition: color var(--transition);
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--green); text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: gap 0.3s; margin-top: auto
     }
-    .article-link:hover { color: var(--green-dark); }
-
-    /* Article featured (premier, pleine largeur) */
-    .article-featured {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-    .article-featured .article-img { aspect-ratio: auto; min-height: 280px; }
-    .article-featured .article-body { padding: 2.5rem; }
-    .article-featured .article-body h2 { font-size: 1.9rem; }
-
-    /* Placeholder notice */
-    .placeholder-notice {
-      background: #fffbeb;
-      border: 1px solid #fcd34d;
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 2.5rem;
-      font-size: 0.9rem;
-      color: #92400e;
-    }
-    .placeholder-notice strong { display: block; margin-bottom: 0.25rem; }
-
-    /* CTA Section */
-    .cta-section {
-      margin-top: 5rem;
-      background: var(--green-bg);
-      border-radius: var(--radius-lg);
-      padding: 4rem 3rem;
-      text-align: center;
-    }
-    .cta-section h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); color: var(--slate-dark); margin-bottom: 1rem; }
-    .cta-section p  { color: var(--slate-mid); max-width: 55ch; margin: 0 auto 2rem; }
-    .btn {
-      display: inline-block; padding: 0.875rem 2rem; border-radius: 50px;
-      font-weight: 600; font-size: 0.9rem; transition: all var(--transition); cursor: pointer;
-    }
-    .btn-primary { background: var(--green); color: white; border: 2px solid var(--green); }
-    .btn-primary:hover { background: var(--green-mid); border-color: var(--green-mid); transform: translateY(-1px); }
+    .article-link:hover { gap: 0.8rem }
 
     /* FOOTER */
     footer {
-      background: #080f0b; color: rgba(255,255,255,0.55); padding: 2.5rem 0; margin-top: 0;
+      background: var(--slate);
+      border-top: 1px solid rgba(194,205,210,0.15);
+      padding: 3rem 4rem;
+      display: flex; justify-content: space-between; align-items: center; gap: 2rem
     }
-    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; text-align: center; }
-    .footer-logo  { font-family: var(--font-heading); font-size: 1.6rem; color: rgba(255,255,255,0.8); }
-    .footer-nav   { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-    .footer-nav a { font-size: 0.82rem; transition: color var(--transition); }
-    .footer-nav a:hover { color: var(--green-light); }
-    .footer-copy  { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
-    .social-links { display: flex; gap: 0.875rem; }
-    .social-link  {
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.15);
-      display: flex; align-items: center; justify-content: center;
-      color: rgba(255,255,255,0.55); transition: all var(--transition);
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 1.2rem; color: var(--cream)
     }
-    .social-link:hover { border-color: var(--green-light); color: var(--green-light); }
-    .social-link svg { width: 16px; height: 16px; }
+    .footer-links { display: flex; gap: 2rem; list-style: none }
+    .footer-links a {
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--slate-mid); text-decoration: none; transition: color 0.3s
+    }
+    .footer-links a:hover { color: var(--green-light) }
+    .footer-legal { font-size: 0.68rem; color: var(--slate-mid) }
 
-    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
-
-    @media (max-width: 900px) {
-      .articles-grid { grid-template-columns: repeat(2, 1fr); }
-      .article-featured { grid-template-columns: 1fr; }
-      .article-featured .article-img { min-height: 220px; }
+    .footer-social {
+      display: flex;
+      gap: 1.1rem;
+      align-items: center
     }
-    @media (max-width: 768px) {
-      .nav-links    { display: none; }
-      .nav-hamburger { display: flex; }
-      .articles-grid { grid-template-columns: 1fr; }
-      .article-featured { grid-column: 1; }
+
+    .footer-social a {
+      color: var(--slate-mid);
+      font-size: 1.15rem;
+      line-height: 1;
+      transition: color 0.3s
+    }
+
+    .footer-social a:hover { color: var(--green-light) }
+
+    /* FADE-UP */
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.7s cubic-bezier(0.22,1,0.36,1)
+    }
+    .fade-up.visible { opacity: 1; transform: none }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      nav { padding: 1.2rem 2rem }
+      .nav-links, .nav-cta { display: none }
+      .page-hero { padding: 8rem 2rem 4rem }
+      .articles-wrap { padding: 0 2rem }
+      .articles-grid { grid-template-columns: 1fr 1fr }
+      footer { flex-direction: column; padding: 3rem 2rem; text-align: center }
+      .footer-links { flex-wrap: wrap; justify-content: center }
+    }
+    @media(max-width:600px) {
+      .articles-grid { grid-template-columns: 1fr }
     }
   </style>
 </head>
 <body>
 
-  <!-- MOBILE NAV -->
-  <nav class="nav-mobile" id="mobileNav" role="dialog" aria-modal="true">
-    <button class="nav-mobile-close" id="mobileClose" aria-label="Fermer">&times;</button>
-    <a href="index.html">Accueil</a>
-    <a href="index.html#musicotherapie">La musicothérapie</a>
-    <a href="index.html#seances">Séances</a>
-    <a href="blog.html" class="active">Ressources</a>
-    <a href="index.html#contact">Contact</a>
+  <nav id="navbar" class="scrolled">
+    <a href="index.html" class="nav-logo">
+      <img src="logo_Enza.svg" class="nav-logo-icon" alt="Logo Enza Duhem" width="30" height="38">
+      <span class="nav-logo-text">Enza Duhem</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#approche">Approche</a></li>
+      <li><a href="index.html#seances">Séances</a></li>
+      <li><a href="blog.html" class="active">Ressources</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Prendre rendez-vous</a>
   </nav>
 
-  <!-- NAV -->
-  <header class="nav" role="banner">
-    <div class="container nav-inner">
-      <a href="index.html" class="nav-logo" aria-label="Enza Duhem — Retour accueil">
-        <img src="logo_Enza.svg" alt="Logo Enza Duhem" height="42">
-        <span class="nav-logo-text">Enza Duhem</span>
-      </a>
-      <ul class="nav-links" role="list">
-        <li><a href="index.html#apropos">À propos</a></li>
-        <li><a href="index.html#musicotherapie">La musicothérapie</a></li>
-        <li><a href="index.html#seances">Séances</a></li>
-        <li><a href="blog.html" class="active">Ressources</a></li>
-        <li><a href="index.html#contact" class="nav-cta">Prendre rendez-vous</a></li>
-      </ul>
-      <button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <!-- HERO -->
   <div class="page-hero">
-    <div class="container">
-      <span class="section-tag">Blog</span>
-      <h1>Ressources &amp; Articles</h1>
-      <p>Réflexions, informations et éclairages sur la musicothérapie et le mieux-être</p>
-    </div>
+    <span class="section-tag">Ressources</span>
+    <h1>La musicothérapie,<br><em>éclairée par la pratique</em></h1>
+    <p>Articles, réflexions et ressources autour de la musicothérapie et de l’accompagnement par le son.</p>
   </div>
 
-  <!-- MAIN -->
-  <main>
-    <div class="container">
+  <main class="sec-articles">
+    <div class="articles-wrap">
 
-      <!-- Notice placeholder -->
-      <div class="placeholder-notice">
-        <strong>Note pour Enza :</strong>
-        Ces articles sont des exemples de structure. Remplacez le contenu par vos propres textes.
-        Si vous souhaitez gérer le blog vous-même, Netlify CMS peut être ajouté facilement.
+      <div class="articles-intro fade-up">
+        <h2>Comprendre <em>la musicothérapie</em></h2>
+        <p>Découvrez des articles écrits à partir de ma pratique et de ma formation, pour mieux comprendre comment la musique peut accompagner le soin.</p>
       </div>
 
-      <!-- Filtres -->
-      <div class="filters" role="group" aria-label="Filtrer par thème">
-        <button class="filter-btn active">Tous</button>
-        <button class="filter-btn">Périnatalité</button>
-        <button class="filter-btn">Enfance &amp; Ado</button>
-        <button class="filter-btn">Âge adulte</button>
-        <button class="filter-btn">Gériatrie</button>
-        <button class="filter-btn">Soins palliatifs</button>
-      </div>
-
-      <!-- Articles -->
       <div class="articles-grid">
 
-        <!-- Article vedette -->
-        <article class="article-card article-featured">
-          <div class="article-img">🎵</div>
+        <article class="article-card fade-up" data-delay="1">
+          <div class="article-img">
+            <i class="ph-light ph-music-note"></i>
+          </div>
           <div class="article-body">
-            <p class="article-category">Introduction</p>
-            <h2>Qu'est-ce que la musicothérapie ? Une introduction accessible</h2>
-            <p>La musicothérapie est souvent méconnue du grand public, entourée d'idées reçues. Que l'on soit mélomane ou simplement curieux, cet article vous invite à découvrir ce qu'est vraiment cette discipline thérapeutique, comment elle fonctionne et à qui elle peut s'adresser.</p>
             <div class="article-meta">
-              <span class="article-date">Mars 2025</span>
-              <span class="article-link">Lire l'article →</span>
+              <span class="tag">Introduction</span>
+              <span>À venir</span>
             </div>
+            <h2 class="article-title">Qu’est-ce que la musicothérapie ?</h2>
+            <p class="article-excerpt">Une présentation accessible de la musicothérapie, de ses fondements théoriques et de ce qu’elle peut apporter dans un parcours de soin.</p>
+            <a href="#" class="article-link">Lire l’article <i class="ph-light ph-arrow-right"></i></a>
           </div>
         </article>
 
-        <!-- Article 2 -->
-        <article class="article-card">
-          <div class="article-img">🤰</div>
+        <article class="article-card fade-up" data-delay="2">
+          <div class="article-img">
+            <i class="ph-light ph-baby"></i>
+          </div>
           <div class="article-body">
-            <p class="article-category">Périnatalité</p>
-            <h2>La musique pendant la grossesse : bienfaits pour la mère et l'enfant</h2>
-            <p>Le fœtus perçoit les sons dès le 5e mois de grossesse. Comment la musicothérapie peut-elle soutenir le lien mère-enfant et préparer à l'arrivée de bébé ?</p>
             <div class="article-meta">
-              <span class="article-date">Février 2025</span>
-              <span class="article-link">Lire l'article →</span>
+              <span class="tag">Périnatalité</span>
+              <span>À venir</span>
             </div>
+            <h2 class="article-title">Musicothérapie et périnatalité</h2>
+            <p class="article-excerpt">Comment la musique peut soutenir le lien parent-bébé, accompagner les prématurés en néonatologie, et apaiser les angoisses de la grossesse.</p>
+            <a href="#" class="article-link">Lire l’article <i class="ph-light ph-arrow-right"></i></a>
           </div>
         </article>
 
-        <!-- Article 3 -->
-        <article class="article-card">
-          <div class="article-img">🧓</div>
+        <article class="article-card fade-up" data-delay="3">
+          <div class="article-img">
+            <i class="ph-light ph-person-simple-run"></i>
+          </div>
           <div class="article-body">
-            <p class="article-category">Gériatrie</p>
-            <h2>Musicothérapie et mémoire : accompagner les personnes âgées</h2>
-            <p>La musique a un pouvoir remarquable sur la mémoire, même dans les stades avancés de la démence. Découvrez comment des séances de musicothérapie peuvent maintenir le lien et préserver l'identité.</p>
             <div class="article-meta">
-              <span class="article-date">Janvier 2025</span>
-              <span class="article-link">Lire l'article →</span>
+              <span class="tag">Enfance &amp; adolescence</span>
+              <span>À venir</span>
             </div>
+            <h2 class="article-title">La musique comme espace de parole</h2>
+            <p class="article-excerpt">Pour les enfants et adolescents, la musique offre un espace d’expression non-verbal précieux, notamment dans les contextes de difficultés émotionnelles.</p>
+            <a href="#" class="article-link">Lire l’article <i class="ph-light ph-arrow-right"></i></a>
           </div>
         </article>
 
-        <!-- Article 4 -->
-        <article class="article-card">
-          <div class="article-img">🧘</div>
+        <article class="article-card fade-up" data-delay="1">
+          <div class="article-img">
+            <i class="ph-light ph-heartbeat"></i>
+          </div>
           <div class="article-body">
-            <p class="article-category">Âge adulte</p>
-            <h2>Stress et anxiété : comment la musique peut devenir un outil thérapeutique</h2>
-            <p>À l'ère de l'hyperconnexion et des rythmes de vie soutenus, le stress chronique touche de nombreux adultes. La musicothérapie offre un espace de ralentissement et de reconnexion à soi.</p>
             <div class="article-meta">
-              <span class="article-date">Décembre 2024</span>
-              <span class="article-link">Lire l'article →</span>
+              <span class="tag">Âge adulte</span>
+              <span>À venir</span>
             </div>
+            <h2 class="article-title">Musicothérapie et gestion du stress</h2>
+            <p class="article-excerpt">L’anxiété, le burn-out, les troubles du sommeil — comment la musicothérapie peut accompagner la régulation émotionnelle chez l’adulte.</p>
+            <a href="#" class="article-link">Lire l’article <i class="ph-light ph-arrow-right"></i></a>
           </div>
         </article>
 
-        <!-- Article 5 -->
-        <article class="article-card">
-          <div class="article-img">👧</div>
+        <article class="article-card fade-up" data-delay="2">
+          <div class="article-img">
+            <i class="ph-light ph-brain"></i>
+          </div>
           <div class="article-body">
-            <p class="article-category">Enfance &amp; Adolescence</p>
-            <h2>L'enfant et la musique : bien plus qu'une activité artistique</h2>
-            <p>Pour les enfants qui peinent à trouver les mots pour exprimer ce qu'ils ressentent, la musicothérapie ouvre un espace d'expression unique. Émotions, confiance en soi, lien social : les bienfaits sont multiples.</p>
             <div class="article-meta">
-              <span class="article-date">Novembre 2024</span>
-              <span class="article-link">Lire l'article →</span>
+              <span class="tag">Gériatrie</span>
+              <span>À venir</span>
             </div>
+            <h2 class="article-title">Musique et mémoire chez la personne âgée</h2>
+            <p class="article-excerpt">La musique active des zones du cerveau préservées même dans les stades avancés de la démence. Retour sur des séances avec des personnes atteintes d’Alzheimer.</p>
+            <a href="#" class="article-link">Lire l’article <i class="ph-light ph-arrow-right"></i></a>
           </div>
         </article>
 
-        <!-- Article 6 -->
-        <article class="article-card">
-          <div class="article-img">🕊️</div>
+        <article class="article-card fade-up" data-delay="3">
+          <div class="article-img">
+            <i class="ph-light ph-feather"></i>
+          </div>
           <div class="article-body">
-            <p class="article-category">Soins palliatifs</p>
-            <h2>Musicothérapie en fin de vie : donner du sens et de la douceur</h2>
-            <p>Dans les moments les plus délicats de la vie, la musique peut offrir ce que les mots ne peuvent plus atteindre. Un espace de connexion, de douceur et de présence pour la personne et ses proches.</p>
             <div class="article-meta">
-              <span class="article-date">Octobre 2024</span>
-              <span class="article-link">Lire l'article →</span>
+              <span class="tag">Soins palliatifs</span>
+              <span>À venir</span>
             </div>
+            <h2 class="article-title">Accompagner la fin de vie par la musique</h2>
+            <p class="article-excerpt">Dans les soins palliatifs, la musicothérapie offre un espace de douceur, de mémoire et de lien — pour la personne accompagnée comme pour ses proches.</p>
+            <a href="#" class="article-link">Lire l’article <i class="ph-light ph-arrow-right"></i></a>
           </div>
         </article>
 
-      </div><!-- /articles-grid -->
-
-      <!-- CTA -->
-      <div class="cta-section">
-        <h2>Envie d'en savoir plus ou de prendre rendez-vous ?</h2>
-        <p>Je suis disponible pour répondre à vos questions et vous accompagner dans votre démarche vers le mieux-être.</p>
-        <a href="index.html#contact" class="btn btn-primary">Prendre rendez-vous</a>
       </div>
-
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer>
-    <div class="container footer-inner">
-      <p class="footer-logo">Enza Duhem</p>
-      <nav class="social-links" aria-label="Réseaux sociaux">
-        <a href="https://www.linkedin.com/in/VOTRE-PROFIL" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/VOTRE-PAGE" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/VOTRE-COMPTE" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-        </a>
-      </nav>
-      <nav class="footer-nav">
-        <a href="index.html">Accueil</a>
-        <a href="mentions-legales.html">Mentions légales</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
-      <p class="footer-copy">&copy; 2025 Enza Duhem — Musicothérapeute. Tous droits réservés.</p>
+    <span class="footer-logo">Enza Duhem · Musicothérapie</span>
+    <ul class="footer-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="mentions-legales.html">Mentions légales</a></li>
+    </ul>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/VOTRE-PAGE" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+      <a href="https://www.linkedin.com/in/VOTRE-PROFIL" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
+      <a href="https://www.instagram.com/VOTRE-COMPTE" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
     </div>
+    <span class="footer-legal">© 2026 Enza Duhem</span>
   </footer>
 
   <script>
-    var hamburger  = document.getElementById('hamburger');
-    var mobileNav  = document.getElementById('mobileNav');
-    var mobileClose = document.getElementById('mobileClose');
-    hamburger.addEventListener('click', function() {
-      mobileNav.classList.add('open');
-      hamburger.setAttribute('aria-expanded','true');
-      document.body.style.overflow = 'hidden';
-    });
-    mobileClose.addEventListener('click', function() {
-      mobileNav.classList.remove('open');
-      hamburger.setAttribute('aria-expanded','false');
-      document.body.style.overflow = '';
-    });
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') { mobileNav.classList.remove('open'); document.body.style.overflow=''; }
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
     });
 
-    // Filtres (UI seulement, articles statiques)
-    document.querySelectorAll('.filter-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-        this.classList.add('active');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const delay = e.target.dataset.delay || 0;
+          setTimeout(() => e.target.classList.add('visible'), delay * 120);
+          observer.unobserve(e.target);
+        }
       });
-    });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   </script>
 
 </body>
