@@ -7,6 +7,9 @@
   <title>Enza Duhem · Musicothérapie</title>
   <meta name="description"
     content="Enza Duhem, musicothérapeute en formation. La musique comme chemin vers le mieux-être — séances individuelles à domicile à Vaulx (Tournai).">
+  <link rel="icon" type="image/svg+xml" href="logo_Enza.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap"
     rel="stylesheet">
@@ -21,6 +24,9 @@
 
     :root {
       --green: #7A9E7E;
+      --green-primary: #3d7558;
+      --green-darkest: #1a3028;
+      --slate-medium: #6B7C85;
       --green-light: #A8C5AB;
       --green-pale: #E8F0E9;
       --green-dark: #4A6B4E;
@@ -1136,14 +1142,14 @@
       transition-delay: 0.5s
     }
   </style>
-  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" defer></script>
 </head>
 
 <body>
 
   <!-- NAV -->
   <nav id="navbar">
-    <a href="#" class="nav-logo">
+    <a href="/" class="nav-logo">
       <img src="logo_Enza.svg" class="nav-logo-icon" alt="Logo Enza Duhem" width="30" height="38">
       <span class="nav-logo-text">Enza Duhem</span>
     </a>
@@ -1382,9 +1388,11 @@
         <h2>Recevoir les prochains <em>articles</em></h2>
         <p class="newsletter-sub">Un email rare, seulement quand c'est utile.</p>
       </div>
-      <form class="newsletter-form" onsubmit="handleNewsletter(event)">
-        <input type="email" placeholder="votre@email.be" required>
-        <button type="submit">S'inscrire</button>
+      <form class="newsletter-form" name="newsletter" method="POST"
+            action="/" data-netlify="true">
+        <input type="hidden" name="form-name" value="newsletter">
+        <input type="email" name="email" placeholder="votre@email.be" required>
+        <button type="submit">S’inscrire</button>
       </form>
     </div>
   </section>
@@ -1417,7 +1425,6 @@
               d'une séance par semaine.</p>
           </div>
         </div>
-        </div>
         <div class="faq-item">
           <button class="faq-question">Intervenez-vous en établissements de santé ?<span
               class="faq-icon">+</span></button>
@@ -1437,24 +1444,28 @@
       <div class="fade-up">
         <span class="section-tag section-tag--light">Contact</span>
         <h2 class="on-dark" style="margin-bottom:2rem;color:var(--green-light);font-style:italic">Commençons ensemble</h2>
-        <form class="contact-form" onsubmit="handleForm(event)">
+        <form class="contact-form" name="contact" method="POST"
+              action="/confirmation.html"
+              data-netlify="true" data-netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p style="display:none"><input name="bot-field"></p>
           <div class="form-row">
             <div class="form-group">
               <label for="prenom">Prénom</label>
-              <input type="text" id="prenom" placeholder="votre prénom" required>
+              <input type="text" id="prenom" name="prenom" placeholder="votre prénom" required>
             </div>
             <div class="form-group">
               <label for="nom">Nom</label>
-              <input type="text" id="nom" placeholder="votre nom" required>
+              <input type="text" id="nom" name="nom" placeholder="votre nom" required>
             </div>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="votre email" required>
+            <input type="email" id="email" name="email" placeholder="votre email" required>
           </div>
           <div class="form-group">
             <label for="seance">Type de séance souhaité</label>
-            <select id="seance">
+            <select id="seance" name="seance">
               <option value="">Choisir…</option>
               <option>Séance individuelle</option>
               <option>Atelier collectif</option>
@@ -1465,11 +1476,9 @@
           </div>
           <div class="form-group">
             <label for="message">Message</label>
-            <textarea id="message" rows="5" placeholder="Parlez-moi de vous et de ce qui vous amène…"></textarea>
+            <textarea id="message" name="message" rows="5" placeholder="Parlez-moi de vous et de ce qui vous amène…"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="align-self:flex-start">Envoyer ma demande</button>
-          <div id="form-success" style="display:none;color:var(--green-light);font-size:0.82rem;margin-top:0.5rem">✓
-            Votre message a bien été envoyé. Je vous réponds sous 48h.</div>
         </form>
       </div>
       <div class="contact-info fade-up" data-delay="2">
@@ -1509,9 +1518,9 @@
       <li><a href="mentions-legales.html">Mentions légales</a></li>
     </ul>
     <div class="footer-social">
-      <a href="https://www.facebook.com/VOTRE-PAGE" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
-      <a href="https://www.linkedin.com/in/VOTRE-PROFIL" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
-      <a href="https://www.instagram.com/VOTRE-COMPTE" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
+      <a href="https://www.facebook.com/VOTRE-PAGE" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+      <a href="https://www.linkedin.com/in/VOTRE-PROFIL" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
+      <a href="https://www.instagram.com/VOTRE-COMPTE" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
     </div>
     <span class="footer-legal">© 2026 Enza Duhem</span>
   </footer>
@@ -1539,23 +1548,7 @@
       });
     });
 
-    // ── CONTACT FORM ──
-    function handleForm(e) {
-      e.preventDefault();
-      document.getElementById('form-success').style.display = 'block';
-      e.target.reset();
-    }
-
-    // ── NEWSLETTER ──
-    function handleNewsletter(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('button');
-      btn.textContent = '✓ Inscrit·e';
-      btn.style.background = 'var(--green)';
-      e.target.reset();
-    }
-
-        // ── SMOOTH ANCHOR ──
+    // ── SMOOTH ANCHOR ──
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const target = document.querySelector(a.getAttribute('href'));
