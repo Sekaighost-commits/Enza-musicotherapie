@@ -172,7 +172,8 @@
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%);
       width: 24px;
       height: 1px;
       background: var(--green)
@@ -505,10 +506,12 @@
       background: var(--green-pale)
     }
 
-    .card-icon {
-      font-size: 1.8rem;
+    .card-icon,
+    .cadre-icon {
+      font-size: 2rem;
+      display: block;
       margin-bottom: 1.2rem;
-      display: block
+      color: var(--green-primary)
     }
 
     .card h3 {
@@ -620,11 +623,6 @@
     .cadre-card:nth-child(4) { grid-column: 2 / span 2 }
     .cadre-card:nth-child(5) { grid-column: 4 / span 2 }
 
-    .cadre-icon {
-      font-size: 1.8rem;
-      display: block;
-      margin-bottom: 1rem
-    }
 
     .cadre-card h3 {
       font-family: 'Cormorant Garamond', serif;
@@ -1123,6 +1121,7 @@
       transition-delay: 0.5s
     }
   </style>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 </head>
 
 <body>
@@ -1188,22 +1187,22 @@
     <p class="approche-intro fade-up" data-delay="1">La musicothérapie est une pratique de soin, de relation d'aide, de soutien, ou de rééducation, utilisant le son et la musique à l'intérieur du lien thérapeutique afin de soutenir le développement, la santé et le bien-être.</p>
     <div class="cards-grid cards-grid--4">
       <div class="card fade-up" data-delay="1">
-        <span class="card-icon">🤝</span>
+        <i class="ph-light ph-hand-heart card-icon"></i>
         <h3>La relation d'aide</h3>
         <p>Empathie, authenticité et non-jugement — le fondement de tout accompagnement thérapeutique.</p>
       </div>
       <div class="card fade-up" data-delay="2">
-        <span class="card-icon">🎭</span>
+        <i class="ph-light ph-wave-sine card-icon"></i>
         <h3>L'Iso-principe</h3>
         <p>Adaptation à l'état émotionnel initial de la personne pour créer une rencontre juste et sécurisante.</p>
       </div>
       <div class="card fade-up" data-delay="3">
-        <span class="card-icon">🎶</span>
+        <i class="ph-light ph-music-notes card-icon"></i>
         <h3>La musicalité innée</h3>
         <p>Aucune compétence musicale n'est requise. Chaque être humain porte en lui une relation naturelle au son.</p>
       </div>
       <div class="card fade-up" data-delay="1">
-        <span class="card-icon">🔍</span>
+        <i class="ph-light ph-eye card-icon"></i>
         <h3>La non-interprétation</h3>
         <p>Aide à l'interprétation de ce qui émerge en séance, mais n'interprète jamais à votre place.</p>
       </div>
@@ -1224,7 +1223,7 @@
     <div class="cadres-grid">
 
       <div class="cadre-card fade-up" data-delay="1">
-        <span class="cadre-icon">👶</span>
+        <i class="ph-light ph-baby cadre-icon"></i>
         <h3>Périnatalité &amp; néonatologie</h3>
         <span class="cadre-tagline">Survivre et se lier</span>
         <span class="cadre-population">Prématuré · Lien parents-bébé</span>
@@ -1232,7 +1231,7 @@
       </div>
 
       <div class="cadre-card fade-up" data-delay="2">
-        <span class="cadre-icon">🌱</span>
+        <i class="ph-light ph-person-simple-run cadre-icon"></i>
         <h3>Enfance &amp; adolescence</h3>
         <span class="cadre-tagline">Grandir et communiquer</span>
         <span class="cadre-population">Troubles DYS · TSA · Santé mentale</span>
@@ -1240,7 +1239,7 @@
       </div>
 
       <div class="cadre-card fade-up" data-delay="3">
-        <span class="cadre-icon">🌿</span>
+        <i class="ph-light ph-heartbeat cadre-icon"></i>
         <h3>Âge adulte</h3>
         <span class="cadre-tagline">Se réparer et s'exprimer</span>
         <span class="cadre-population">Douleur chronique · Handicap · Santé mentale</span>
@@ -1248,7 +1247,7 @@
       </div>
 
       <div class="cadre-card fade-up" data-delay="1">
-        <span class="cadre-icon">🌳</span>
+        <i class="ph-light ph-brain cadre-icon"></i>
         <h3>Gériatrie</h3>
         <span class="cadre-tagline">Se souvenir et maintenir</span>
         <span class="cadre-population">Alzheimer &amp; démences · Parkinson</span>
@@ -1256,7 +1255,7 @@
       </div>
 
       <div class="cadre-card fade-up" data-delay="2">
-        <span class="cadre-icon">🕊️</span>
+        <i class="ph-light ph-feather cadre-icon"></i>
         <h3>Soins palliatifs</h3>
         <span class="cadre-tagline">S'apaiser et partir</span>
         <span class="cadre-population">Accompagnements de fin de vie</span>
@@ -1422,21 +1421,21 @@
     <div class="contact-grid">
       <div class="fade-up">
         <span class="section-tag section-tag--light">Contact</span>
-        <h2 class="on-dark" style="margin-bottom:2rem">Commençons <em>ensemble</em></h2>
+        <h2 class="on-dark" style="margin-bottom:2rem;color:var(--green-light);font-style:italic">Commençons ensemble</h2>
         <form class="contact-form" onsubmit="handleForm(event)">
           <div class="form-row">
             <div class="form-group">
               <label for="prenom">Prénom</label>
-              <input type="text" id="prenom" placeholder="Sophie" required>
+              <input type="text" id="prenom" placeholder="votre prénom" required>
             </div>
             <div class="form-group">
               <label for="nom">Nom</label>
-              <input type="text" id="nom" placeholder="Martin" required>
+              <input type="text" id="nom" placeholder="votre nom" required>
             </div>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="sophie@email.com" required>
+            <input type="email" id="email" placeholder="votre email" required>
           </div>
           <div class="form-group">
             <label for="seance">Type de séance souhaité</label>
@@ -1477,9 +1476,9 @@
           style="margin-top:2.5rem;padding:2rem;background:rgba(122,158,126,0.12);border-left:2px solid var(--green)">
           <p
             style="color:var(--slate-light);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.6">
-            "La musique commence là où les mots finissent."<br><span
+            &laquo; La musique commence là où s’arrête le pouvoir des mots. &raquo;<br><span
               style="font-family:'DM Sans',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--slate-mid);font-style:normal">—
-              Heinrich Heine</span></p>
+              Richard Wagner</span></p>
         </div>
       </div>
     </div>
