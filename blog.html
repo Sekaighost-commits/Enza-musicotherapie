@@ -197,6 +197,21 @@
     .footer-links a:hover { color: var(--green-light) }
     .footer-legal { font-size: 0.68rem; color: var(--slate-mid) }
 
+    .footer-social {
+      display: flex;
+      gap: 1.1rem;
+      align-items: center
+    }
+
+    .footer-social a {
+      color: var(--slate-mid);
+      font-size: 1.15rem;
+      line-height: 1;
+      transition: color 0.3s
+    }
+
+    .footer-social a:hover { color: var(--green-light) }
+
     /* FADE-UP */
     .fade-up {
       opacity: 0; transform: translateY(28px);
@@ -354,6 +369,11 @@
       <li><a href="index.html#contact">Contact</a></li>
       <li><a href="mentions-legales.html">Mentions légales</a></li>
     </ul>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/VOTRE-PAGE" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+      <a href="https://www.linkedin.com/in/VOTRE-PROFIL" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
+      <a href="https://www.instagram.com/VOTRE-COMPTE" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
+    </div>
     <span class="footer-legal">© 2026 Enza Duhem</span>
   </footer>
 

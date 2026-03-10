@@ -135,6 +135,10 @@
     .footer-nav a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; }
     .footer-nav a:hover { color: var(--green-light); }
     .footer-copy  { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    .footer-social { display: flex; gap: 1.1rem; align-items: center; }
+    .footer-social a { color: rgba(255,255,255,0.55); font-size: 1.15rem; line-height: 1; transition: color 0.3s; text-decoration: none; }
+    .footer-social a:hover { color: var(--green-light); }
+
 
     :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
 
@@ -142,6 +146,7 @@
       .page-hero { padding: 7rem 0 2.5rem; }
     }
   </style>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 </head>
 <body>
 
@@ -289,7 +294,12 @@
         <a href="blog.html">Ressources</a>
         <a href="index.html#contact">Contact</a>
       </nav>
-      <p class="footer-copy">&copy; 2025 Enza Duhem — Musicothérapeute. Tous droits réservés.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/VOTRE-PAGE" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+        <a href="https://www.linkedin.com/in/VOTRE-PROFIL" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
+        <a href="https://www.instagram.com/VOTRE-COMPTE" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Enza Duhem — Musicothérapeute. Tous droits réservés.</p>
     </div>
   </footer>
 

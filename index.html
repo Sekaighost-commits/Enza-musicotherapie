@@ -1076,6 +1076,21 @@
       color: var(--slate-mid)
     }
 
+    .footer-social {
+      display: flex;
+      gap: 1.1rem;
+      align-items: center
+    }
+
+    .footer-social a {
+      color: var(--slate-mid);
+      font-size: 1.15rem;
+      line-height: 1;
+      transition: color 0.3s
+    }
+
+    .footer-social a:hover { color: var(--green-light) }
+
     @media(max-width:900px) {
       footer {
         flex-direction: column;
@@ -1491,9 +1506,14 @@
       <li><a href="#approche">Approche</a></li>
       <li><a href="#seances">Séances</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="#">Mentions légales</a></li>
+      <li><a href="mentions-legales.html">Mentions légales</a></li>
     </ul>
-    <span class="footer-legal">© 2025 Enza Duhem</span>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/VOTRE-PAGE" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+      <a href="https://www.linkedin.com/in/VOTRE-PROFIL" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ph-light ph-linkedin-logo"></i></a>
+      <a href="https://www.instagram.com/VOTRE-COMPTE" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
+    </div>
+    <span class="footer-legal">© 2026 Enza Duhem</span>
   </footer>
 
   <script>
