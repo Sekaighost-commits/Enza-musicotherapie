@@ -28,7 +28,7 @@
 
     # Content Security Policy
     # Autorise : propres ressources + Google Fonts + Netlify Forms
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; form-action 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://unpkg.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; form-action 'self';"
 
     # HTTPS strict (HSTS) — activer après test en production
     # Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
