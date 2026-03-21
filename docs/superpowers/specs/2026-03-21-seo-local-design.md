@@ -8,7 +8,9 @@
 
 Site statique hébergé sur Netlify : `musicotherapeute-hainaut.be`
 Pages existantes : `index.html`, `blog.html`, `mentions-legales.html`, `confirmation.html`
-SEO actuel : titres basiques, meta descriptions partielles, pas de schema, pas de sitemap, pas de robots.txt
+SEO actuel : titres basiques, meta descriptions partielles, pas de schema, pas de sitemap
+Note : `robots.txt` et `sitemap.xml` existent déjà à la racine et correspondent au spec — pas à recréer.
+Note : `confirmation.html` a déjà `noindex, nofollow` — pas à modifier.
 
 **Objectif de classement :** Recherches locales uniquement — "musicothérapie Tournai", "musicothérapeute Hainaut", "musicothérapeute à domicile Belgique"
 
@@ -27,39 +29,39 @@ SEO actuel : titres basiques, meta descriptions partielles, pas de schema, pas d
 - `blog.html` : inclure "musicothérapie", "articles", "ressources", "Hainaut"
 
 ### 1.3 JSON-LD Schema (données structurées)
-Ajouter dans `<head>` de `index.html` un bloc `<script type="application/ld+json">` avec :
-- Type : `LocalBusiness` + `Person`
-- Nom : Enza Duhem
-- Profession : Musicothérapeute
-- Adresse : Vaulx, Tournai, Hainaut, Belgique
-- URL : https://musicotherapeute-hainaut.be
-- Email : enza@musicotherapeute-hainaut.be
-- Zone de service : Hainaut, Tournai, Belgique
-- Langue : fr-BE
+Ajouter dans `<head>` de `index.html` un bloc `<script type="application/ld+json">` structuré en `@graph` avec deux nœuds :
+- `HealthAndBeautyBusiness` (type principal, plus précis que `LocalBusiness` pour une professionnelle de santé)
+  - Nom : Enza Duhem — Musicothérapeute
+  - Adresse : Vaulx, Tournai, Hainaut, Belgique (PostalAddress)
+  - URL : https://musicotherapeute-hainaut.be
+  - Email : enza@musicotherapeute-hainaut.be ⚠️ PLACEHOLDER — à confirmer avant mise en ligne
+  - `areaServed` : tableau d'`AdministrativeArea` → Tournai, Hainaut, Belgique
+  - `inLanguage` : fr-BE
+- `Person`
+  - Nom : Enza Duhem
+  - Profession (jobTitle) : Musicothérapeute
+  - `worksFor` → référence au nœud `HealthAndBeautyBusiness`
+
+⚠️ Structure `@graph` obligatoire pour combiner deux types — ne pas les fusionner dans un seul objet.
 
 ### 1.4 Open Graph tags
 Ajouter dans `<head>` de `index.html` et `blog.html` :
 - `og:title`, `og:description`, `og:url`, `og:image` (hero-bg.jpg)
+- `og:image:width` : 1200, `og:image:height` : 630 (format recommandé Facebook/LinkedIn)
 - `og:type` : website
 - `og:locale` : fr_BE
 
+Note : les balises `html lang` seront également mises à jour de `fr` vers `fr-BE` sur toutes les pages pour cohérence avec og:locale.
+
 ### 1.5 robots.txt
-Créer `robots.txt` à la racine :
-```
-User-agent: *
-Allow: /
-Disallow: /confirmation.html
-Sitemap: https://musicotherapeute-hainaut.be/sitemap.xml
-```
+✅ Déjà présent et conforme à la racine — aucune action requise.
 
 ### 1.6 sitemap.xml
-Créer `sitemap.xml` à la racine avec les 3 pages publiques :
-- `https://musicotherapeute-hainaut.be/` (priority: 1.0)
-- `https://musicotherapeute-hainaut.be/blog.html` (priority: 0.8)
-- `https://musicotherapeute-hainaut.be/mentions-legales.html` (priority: 0.3)
+✅ Déjà présent et conforme à la racine — aucune action requise.
 
-### 1.7 Meta robots sur confirmation.html
-Ajouter `<meta name="robots" content="noindex, nofollow">` sur `confirmation.html` (page de remerciement, inutile à indexer)
+### 1.7 confirmation.html
+✅ `noindex, nofollow` déjà présent — aucune modification de robots nécessaire.
+**Action unique :** ajouter `<link rel="canonical" href="https://musicotherapeute-hainaut.be/confirmation.html">` uniquement.
 
 ### 1.8 Canonical URLs
 Ajouter `<link rel="canonical" href="https://musicotherapeute-hainaut.be/">` sur chaque page.
@@ -101,16 +103,22 @@ Action manuelle effectuée par Enza sur [search.google.com/search-console](https
 
 ---
 
+### 1.9 Redirects dans netlify.toml
+Vérifier et activer la règle de redirection `www → apex` pour `musicotherapeute-hainaut.be` afin que les canonicals soient cohérents. La règle existe en commentaire dans `netlify.toml` mais référence l'ancien domaine — à mettre à jour.
+
+---
+
 ## Fichiers à modifier / créer
 
 | Fichier | Action |
 |---|---|
 | `index.html` | Modifier title, meta description, ajouter JSON-LD, Open Graph, canonical |
 | `blog.html` | Modifier title, meta description, ajouter Open Graph, canonical |
-| `mentions-legales.html` | Modifier title, ajouter canonical |
-| `confirmation.html` | Ajouter noindex, canonical |
-| `robots.txt` | Créer (nouveau) |
-| `sitemap.xml` | Créer (nouveau) |
+| `mentions-legales.html` | Modifier title, ajouter canonical (tag `noindex, follow` existant conservé — page légale, non destinée à être indexée) |
+| `confirmation.html` | Ajouter canonical uniquement (noindex déjà présent) |
+| `robots.txt` | Déjà présent et conforme — aucune modification |
+| `sitemap.xml` | Déjà présent et conforme — aucune modification |
+| `netlify.toml` | Mettre à jour la règle de redirection www → apex |
 
 ---
 
