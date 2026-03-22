@@ -487,6 +487,32 @@
       margin-bottom: 1.2rem;
       margin-top: -0.5rem;
     }
+    .about-parcours {
+      list-style: none;
+      margin: 1.4rem 0 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .about-parcours li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.5;
+    }
+    .parcours-icon {
+      color: #5a9478;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .parcours-lieu {
+      display: block;
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-top: 0.15rem;
+    }
 
     .about-text p+p {
       margin-top: 1.2rem
@@ -1266,6 +1292,11 @@
         <h2>Enza Duhem,<br><em>musicothérapeute en formation</em></h2>
         <p class="about-subtitle">Une approche douce et ancrée dans le soin</p>
         <p>Je suis Enza Duhem, musicothérapeute en formation. Chaque jour, je vois l'impact que peut avoir la musique sur nous. Je ne cesse de me dire que cette discipline a sa place et peut réellement aider chacun de nous, quelque soit notre âge, notre culture, nos problématiques et nos objectifs.</p>
+        <ul class="about-parcours">
+          <li><span class="parcours-icon">—</span> Licence Lettres &amp; Arts, parcours Musique et Musicologie <span class="parcours-lieu">Université de Lille III</span></li>
+          <li><span class="parcours-icon">—</span> Formation de psychothérapie <span class="parcours-lieu">En ligne</span></li>
+          <li><span class="parcours-icon">—</span> Formation de Musicothérapie ARES <span class="parcours-lieu">Maison de la Formation, Seraing</span></li>
+        </ul>
         <a href="#contact" class="btn btn-dark">Me contacter</a>
       </div>
     </div>
