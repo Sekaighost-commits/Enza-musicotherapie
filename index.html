@@ -496,7 +496,7 @@
     }
     .about-parcours li {
       display: flex;
-      align-items: baseline;
+      align-items: flex-start;
       gap: 0.6rem;
       font-size: 0.95rem;
       color: #334155;
@@ -506,12 +506,24 @@
       color: #5a9478;
       font-weight: 500;
       flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .parcours-text {
+      display: flex;
+      flex-direction: column;
     }
     .parcours-lieu {
-      display: block;
       font-size: 0.82rem;
       color: #64748b;
-      margin-top: 0.15rem;
+      margin-top: 0.1rem;
+    }
+    .parcours-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5a9478;
+      margin-bottom: 0.6rem;
     }
 
     .about-text p+p {
@@ -1292,10 +1304,20 @@
         <h2>Enza Duhem,<br><em>musicothérapeute en formation</em></h2>
         <p class="about-subtitle">Une approche douce et ancrée dans le soin</p>
         <p>Je suis Enza Duhem, musicothérapeute en formation. Chaque jour, je vois l'impact que peut avoir la musique sur nous. Je ne cesse de me dire que cette discipline a sa place et peut réellement aider chacun de nous, quelque soit notre âge, notre culture, nos problématiques et nos objectifs.</p>
+        <p class="parcours-label">Parcours</p>
         <ul class="about-parcours">
-          <li><span class="parcours-icon">—</span> Licence Lettres &amp; Arts, parcours Musique et Musicologie <span class="parcours-lieu">Université de Lille III</span></li>
-          <li><span class="parcours-icon">—</span> Formation de psychothérapie <span class="parcours-lieu">En ligne</span></li>
-          <li><span class="parcours-icon">—</span> Formation de Musicothérapie ARES <span class="parcours-lieu">Maison de la Formation, Seraing</span></li>
+          <li>
+            <span class="parcours-icon">—</span>
+            <span class="parcours-text">Licence Lettres &amp; Arts, parcours Musique et Musicologie<span class="parcours-lieu">Université de Lille III</span></span>
+          </li>
+          <li>
+            <span class="parcours-icon">—</span>
+            <span class="parcours-text">Formation de psychothérapie<span class="parcours-lieu">En ligne</span></span>
+          </li>
+          <li>
+            <span class="parcours-icon">—</span>
+            <span class="parcours-text">Formation de Musicothérapie ARES<span class="parcours-lieu">Maison de la Formation, Seraing</span></span>
+          </li>
         </ul>
         <a href="#contact" class="btn btn-dark">Me contacter</a>
       </div>
