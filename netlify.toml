@@ -36,11 +36,12 @@
 # ============================================================
 # Redirections
 # ============================================================
-# Redirection www → sans www (à activer si domaine configuré)
-# [[redirects]]
-#   from   = "https://www.enzaduhem.be/*"
-#   to     = "https://enzaduhem.be/:splat"
-#   status = 301
+# Redirection www → apex (musicotherapeute-hainaut.be)
+[[redirects]]
+  from   = "https://www.musicotherapeute-hainaut.be/*"
+  to     = "https://musicotherapeute-hainaut.be/:splat"
+  status = 301
+  force  = true
 
 # Page 404 personnalisée (créer un fichier 404.html si souhaité)
 # [[redirects]]
