@@ -175,9 +175,13 @@
       background: var(--green-pale);
       display: flex; align-items: center; justify-content: center;
       color: var(--green); overflow: hidden;
-      min-height: 120px; padding: 0 2.4rem
+      min-height: 120px; padding: 0 2.4rem;
+      cursor: pointer;
+      transition: background 0.4s
     }
-    .article-img i { font-size: 3.5rem; opacity: 0.55 }
+    .article-card:hover .article-img { background: var(--green-light) }
+    .article-img i { font-size: 3.5rem; opacity: 0.55; transition: opacity 0.4s, transform 0.4s }
+    .article-card:hover .article-img i { opacity: 0.85; transform: scale(1.15) }
 
     .article-body {
       padding: 1.8rem 2.4rem; flex: 1;
@@ -297,9 +301,9 @@
       <div class="articles-grid">
 
         <article class="article-card fade-up" data-delay="1">
-          <div class="article-img">
+          <a href="article-perinatalite.html" class="article-img">
             <i class="ph-light ph-baby"></i>
-          </div>
+          </a>
           <div class="article-body">
             <div class="article-meta">
               <span class="tag">Périnatalité</span>
@@ -311,9 +315,9 @@
         </article>
 
         <article class="article-card fade-up" data-delay="2">
-          <div class="article-img">
+          <a href="article-enfance.html" class="article-img">
             <i class="ph-light ph-person-simple-run"></i>
-          </div>
+          </a>
           <div class="article-body">
             <div class="article-meta">
               <span class="tag">Enfance &amp; adolescence</span>
@@ -325,9 +329,9 @@
         </article>
 
         <article class="article-card fade-up" data-delay="3">
-          <div class="article-img">
+          <a href="article-adulte.html" class="article-img">
             <i class="ph-light ph-heartbeat"></i>
-          </div>
+          </a>
           <div class="article-body">
             <div class="article-meta">
               <span class="tag">Âge adulte</span>
@@ -339,9 +343,9 @@
         </article>
 
         <article class="article-card fade-up" data-delay="1">
-          <div class="article-img">
+          <a href="article-geriatrie.html" class="article-img">
             <i class="ph-light ph-brain"></i>
-          </div>
+          </a>
           <div class="article-body">
             <div class="article-meta">
               <span class="tag">Gériatrie</span>
@@ -353,9 +357,9 @@
         </article>
 
         <article class="article-card fade-up" data-delay="2">
-          <div class="article-img">
+          <a href="article-soins-palliatifs.html" class="article-img">
             <i class="ph-light ph-feather"></i>
-          </div>
+          </a>
           <div class="article-body">
             <div class="article-meta">
               <span class="tag">Soins palliatifs</span>
