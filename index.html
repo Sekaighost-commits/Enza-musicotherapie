@@ -1593,10 +1593,12 @@
         <span class="section-tag section-tag--light">Contact</span>
         <h2 class="on-dark" style="margin-bottom:2rem;color:var(--green-light);font-style:italic">Commençons ensemble</h2>
         <form class="contact-form" name="contact" method="POST"
-              action="https://api.web3forms.com/submit">
+              action="https://api.web3forms.com/submit"
+              id="contact-form">
           <input type="hidden" name="access_key" value="abaef60c-5460-4744-9223-d52cc308ebcd">
           <input type="hidden" name="redirect" value="https://musicotherapeute-hainaut.be/confirmation.html">
           <input type="hidden" name="subject" value="Nouvelle demande de contact — Enza Duhem">
+          <input type="hidden" name="replyto" id="replyto_field" value="">
           <input type="checkbox" name="botcheck" style="display:none">
           <div class="form-row">
             <div class="form-group">
@@ -1695,6 +1697,12 @@
         const target = document.querySelector(a.getAttribute('href'));
         if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
       });
+    });
+
+    // Copie l'email du visiteur dans le champ replyto avant envoi
+    document.getElementById('contact-form').addEventListener('submit', function() {
+      const email = document.getElementById('email').value;
+      document.getElementById('replyto_field').value = email;
     });
   </script>
 </body>
