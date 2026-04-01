@@ -21,7 +21,6 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Espace de musicothérapie d'Enza Duhem">
   <meta property="og:site_name" content="Enza Duhem — Musicothérapeute">
-  <link rel="icon" type="image/svg+xml" href="logo_Enza.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -1534,6 +1533,7 @@
             action="https://api.web3forms.com/submit">
         <input type="hidden" name="access_key" value="abaef60c-5460-4744-9223-d52cc308ebcd">
         <input type="hidden" name="subject" value="Nouvelle inscription newsletter — Enza Duhem">
+        <input type="hidden" name="redirect" value="https://musicotherapeute-hainaut.be/confirmation.html">
         <input type="checkbox" name="botcheck" style="display:none">
         <input type="email" name="email" placeholder="votre@email.be" required>
         <button type="submit">S’inscrire</button>
@@ -1683,11 +1683,18 @@
 
     // ── FAQ ACCORDION ──
     document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
       btn.addEventListener('click', () => {
         const item = btn.closest('.faq-item');
         const isOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-        if (!isOpen) item.classList.add('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
       });
     });
 
