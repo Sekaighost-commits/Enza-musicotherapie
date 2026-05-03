@@ -1704,6 +1704,7 @@
     document.getElementById('contact-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = this.querySelector('button[type="submit"]');
+      const originalLabel = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Envoi en cours…';
       try {
@@ -1714,13 +1715,18 @@
           seance: document.getElementById('seance').value,
           message: document.getElementById('message').value
         };
-        await fetch('https://hook.eu1.make.com/t49mt94ic5390otj94a5stnm1saf96gh', {
+        const res = await fetch('https://hook.eu1.make.com/t49mt94ic5390otj94a5stnm1saf96gh', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-      } catch(err) {}
-      window.location.href = 'confirmation.html';
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        window.location.href = 'confirmation.html';
+      } catch(err) {
+        btn.disabled = false;
+        btn.textContent = originalLabel;
+        alert("L'envoi a échoué. Merci de réessayer ou de m'écrire directement à enza@musicotherapeute-hainaut.be");
+      }
     });
   </script>
 </body>
