@@ -178,13 +178,15 @@
     /* ── SECTION TAGS ── */
     .section-tag {
       display: inline-block;
-      font-size: 0.58rem;
+      font-size: 0.62rem;
       text-transform: uppercase;
       letter-spacing: 0.25em;
       color: var(--green);
-      margin-bottom: 1.2rem;
+      border: 1px solid var(--green);
+      padding: 0.35rem 0.9rem;
+      padding-top: 0.8rem;
+      margin-bottom: 1.5rem;
       position: relative;
-      padding-top: 1.8rem
     }
 
     .section-tag::before {
@@ -195,7 +197,7 @@
       transform: translateX(-50%);
       width: 24px;
       height: 1px;
-      background: var(--green)
+      background: currentColor
     }
 
     .section-tag--light {
@@ -1239,18 +1241,6 @@
       max-width: 720px;
       margin: 0 auto 3.5rem;
     }
-    .temoignages-header .section-tag--bordered {
-      display: inline-block;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--green);
-      padding: 0.5rem 0.9rem;
-      border: 1px solid var(--green);
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-    }
     .temoignages-header h2 {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -1584,7 +1574,7 @@
   <!-- TÉMOIGNAGES -->
   <section id="temoignages" class="sec-temoignages">
     <div class="temoignages-header fade-up">
-      <span class="section-tag--bordered">Témoignages</span>
+      <span class="section-tag">Témoignages</span>
       <h2>Ce qu'en disent les personnes accompagnées</h2>
       <p class="temoignages-consent">Témoignages partagés avec l'accord des personnes concernées. Prénoms modifiés à la demande.</p>
     </div>
