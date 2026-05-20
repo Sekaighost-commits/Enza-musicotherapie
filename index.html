@@ -1227,6 +1227,117 @@
     .fade-up[data-delay="5"] {
       transition-delay: 0.5s
     }
+
+    /* ── TÉMOIGNAGES ── */
+    .sec-temoignages {
+      background: var(--cream);
+      padding: 7rem 2rem;
+    }
+    .temoignages-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 3.5rem;
+    }
+    .temoignages-header .section-tag--bordered {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--green);
+      padding: 0.5rem 0.9rem;
+      border: 1px solid var(--green);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    .temoignages-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 2rem;
+      color: var(--slate);
+      margin: 0 0 1rem;
+      line-height: 1.2;
+    }
+    .temoignages-consent {
+      font-family: 'DM Sans', sans-serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--slate-mid);
+      margin: 0;
+    }
+    .temoignages-list {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .temoignage {
+      padding: 2rem 0;
+      max-height: 200rem;
+      opacity: 1;
+      overflow: hidden;
+      transition: max-height 0.6s ease, opacity 0.4s ease, padding 0.4s ease;
+    }
+    .temoignage + .temoignage {
+      border-top: 1px solid rgba(122,158,126,0.25);
+    }
+    /* Témoignages masqués — transition douce */
+    .temoignage.is-hidden {
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-top: 0 !important;
+    }
+    .temoignage-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.15rem;
+      color: var(--slate);
+      line-height: 1.7;
+      margin: 0 0 1rem;
+    }
+    .temoignage-quote:last-of-type {
+      margin-bottom: 1.25rem;
+    }
+    .temoignage-author {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--slate-mid);
+      font-weight: 400;
+      margin: 0;
+    }
+    /* Bouton "Lire d'autres témoignages" — dormant tant que < 4 témoignages */
+    .temoignages-toggle {
+      display: none;
+      margin: 2.5rem auto 0;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.85rem 1.6rem;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .temoignages-toggle:hover,
+    .temoignages-toggle:focus-visible {
+      background: var(--green);
+      color: var(--cream);
+    }
+    .temoignages-toggle.visible {
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .sec-temoignages { padding: 5rem 1.5rem; }
+      .temoignages-header h2 { font-size: 1.6rem; }
+      .temoignage-quote { font-size: 1.05rem; }
+    }
   </style>
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" defer integrity="sha384-cPFV+/abYd3INVFHPmSKpBmcnH+Q+bTZW7dv/EiuShUNPkHyFmRF8PsL7Ibfvunk" crossorigin="anonymous"></script>
   <!-- Données structurées JSON-LD (schema.org) -->
