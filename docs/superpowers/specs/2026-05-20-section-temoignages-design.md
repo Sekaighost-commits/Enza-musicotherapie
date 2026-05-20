@@ -57,8 +57,9 @@ Un seul témoignage publié :
 - Tant que la section contient **3 témoignages ou moins**, tous sont affichés directement, pas de bouton.
 - À partir de **4 témoignages**, les 2 ou 3 premiers sont visibles par défaut et les suivants sont masqués (`hidden`).
 - Bouton sous la liste, libellé *Lire d'autres témoignages (N)* où N est le nombre de témoignages masqués.
-- Au clic, les témoignages masqués apparaissent avec une transition douce (`max-height` ou simple `display`), le bouton disparaît ou se transforme en *Replier*.
-- Accessibilité : `aria-expanded`, `aria-controls` corrects.
+- Au clic, les témoignages masqués apparaissent avec une transition douce. Le bouton se transforme en *Replier les témoignages* (il ne disparaît pas), permettant à l'utilisateur de revenir à l'état initial.
+- Implémentation de la transition : utiliser une classe CSS togglée (par exemple `.hidden-testimonial`) plutôt que l'attribut HTML `hidden`, car `hidden` n'est pas animable. La classe doit jouer sur `max-height` + `opacity` pour une transition douce.
+- Accessibilité : `aria-expanded` sur le bouton, `aria-controls` pointant vers l'id du conteneur de témoignages masqués.
 
 Pour le lancement avec un seul témoignage, le bouton n'est pas affiché. Le HTML et le JS doivent néanmoins être structurés pour permettre l'ajout futur sans refonte.
 
@@ -121,4 +122,4 @@ L'implémentation est complète quand :
 7. Le bouton *Lire d'autres témoignages* apparaît automatiquement quand 4+ témoignages sont présents.
 8. Les mentions légales contiennent la sous-section sur les témoignages.
 9. Aucune régression visuelle sur les sections adjacentes (Séances, Ressources).
-10. Validation manuelle sur Chrome desktop et mobile (DevTools responsive).
+10. Validation manuelle sur Chrome desktop et mobile (DevTools responsive). Firefox et Safari sont hors scope de la validation manuelle initiale (compatibilité HTML/CSS standard suffisante).
