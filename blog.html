@@ -268,6 +268,9 @@
     @media(max-width:600px) {
       .articles-grid { grid-template-columns: 1fr }
     }
+
+    /* Accessibilité — focus visible pour la navigation clavier */
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px }
   </style>
 </head>
 <body>

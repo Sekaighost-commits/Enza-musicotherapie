@@ -897,7 +897,6 @@
       font-size: 0.85rem;
       font-weight: 300;
       color: var(--slate);
-      outline: none;
       transition: border-color 0.3s
     }
 
@@ -1069,7 +1068,6 @@
       font-size: 0.88rem;
       font-weight: 300;
       color: var(--cream);
-      outline: none;
       transition: border 0.3s;
       resize: none
     }
@@ -1227,6 +1225,9 @@
     .fade-up[data-delay="5"] {
       transition-delay: 0.5s
     }
+
+    /* Accessibilité — focus visible pour la navigation clavier */
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px }
 
     /* ── TÉMOIGNAGES ── */
     .sec-temoignages {
