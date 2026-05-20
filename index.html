@@ -1843,6 +1843,29 @@
       });
     });
 
+    // ── TÉMOIGNAGES — Bouton "Lire d'autres témoignages" ──
+    (function() {
+      const list = document.getElementById('temoignages-list');
+      const toggle = document.getElementById('temoignages-toggle');
+      if (!list || !toggle) return;
+
+      const hiddenItems = list.querySelectorAll('.temoignage.is-hidden');
+      if (hiddenItems.length === 0) return; // Aucun témoignage masqué → bouton reste caché
+
+      toggle.classList.add('visible');
+      toggle.textContent = `Lire d'autres témoignages (${hiddenItems.length})`;
+
+      let expanded = false;
+      toggle.addEventListener('click', () => {
+        expanded = !expanded;
+        hiddenItems.forEach(el => el.classList.toggle('is-hidden', !expanded));
+        toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        toggle.textContent = expanded
+          ? 'Replier les témoignages'
+          : `Lire d'autres témoignages (${hiddenItems.length})`;
+      });
+    })();
+
     // Envoi formulaire vers Make webhook
     document.getElementById('contact-form').addEventListener('submit', async function(e) {
       e.preventDefault();
