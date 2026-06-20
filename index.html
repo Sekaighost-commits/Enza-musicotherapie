@@ -1334,6 +1334,31 @@
       .temoignages-header h2 { font-size: 1.6rem; }
       .temoignage-quote { font-size: 1.05rem; }
     }
+
+    /* ── SÉANCE DÉCOUVERTE ── */
+    .sec-decouverte{ background:var(--green-pale); padding:6rem 2rem; text-align:center }
+    .decouverte-inner{ max-width:760px; margin:0 auto }
+    .decouverte-lead{ max-width:60ch; margin:1.5rem auto 2.5rem; color:var(--slate); line-height:1.8 }
+    .decouverte-facts{ display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:1.5rem 2.5rem; margin-bottom:2rem }
+    .decouverte-fact .v{ display:block; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.9rem; color:var(--green-primary); line-height:1 }
+    .decouverte-fact .l{ display:block; margin-top:.45rem; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--slate-mid) }
+    .decouverte-sep{ width:1px; height:34px; background:var(--green); opacity:.4 }
+    .decouverte-note{ font-style:italic; color:var(--slate-mid); font-size:.9rem; max-width:52ch; margin:0 auto 2rem }
+    @media(max-width:600px){ .sec-decouverte{ padding:4.5rem 1.5rem } .decouverte-sep{ display:none } }
+
+    /* ── CTA collant (mobile) ── */
+    .mobile-cta{ display:none }
+    @media(max-width:768px){
+      body{ padding-bottom:64px }
+      .mobile-cta{ position:fixed; left:0; right:0; bottom:0; z-index:90; display:block;
+        padding:.6rem .9rem calc(.6rem + env(safe-area-inset-bottom)); background:var(--green-darkest);
+        box-shadow:0 -3px 16px rgba(0,0,0,.22); transition:transform .35s cubic-bezier(.22,1,.36,1) }
+      .mobile-cta.hide{ transform:translateY(130%) }
+      .mobile-cta a{ display:block; text-align:center; background:var(--green); color:var(--cream);
+        font-family:'DM Sans',sans-serif; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase;
+        padding:.95rem; border-radius:2px; text-decoration:none }
+      .mobile-cta a:active{ background:var(--green-dark) }
+    }
   </style>
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" defer integrity="sha384-cPFV+/abYd3INVFHPmSKpBmcnH+Q+bTZW7dv/EiuShUNPkHyFmRF8PsL7Ibfvunk" crossorigin="anonymous"></script>
   <!-- Webful — analytics -->
@@ -1587,6 +1612,24 @@
     </div>
   </section>
 
+  <!-- SÉANCE DÉCOUVERTE -->
+  <section id="decouverte" class="sec-decouverte">
+    <div class="decouverte-inner fade-up">
+      <span class="section-tag">Pour faire connaissance</span>
+      <h2>Et si vous testiez&nbsp;? <em>La séance découverte</em></h2>
+      <p class="decouverte-lead">Une première séance d'une heure pour découvrir la musicothérapie à votre rythme, sans engagement. Aucune compétence musicale n'est requise : juste vous, le son, et un moment pour vous recentrer sur l'essentiel.</p>
+      <div class="decouverte-facts">
+        <div class="decouverte-fact"><span class="v">15&nbsp;€</span><span class="l">par personne</span></div>
+        <span class="decouverte-sep"></span>
+        <div class="decouverte-fact"><span class="v">1 heure</span><span class="l">sans engagement</span></div>
+        <span class="decouverte-sep"></span>
+        <div class="decouverte-fact"><span class="v">À Vaulx</span><span class="l">dans ma salle de soin</span></div>
+      </div>
+      <p class="decouverte-note">Les prochaines dates sont communiquées sur demande. Écrivez-moi pour réserver votre place&nbsp;— je vous réponds personnellement.</p>
+      <a href="#contact" class="btn btn-primary">Demander les prochaines dates</a>
+    </div>
+  </section>
+
   <!-- TÉMOIGNAGES -->
   <section id="temoignages" class="sec-temoignages">
     <div class="temoignages-header fade-up">
@@ -1743,7 +1786,8 @@
     <div class="contact-grid">
       <div class="fade-up">
         <span class="section-tag section-tag--light">Contact</span>
-        <h2 class="on-dark" style="margin-bottom:2rem;color:var(--green-light);font-style:italic">Commençons ensemble</h2>
+        <h2 class="on-dark" style="margin-bottom:1rem;color:var(--green-light);font-style:italic">Commençons ensemble</h2>
+        <p style="color:var(--cream);opacity:.85;font-weight:300;line-height:1.75;max-width:46ch;margin-bottom:2rem">Écrivez-moi en toute confiance&nbsp;: je vous réponds personnellement, en général sous 48&nbsp;h. Aucune obligation, et tout ce que vous partagez reste strictement confidentiel.</p>
         <form class="contact-form" id="contact-form">
           <input type="checkbox" name="botcheck" style="display:none">
           <div class="form-row">
@@ -1816,12 +1860,28 @@
     <span class="footer-legal">© 2026 Enza Duhem</span>
   </footer>
 
+  <!-- CTA collant (mobile) -->
+  <div class="mobile-cta" id="mobile-cta">
+    <a href="#contact">Prendre rendez-vous</a>
+  </div>
+
   <script>
     // ── NAV SCROLL ──
     const nav = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── CTA collant mobile : se masque quand la section contact est visible ──
+    (function () {
+      const cta = document.getElementById('mobile-cta');
+      const contact = document.getElementById('contact');
+      if (!cta || !contact || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(
+        es => es.forEach(e => cta.classList.toggle('hide', e.isIntersecting)),
+        { threshold: 0.01 }
+      ).observe(contact);
+    })();
 
     // ── FADE-UP OBSERVER ──
     const observer = new IntersectionObserver((entries) => {
