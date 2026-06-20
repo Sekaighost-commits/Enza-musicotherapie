@@ -2,6 +2,11 @@
 <html lang="fr-BE">
 <head>
   <meta charset="UTF-8">
+  <script>document.documentElement.classList.add('js')</script>
+  <style>
+    html:not(.js) .fade-up{opacity:1!important;transform:none!important}
+    @media (prefers-reduced-motion:reduce){.fade-up{opacity:1!important;transform:none!important;transition:none!important}}
+  </style>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Message envoyé | Enza Duhem</title>
   <meta name="robots" content="noindex, nofollow">
