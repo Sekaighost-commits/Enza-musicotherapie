@@ -50,6 +50,7 @@
       --green-dark: #4A6B4E;
       --slate: #3D4A52;
       --slate-mid: #6B7C85;
+      --slate-soft: #55636D;
       --slate-light: #C2CDD2;
       --cream: #F7F5F0;
       --white: #FDFCFA;
@@ -139,7 +140,7 @@
     }
 
     nav.scrolled .nav-links a {
-      color: var(--slate-mid)
+      color: var(--slate-soft)
     }
 
     .nav-links a:hover {
@@ -245,9 +246,9 @@
     }
 
     p {
-      font-size: 0.88rem;
+      font-size: 0.95rem;
       line-height: 1.85;
-      color: var(--slate-mid)
+      color: var(--slate)
     }
 
     .on-dark p {
@@ -1341,9 +1342,9 @@
     .decouverte-lead{ max-width:60ch; margin:1.5rem auto 2.5rem; color:var(--slate); line-height:1.8 }
     .decouverte-facts{ display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:1.5rem 2.5rem; margin-bottom:2rem }
     .decouverte-fact .v{ display:block; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.9rem; color:var(--green-primary); line-height:1 }
-    .decouverte-fact .l{ display:block; margin-top:.45rem; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--slate-mid) }
+    .decouverte-fact .l{ display:block; margin-top:.45rem; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--slate-soft) }
     .decouverte-sep{ width:1px; height:34px; background:var(--green); opacity:.4 }
-    .decouverte-note{ font-style:italic; color:var(--slate-mid); font-size:.9rem; max-width:52ch; margin:0 auto 2rem }
+    .decouverte-note{ font-style:italic; color:var(--slate-soft); font-size:.9rem; max-width:52ch; margin:0 auto 2rem }
     @media(max-width:600px){ .sec-decouverte{ padding:4.5rem 1.5rem } .decouverte-sep{ display:none } }
 
     /* ── CTA collant (mobile) ── */
@@ -1443,7 +1444,7 @@
     <div class="hero-content">
       <span class="section-tag section-tag--light">Musicothérapeute · Vaulx (Tournai)</span>
       <h1 class="on-dark fade-up">La musique,<br><em>un chemin<br>vers soi</em></h1>
-      <p class="fade-up" data-delay="1">Un accompagnement sécure et adapté à votre parcours et à vos problèmes de vie.</p>
+      <p class="on-dark fade-up" data-delay="1">Un accompagnement sécure et adapté à votre parcours et à vos problèmes de vie.</p>
       <div class="fade-up" data-delay="2" style="display:flex;gap:1rem;flex-wrap:wrap">
         <a href="#seances" class="btn btn-primary">Découvrir les séances</a>
         <a href="#approche" class="btn btn-outline">Mon approche</a>
