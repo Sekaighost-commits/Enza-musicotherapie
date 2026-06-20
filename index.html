@@ -706,63 +706,97 @@
       font-size: 1.15rem
     }
 
-    .cadres-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 1.5rem;
-      max-width: 1100px;
-      margin: 0 auto
+    /* ── PARCOURS DE VIE (fil naissance → fin de vie) ── */
+    .parcours {
+      max-width: 760px;
+      margin: 0 auto;
     }
-
-    .cadre-card {
-      grid-column: span 2;
-      background: #fff;
-      border-top: 3px solid var(--green-primary);
-      padding: 2rem 1.8rem;
-      border-radius: 2px
-    }
-
-    .cadre-card:nth-child(4) { grid-column: 2 / span 2 }
-    .cadre-card:nth-child(5) { grid-column: 4 / span 2 }
-
-
-    .cadre-card h3 {
+    .parcours-bookend {
+      text-align: center;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--green-dark);
+      margin: 0;
+    }
+    .parcours-list {
+      position: relative;
+      margin: 1.5rem 0;
+    }
+    .parcours-list::before {
+      content: "";
+      position: absolute;
+      left: 27px;
+      top: 30px;
+      bottom: 30px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--green-light), var(--green) 50%, var(--green-light));
+      opacity: 0.55;
+    }
+    .parcours-stage {
+      position: relative;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 1.6rem;
+      padding: 1.3rem 0;
+      align-items: start;
+    }
+    .parcours-node {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--green-pale);
+      border: 1px solid var(--green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .parcours-node i {
+      font-size: 1.6rem;
+      color: var(--green-primary);
+    }
+    .parcours-content h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
       font-weight: 600;
       color: var(--green-darkest);
-      margin-bottom: 0.3rem
+      margin: 0.35rem 0 0.1rem;
+      line-height: 1.2;
     }
-
-    .cadre-tagline {
+    .parcours-tagline {
       display: block;
+      font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       color: var(--green-primary);
-      font-size: 0.95rem;
-      margin-bottom: 0.8rem
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
     }
-
-    .cadre-population {
-      display: block;
-      font-size: 0.8rem;
+    .parcours-population {
+      display: inline-block;
+      font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--slate-medium);
-      margin-bottom: 0.9rem
+      color: var(--green-dark);
+      background: rgba(122,158,126,0.15);
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
     }
-
-    .cadre-card p {
-      font-size: 0.92rem;
+    .parcours-content p {
+      font-size: 0.95rem;
       color: var(--slate);
-      line-height: 1.7
+      line-height: 1.7;
+      margin: 0;
     }
-
-    @media(max-width:900px) {
-      .cadres-grid { grid-template-columns: 1fr 1fr; gap: 1rem }
-      .cadre-card,
-      .cadre-card:nth-child(4),
-      .cadre-card:nth-child(5) { grid-column: span 1 }
+    @media(max-width:600px) {
+      .parcours-stage { grid-template-columns: 46px 1fr; gap: 1.1rem }
+      .parcours-node { width: 46px; height: 46px }
+      .parcours-node i { font-size: 1.35rem }
+      .parcours-list::before { left: 22px }
+      .parcours-content h3 { font-size: 1.25rem }
     }
 
     @media(max-width:600px) {
@@ -1537,48 +1571,62 @@
         <p>Que l'on soit un bébé prématuré ou une personne en fin de vie, la musique nous ramène à notre humanité fondamentale : Sentir, vibrer et être en lien avec l'autre.</p>
       </div>
     </div>
-    <div class="cadres-grid">
+    <div class="parcours">
+      <p class="parcours-bookend fade-up">De la première respiration…</p>
+      <div class="parcours-list">
 
-      <div class="cadre-card fade-up" data-delay="1">
-        <i class="ph-light ph-baby cadre-icon"></i>
-        <h3>Périnatalité &amp; néonatologie</h3>
-        <span class="cadre-tagline">Survivre et se lier</span>
-        <span class="cadre-population">Prématuré · Lien parents-bébé</span>
-        <p>Régulation physiologique, stimulation de la succion, enveloppement sonore, soutien du lien parents-bébé.</p>
+        <div class="parcours-stage fade-up">
+          <div class="parcours-node"><i class="ph-light ph-baby"></i></div>
+          <div class="parcours-content">
+            <h3>Périnatalité &amp; néonatologie</h3>
+            <span class="parcours-tagline">Survivre et se lier</span>
+            <span class="parcours-population">Prématuré · Lien parents-bébé</span>
+            <p>Régulation physiologique, stimulation de la succion, enveloppement sonore, soutien du lien parents-bébé.</p>
+          </div>
+        </div>
+
+        <div class="parcours-stage fade-up">
+          <div class="parcours-node"><i class="ph-light ph-person-simple-run"></i></div>
+          <div class="parcours-content">
+            <h3>Enfance &amp; adolescence</h3>
+            <span class="parcours-tagline">Grandir et communiquer</span>
+            <span class="parcours-population">Troubles DYS · TSA · Santé mentale</span>
+            <p>Ouverture à la communication, structuration, gestion sensorielle, canalisation de l'énergie, évolution de l'estime de soi, expression émotionnelle, conscience du corps, plaisir et détente.</p>
+          </div>
+        </div>
+
+        <div class="parcours-stage fade-up">
+          <div class="parcours-node"><i class="ph-light ph-heartbeat"></i></div>
+          <div class="parcours-content">
+            <h3>Âge adulte</h3>
+            <span class="parcours-tagline">Se réparer et s'exprimer</span>
+            <span class="parcours-population">Douleur chronique · Handicap · Santé mentale</span>
+            <p>Catharsis, rupture de l'isolement, (ré)ancrage, récupération du langage, rééducation motrice, détournement de l'attention, relaxation profonde.</p>
+          </div>
+        </div>
+
+        <div class="parcours-stage fade-up">
+          <div class="parcours-node"><i class="ph-light ph-brain"></i></div>
+          <div class="parcours-content">
+            <h3>Gériatrie</h3>
+            <span class="parcours-tagline">Se souvenir et maintenir</span>
+            <span class="parcours-population">Troubles cognitifs · Troubles moteurs</span>
+            <p>Stimulation de la mémoire, maintien de l'identité, réduction des troubles du comportement, soutien à la mobilité et au lien social.</p>
+          </div>
+        </div>
+
+        <div class="parcours-stage fade-up">
+          <div class="parcours-node"><i class="ph-light ph-feather"></i></div>
+          <div class="parcours-content">
+            <h3>Soins palliatifs</h3>
+            <span class="parcours-tagline">S'apaiser et partir</span>
+            <span class="parcours-population">Accompagnements de fin de vie</span>
+            <p>Apaisement de la douleur, régulation respiratoire, soutien à l'entourage, facilitation du lâcher-prise.</p>
+          </div>
+        </div>
+
       </div>
-
-      <div class="cadre-card fade-up" data-delay="2">
-        <i class="ph-light ph-person-simple-run cadre-icon"></i>
-        <h3>Enfance &amp; adolescence</h3>
-        <span class="cadre-tagline">Grandir et communiquer</span>
-        <span class="cadre-population">Troubles DYS · TSA · Santé mentale</span>
-        <p>Ouverture à la communication, structuration, gestion sensorielle, canalisation de l'énergie, évolution de l'estime de soi, expression émotionnelle, conscience du corps, plaisir et détente.</p>
-      </div>
-
-      <div class="cadre-card fade-up" data-delay="3">
-        <i class="ph-light ph-heartbeat cadre-icon"></i>
-        <h3>Âge adulte</h3>
-        <span class="cadre-tagline">Se réparer et s'exprimer</span>
-        <span class="cadre-population">Douleur chronique · Handicap · Santé mentale</span>
-        <p>Catharsis, rupture de l'isolement, (ré)ancrage, récupération du langage, rééducation motrice, détournement de l'attention, relaxation profonde.</p>
-      </div>
-
-      <div class="cadre-card fade-up" data-delay="1">
-        <i class="ph-light ph-brain cadre-icon"></i>
-        <h3>Gériatrie</h3>
-        <span class="cadre-tagline">Se souvenir et maintenir</span>
-        <span class="cadre-population">Troubles cognitifs · Troubles moteurs</span>
-        <p>Stimulation de la mémoire, maintien de l'identité, réduction des troubles du comportement, soutien à la mobilité et au lien social.</p>
-      </div>
-
-      <div class="cadre-card fade-up" data-delay="2">
-        <i class="ph-light ph-feather cadre-icon"></i>
-        <h3>Soins palliatifs</h3>
-        <span class="cadre-tagline">S'apaiser et partir</span>
-        <span class="cadre-population">Accompagnements de fin de vie</span>
-        <p>Apaisement de la douleur, régulation respiratoire, soutien à l'entourage, facilitation du lâcher-prise.</p>
-      </div>
-
+      <p class="parcours-bookend fade-up">…jusqu'au dernier souffle.</p>
     </div>
   </section>
 
