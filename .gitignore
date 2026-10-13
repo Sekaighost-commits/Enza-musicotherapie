@@ -2,6 +2,7 @@
 .worktrees
 .superpowers/
 
-# Outils internes — NE PAS déployer (contiennent IBAN, tarifs, infos privées)
-devis.html
+# Supports d'impression (source du flyer, pas une page du site)
 flyer-decouverte.html
+# Archives des critiques de design
+.impeccable/
