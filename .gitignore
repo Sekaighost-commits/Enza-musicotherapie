@@ -1,3 +1,7 @@
 *.pdf
 .worktrees
 .superpowers/
+
+# Outils internes — NE PAS déployer (contiennent IBAN, tarifs, infos privées)
+devis.html
+flyer-decouverte.html
