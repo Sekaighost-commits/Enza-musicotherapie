@@ -329,6 +329,7 @@
           <label class="fld"><span>Date</span><input id="d_date" type="date"></label>
         </div>
         <p class="fld-hint info only-facture" id="hint-num"></p>
+        <p class="fld-hint" id="hint-doc" hidden></p>
         <label class="fld only-devis"><span>Valable jusqu'au</span><input id="d_valid" type="date"></label>
         <label class="fld only-facture"><span>Échéance de paiement</span><input id="f_due" type="date"></label>
         <label class="fld only-facture"><span>Période / date de la prestation (optionnel)</span><input id="f_period" placeholder="Ex. : mars 2026 — 4 ateliers"></label>
@@ -515,7 +516,7 @@
     const row=document.createElement('div');
     row.className='item-row';
     row.innerHTML=`<label class="i-f i-f-desc"><span class="i-l">Description</span><input class="i-desc" placeholder="Ex. : Atelier collectif (1h)" value="${esc(desc)}"></label>
-      <label class="i-f"><span class="i-l">Quantité</span><input class="i-qte" type="number" inputmode="decimal" min="0" step="1" value="${esc(qte)}"></label>
+      <label class="i-f"><span class="i-l">Quantité</span><input class="i-qte" type="number" inputmode="decimal" min="0" step="any" value="${esc(qte)}"></label>
       <label class="i-f"><span class="i-l">Prix unitaire (€)</span><input class="i-pu" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" value="${esc(pu)}"></label>
       <button type="button" class="del" aria-label="Supprimer la ligne" title="Supprimer" onclick="this.parentNode.remove();render()">×</button>`;
     row.querySelectorAll('input').forEach(i=>i.addEventListener('input',render));
@@ -564,7 +565,7 @@
       const qte=parseFloat(r.querySelector('.i-qte').value)||0;
       const pu=parseFloat(r.querySelector('.i-pu').value)||0;
       if(!desc && !pu) return;
-      rows+=`<tr><td>${esc(desc)||'—'}</td><td class="num">${qte||''}</td><td class="num">${pu?euro(pu):''}</td><td class="num">${euro(qte*pu)}</td></tr>`;
+      rows+=`<tr><td>${esc(desc)||'—'}</td><td class="num">${qte?qte.toLocaleString('fr-BE'):''}</td><td class="num">${pu?euro(pu):''}</td><td class="num">${euro(cents(qte*pu))}</td></tr>`;
     });
     $('p_items').innerHTML = rows || `<tr><td colspan="4" class="empty-hint" style="padding:1.2rem .8rem">Ajoutez vos prestations à gauche…</td></tr>`;
 
@@ -580,10 +581,11 @@
     // paiement (facture)
     if(MODE==='facture'){
       const iban=$('e_iban').value.trim(), num=$('d_num').value.trim();
-      $('p_pay').innerHTML = '<div class="lbl">Paiement</div>'
-        + 'Merci de régler <b>'+euro(reste)+'</b> au plus tard le <b>'+fdate($('f_due').value)+'</b>, par virement sur le compte '
-        + (iban ? '<b>'+esc(iban)+'</b>' : '<span class="todo">IBAN à compléter</span>')
-        + (num ? ', en indiquant en communication : <b>'+esc(num)+'</b>.' : '.');
+      $('p_pay').innerHTML = '<div class="lbl">Paiement</div>' + (acompte>0 && reste<=0
+        ? 'Cette facture est <b>entièrement réglée</b> par l\'acompte reçu : rien à payer.'
+        : 'Merci de régler <b>'+euro(reste)+'</b> au plus tard le <b>'+fdate($('f_due').value)+'</b>, par virement sur le compte '
+          + (iban ? '<b>'+esc(iban)+'</b>' : '<span class="todo">IBAN à compléter</span>')
+          + (num ? ', en indiquant en communication : <b>'+esc(num)+'</b>.' : '.'));
     }
 
     // conditions / remarque (masquée si vide)
@@ -592,12 +594,17 @@
     $('p_cond_wrap').style.display = $('d_cond').value.trim() ? '' : 'none';
 
     // aides dans le formulaire (facture)
-    const missing=[];
-    if(MODE==='facture' && !$('e_bce').value.trim()) missing.push("le n° d'entreprise (obligatoire sur une facture)");
+    const missing=[], docIssues=[];
+    if(!$('e_bce').value.trim()) missing.push("le n° d'entreprise (obligatoire sur les devis et factures)");
     if(MODE==='facture' && !$('e_iban').value.trim()) missing.push("l'IBAN (pour le paiement)");
     $('hint-peppol').hidden = !(MODE==='facture' && $('c_tva').value.trim()); // facturation électronique B2B obligatoire (2026)
     $('hint-legal').hidden = !missing.length;
     $('hint-legal').textContent = missing.length ? 'À compléter : '+missing.join(' et ')+'.' : '';
+    if(!$('d_date').value) docIssues.push('la date est vide');
+    if(MODE==='facture' && !$('f_due').value) docIssues.push("l'échéance de paiement est vide");
+    if(MODE==='facture' && acompte>total) docIssues.push("l'acompte déduit dépasse le total des prestations");
+    $('hint-doc').hidden = !docIssues.length;
+    $('hint-doc').textContent = docIssues.length ? 'Attention : '+docIssues.join(' ; ')+'.' : '';
     if(MODE==='facture'){
       const y=yearOf($('d_num').value), last=lastUsed('facture', y);
       $('hint-num').textContent = 'Les factures doivent se suivre sans trou ni doublon. '
@@ -618,13 +625,16 @@
     fitPaper();
   }
 
+  // chaque ligne est arrondie au centime : le total est toujours la somme exacte des lignes affichées
+  const cents = v => Math.round(v*100)/100;
   function computeTotals(){
     let total=0;
     document.querySelectorAll('#items .item-row').forEach(r=>{
-      total+=(parseFloat(r.querySelector('.i-qte').value)||0)*(parseFloat(r.querySelector('.i-pu').value)||0);
+      total+=cents((parseFloat(r.querySelector('.i-qte').value)||0)*(parseFloat(r.querySelector('.i-pu').value)||0));
     });
-    const acompte = MODE==='facture' ? Math.max(0, parseFloat($('f_acompte').value)||0) : 0;
-    return {total, acompte, du:total-acompte};
+    total=cents(total);
+    const acompte = MODE==='facture' ? cents(Math.max(0, parseFloat($('f_acompte').value)||0)) : 0;
+    return {total, acompte, du:cents(total-acompte)};
   }
 
   /* ---------- Compactage léger tant que le devis dépasse une page (2 niveaux max, puis pages multiples) ---------- */
@@ -777,6 +787,7 @@
     const btn=$('btn-pdf');
     const label=btn.innerHTML;
     const sx=window.scrollX, sy=window.scrollY;
+    let saved=false;
     btn.disabled=true; btn.textContent='Génération…';
     try{
       await loadPdfLib();
@@ -797,7 +808,7 @@
         // devis long : jamais de coupure au milieu d'une ligne, du total, des conditions ou des signatures
         pagebreak: { mode:['css'], avoid:['tr','.d-total-block','.d-pay','.d-conditions','.d-sign','.d-foot'] }
       }).from(sheet).save();
-      recordDoc('pdf');
+      saved=true;
     }catch(e){
       alert("Le PDF n'a pas pu être généré (connexion internet nécessaire la première fois). Tu peux utiliser « Imprimer » puis « Enregistrer au format PDF ».");
     }finally{
@@ -805,6 +816,7 @@
       window.scrollTo(sx,sy);
       setTimeout(()=>window.scrollTo(sx,sy),150); // la bibliothèque peut encore bouger la page juste après
     }
+    if(saved) recordDoc('pdf');
   }
 
   /* Le moteur de capture rend mal un SVG coloré par CSS (currentColor) : dans la copie destinée au PDF,
@@ -884,6 +896,18 @@
     }
     if(rec && MODE==='facture' && !sameData(rec.data,snapshot()))
       return confirm("Cette facture a déjà été émise. En principe, une facture envoyée ne se modifie plus : pour corriger un montant, on établit une note de crédit.\n\nEnregistrer quand même cette nouvelle version ? (L'historique gardera la trace de la modification.)");
+    // nouvelle facture : pas de trou dans la numérotation
+    const p=parseNum(num);
+    if(!rec && MODE==='facture' && p){
+      const expected=lastUsed('facture',p.y)+1;
+      if(p.n>expected){
+        const exp=formatNum('facture',p.y,expected);
+        if(!confirm('Le prochain numéro de facture attendu est '+exp+'. Utiliser '+num+' laisserait un trou dans la numérotation (les factures doivent se suivre), sauf si les numéros intermédiaires ont été utilisés sur un autre appareil.\n\nGarder '+num+' quand même ?\n(Annuler = passer à '+exp+'.)')){
+          $('d_num').value=exp; render();
+          return false;
+        }
+      }
+    }
     return true;
   }
 
@@ -900,10 +924,12 @@
       rec={id, type:MODE, status: MODE==='devis'?'attente':'a_payer', createdAt:at,
            log:[{at, what:(MODE==='devis'?'Devis émis':'Facture émise')+' ('+how1+')'}]};
       docs.push(rec);
-      // facture établie d'après un devis : le devis passe en « Facturé »
+      // facture établie d'après un devis : le devis passe en « Facturé » (un devis peut donner plusieurs factures,
+      // ex. un cycle d'ateliers facturé chaque mois)
       const dv = MODE==='facture' && s.f_ref.trim() && docs.find(d=>d.id==='devis:'+s.f_ref.trim());
       if(dv){
-        dv.status='facture'; dv.invoice=num; dv.updatedAt=at;
+        const inv=invoicesOf(dv); if(!inv.includes(num)) inv.push(num);
+        dv.invoices=inv; dv.invoice=inv.join(', '); dv.status='facture'; dv.updatedAt=at;
         dv.log.push({at, what:'Facturé → '+num});
         rec.log.push({at, what:"Établie d'après le devis "+dv.num});
       }
@@ -916,14 +942,18 @@
     if($('docs-dlg').open) renderDocs();
   }
 
+  const invoicesOf = d => Array.isArray(d.invoices) ? d.invoices.slice() : (d.invoice ? [d.invoice] : []);
+  const isUnpaid = d => d.type==='facture' && d.status!=='payee' && (d.du||0)>0; // reste quelque chose à encaisser
   function statusOf(d){
     const t=today();
     if(d.type==='devis'){
-      if(d.status==='facture') return {label:'Facturé'+(d.invoice?' ('+d.invoice+')':''), cls:'st-ok'};
+      if(d.status==='facture'){ const inv=invoicesOf(d);
+        return {label:'Facturé'+(inv.length>2 ? ' ('+inv.length+' factures)' : inv.length ? ' ('+inv.join(', ')+')' : ''), cls:'st-ok'}; }
       if(d.status==='refuse') return {label:'Refusé', cls:'st-off'};
       return d.due && d.due<t ? {label:'Expiré', cls:'st-off'} : {label:'En attente', cls:'st-wait'};
     }
     if(d.status==='payee') return {label:'Payée'+(d.paidAt?' le '+frDate(d.paidAt):''), cls:'st-ok'};
+    if(!isUnpaid(d)) return {label:'Réglée (acompte)', cls:'st-ok'};
     return d.due && d.due<t ? {label:'En retard', cls:'st-late'} : {label:'À payer', cls:'st-wait'};
   }
 
@@ -958,7 +988,7 @@
     else if(n){ st.className='st warn'; st.innerHTML='<b>'+n+' document'+(n>1?'s':'')+' à sauvegarder</b> (dernière sauvegarde : '+esc(frDateTime(b))+').'; }
     else{ st.className='st ok'; st.textContent='Tout est sauvegardé (dernière sauvegarde : '+frDateTime(b)+').'; }
     // synthèse
-    const unpaid=DOCS.filter(d=>d.type==='facture' && d.status!=='payee');
+    const unpaid=DOCS.filter(isUnpaid);
     const late=unpaid.filter(d=>d.due && d.due<t);
     const pending=DOCS.filter(d=>d.type==='devis' && d.status==='attente' && !(d.due && d.due<t));
     $('docs-sum').innerHTML = DOCS.length ?
@@ -972,9 +1002,10 @@
       bt.setAttribute('aria-pressed', f===DOCS_FILTER);
     });
     // liste (plus récents d'abord)
-    const q=$('docs-q').value.trim().toLowerCase();
+    const fold=v=>String(v||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); // « creche » trouve « Crèche »
+    const q=fold($('docs-q').value.trim());
     const list=DOCS.filter(d=>(DOCS_FILTER==='all'||d.type===DOCS_FILTER)
-        && (!q || [d.num,d.client,d.objet].join(' ').toLowerCase().includes(q)))
+        && (!q || fold([d.num,d.client,d.objet].join(' ')).includes(q)))
       .sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
     if(!list.length){
       $('docs-list').innerHTML='<li class="docs-empty">'+(DOCS.length ? 'Aucun document ne correspond.'
@@ -988,8 +1019,9 @@
       const acts=['<button type="button" class="btn" data-act="open" data-id="'+id+'">Rouvrir</button>'];
       if(!isF && d.status==='attente') acts.push('<button type="button" class="btn primary" data-act="invoice" data-id="'+id+'">Faire la facture</button>',
                                                '<button type="button" class="btn" data-act="refuse" data-id="'+id+'">Refusé</button>');
+      if(!isF && d.status==='facture') acts.push('<button type="button" class="btn" data-act="invoice" data-id="'+id+'">Autre facture</button>');
       if(!isF && d.status==='refuse') acts.push('<button type="button" class="btn" data-act="attente" data-id="'+id+'">Remettre en attente</button>');
-      if(isF && d.status!=='payee') acts.push('<button type="button" class="btn primary" data-act="payee" data-id="'+id+'">Marquer payée</button>');
+      if(isUnpaid(d)) acts.push('<button type="button" class="btn primary" data-act="payee" data-id="'+id+'">Marquer payée</button>');
       if(isF && d.status==='payee') acts.push('<button type="button" class="btn" data-act="a_payer" data-id="'+id+'">Annuler « payée »</button>');
       acts.push('<button type="button" class="del" data-act="delete" data-id="'+id+'">Supprimer</button>');
       const log=(d.log||[]).slice().reverse().map(l=>'<li><time>'+esc(frDateTime(l.at))+'</time>'+esc(l.what)+'</li>').join('');
@@ -1049,10 +1081,12 @@
     if(!confirm(msg)) return;
     const at=nowIso();
     if(rec.type==='facture') docs.forEach(d=>{
-      if(d.type==='devis' && d.invoice===rec.num){
-        d.status='attente'; delete d.invoice; d.updatedAt=at;
-        d.log.push({at, what:'Facture '+rec.num+' supprimée — devis remis en attente'});
-      }
+      const inv=d.type==='devis' ? invoicesOf(d) : [];
+      if(!inv.includes(rec.num)) return;
+      const left=inv.filter(n=>n!==rec.num);
+      d.invoices=left; d.invoice=left.join(', '); d.updatedAt=at;
+      if(!left.length){ d.status='attente'; delete d.invoices; delete d.invoice; }
+      d.log.push({at, what:'Facture '+rec.num+' supprimée'+(left.length ? '' : ' — devis remis en attente')});
     });
     // un essai supprimé libère son numéro s'il était le dernier attribué
     const p=parseNum(rec.num);
