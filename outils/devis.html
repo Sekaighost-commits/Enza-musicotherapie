@@ -688,13 +688,14 @@
   const parseNum=num=>{ const m=String(num||'').match(/(\d{4})-(\d+)\s*$/); return m ? {y:+m[1], n:parseInt(m[2],10)} : null; };
   function lastUsed(type,y){
     let n=0;
-    try{
+    // devis : le compteur garde aussi les devis faits avant « Mes documents » (un trou de numérotation est sans
+    // conséquence pour un devis). Factures : seul le registre fait foi — un essai supprimé libère son numéro et
+    // les essais d'avant le registre ne décalent pas la série.
+    if(type==='devis') try{
       const v=localStorage.getItem(numKey(type,y));
       if(v!==null) n=parseInt(v,10)||0;
-      // ancien compteur de devis (avant l'ajout des factures)
-      else if(type==='devis' && y===new Date().getFullYear()) n=parseInt(localStorage.getItem('enza_devis_counter')||'0',10)||0;
+      else if(y===new Date().getFullYear()) n=parseInt(localStorage.getItem('enza_devis_counter')||'0',10)||0; // ancien compteur
     }catch(e){}
-    // les documents enregistrés comptent aussi (ex. après une restauration sur un nouvel appareil)
     DOCS.forEach(d=>{ const p=d.type===type && parseNum(d.num); if(p && p.y===y) n=Math.max(n,p.n); });
     return n;
   }
