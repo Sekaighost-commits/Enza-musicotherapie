@@ -341,6 +341,7 @@
         <label class="fld"><span>Adresse</span><textarea id="c_adr" placeholder="Rue, n°&#10;Code postal, Ville"></textarea></label>
         <label class="fld"><span>Personne de contact (optionnel)</span><input id="c_contact" placeholder="Ex. : Mme Dupont, Directrice"></label>
         <label class="fld"><span>N° TVA / BCE du client (institution, optionnel)</span><input id="c_tva" placeholder="BE 0xxx.xxx.xxx"></label>
+        <p class="fld-hint only-facture" id="hint-peppol" hidden><b>Peppol :</b> si ce client est assujetti à la TVA (n° de TVA actif), cette facture doit lui être envoyée via le réseau Peppol depuis le 1er janvier 2026 — le PDF seul ne suffit plus. Les particuliers et les clients sans n° de TVA ne sont pas concernés. En cas de doute, demande à ton comptable.</p>
       </fieldset>
 
       <fieldset>
@@ -594,6 +595,7 @@
     const missing=[];
     if(MODE==='facture' && !$('e_bce').value.trim()) missing.push("le n° d'entreprise (obligatoire sur une facture)");
     if(MODE==='facture' && !$('e_iban').value.trim()) missing.push("l'IBAN (pour le paiement)");
+    $('hint-peppol').hidden = !(MODE==='facture' && $('c_tva').value.trim()); // facturation électronique B2B obligatoire (2026)
     $('hint-legal').hidden = !missing.length;
     $('hint-legal').textContent = missing.length ? 'À compléter : '+missing.join(' et ')+'.' : '';
     if(MODE==='facture'){
