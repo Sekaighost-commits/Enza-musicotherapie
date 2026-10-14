@@ -53,6 +53,67 @@
   .mode-switch input:focus-visible + span{outline:2px solid var(--green);outline-offset:-4px}
   .fld-hint{font-size:.74rem;line-height:1.5;color:#8a4b2e;background:#fbefe7;border-radius:4px;padding:.45rem .6rem;margin:-.2rem 0 .7rem}
   .fld-hint.info{color:var(--slate-soft);background:var(--green-pale)}
+  .doc-state{font-size:.74rem;line-height:1.5;color:var(--slate-soft);margin:-.4rem 0 1.1rem}
+  .doc-state b{color:var(--green-darkest);font-weight:600}
+  .doc-state .warn{color:#a0522d}
+
+  /* ---------- Mes documents : registre sur l'appareil + sauvegarde par fichier ---------- */
+  .toolbar button.has-dot{position:relative}
+  .toolbar button.has-dot::after{content:'';position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#e8a87c;box-shadow:0 0 0 2px var(--green-darkest)}
+  dialog.docs{width:min(860px,calc(100% - 2rem));max-height:calc(100% - 2rem);margin:auto;border:none;border-radius:10px;padding:0;background:var(--cream);color:var(--slate);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  dialog.docs[open]{display:flex;flex-direction:column}
+  dialog.docs::backdrop{background:rgba(26,48,40,.55)}
+  .docs-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--green-darkest);color:var(--cream);padding:.8rem 1.2rem;flex-shrink:0}
+  .docs-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:1.4rem}
+  .docs-close{border:none;background:none;color:var(--cream);font-size:1.7rem;line-height:1;cursor:pointer;padding:.1rem .5rem}
+  .docs-body{padding:1.1rem 1.2rem 1.4rem;overflow:auto}
+  .docs-note{font-size:.78rem;line-height:1.55;color:var(--slate-soft);margin-bottom:.9rem}
+  .docs-backup{display:flex;flex-wrap:wrap;gap:.7rem 1rem;align-items:center;justify-content:space-between;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:.8rem 1rem;margin-bottom:1rem}
+  .docs-backup .st{font-size:.8rem;line-height:1.5;flex:1 1 260px}
+  .docs-backup .st.warn{color:#a0522d}
+  .docs-backup .st.ok{color:var(--green-primary)}
+  .docs-btns{display:flex;flex-wrap:wrap;gap:.5rem}
+  .btn{font-family:'DM Sans',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--green);background:var(--white);color:var(--green-dark);padding:.55rem .85rem;border-radius:4px;cursor:pointer}
+  .btn:hover{background:var(--green-pale)}
+  .btn.primary{background:var(--green-primary);border-color:var(--green-primary);color:var(--cream)}
+  .btn.primary:hover{background:var(--green-dark)}
+  .docs-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.7rem;margin-bottom:1rem}
+  .docs-sum > div{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:.7rem .9rem}
+  .docs-sum span{display:block;font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
+  .docs-sum b{display:block;font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--green-darkest);line-height:1.25}
+  .docs-sum small{font-size:.74rem;color:var(--slate-soft)}
+  .docs-sum em{color:#a0522d;font-style:normal;font-weight:600}
+  .docs-filters{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:.8rem}
+  .seg{display:flex;border:1px solid var(--green);border-radius:6px;overflow:hidden}
+  .seg button{border:none;background:var(--white);color:var(--green-dark);font-family:'DM Sans',sans-serif;font-weight:600;font-size:.74rem;padding:.5rem .8rem;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--green-primary);color:var(--cream)}
+  .docs-filters input{flex:1;min-width:180px}
+  .docs-list{list-style:none;display:grid;gap:.6rem}
+  .doc-card{background:var(--white);border:1px solid var(--line);border-left:4px solid var(--green-light);border-radius:8px;padding:.8rem 1rem}
+  .doc-card[data-type="facture"]{border-left-color:var(--green-primary)}
+  .doc-card.current{box-shadow:0 0 0 2px var(--green-light)}
+  .dc-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem .6rem}
+  .dc-type{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
+  .dc-num{font-size:.95rem;color:var(--green-darkest)}
+  .dc-amount{margin-left:auto;font-weight:600;color:var(--green-darkest);white-space:nowrap}
+  .chip{font-size:.68rem;font-weight:600;padding:.12rem .55rem;border-radius:20px;white-space:nowrap}
+  .st-wait{background:#f1efe8;color:var(--slate-soft)}
+  .st-ok{background:var(--green-pale);color:var(--green-primary)}
+  .st-late{background:#fbefe7;color:#a0522d}
+  .st-off{background:#f1efe8;color:var(--slate-mid)}
+  .dc-client{font-size:.88rem;margin-top:.3rem;color:var(--slate)}
+  .dc-client span{color:var(--slate-soft)}
+  .dc-meta{font-size:.74rem;color:var(--slate-mid);margin-top:.15rem}
+  .dc-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin-top:.6rem}
+  .dc-actions .btn{padding:.42rem .65rem;font-size:.66rem}
+  .dc-actions .del{margin-left:auto;border:none;background:none;color:var(--slate-mid);font-family:'DM Sans',sans-serif;font-size:.72rem;text-decoration:underline;cursor:pointer;padding:.3rem}
+  .dc-actions .del:hover{color:#b4553f}
+  .dc-log{margin-top:.5rem;font-size:.74rem;color:var(--slate-soft)}
+  .dc-log summary{cursor:pointer;color:var(--green-dark);font-weight:600}
+  .dc-log ol{list-style:none;margin-top:.35rem;border-left:2px solid var(--green-pale);padding-left:.7rem}
+  .dc-log li{padding:.12rem 0}
+  .dc-log time{color:var(--slate-mid);margin-right:.4rem;font-variant-numeric:tabular-nums}
+  .docs-empty{text-align:center;padding:2rem 1rem;color:var(--slate-soft);font-size:.86rem;line-height:1.6;background:var(--white);border:1px dashed var(--slate-light);border-radius:8px}
   /* pendant la génération du PDF : les marges (15 mm) sont portées par chaque page du PDF, la feuille n'a
      donc plus de marge propre ni de largeur fixe. Hauteur mini = hauteur utile d'une page (297 − 2×15 mm,
      arrondi bas) pour garder les signatures en bas d'un devis d'une page ; un devis long continue sur la suivante. */
@@ -123,7 +184,10 @@
   @media(max-width:600px){
     .toolbar{padding:.6rem .75rem;gap:.5rem;flex-wrap:nowrap}
     .toolbar .brand{display:none}
-    .toolbar button{flex:1;padding:.7rem .4rem;letter-spacing:.06em}
+    .toolbar button{flex:1;padding:.7rem .2rem;letter-spacing:.04em;font-size:.68rem}
+    dialog.docs{width:100%;max-width:100%;height:100%;max-height:100%;border-radius:0}
+    .docs-body{padding:.9rem .75rem 1.2rem}
+    .docs-filters input{min-width:0;flex-basis:100%}
     .lbl-long{display:none}
     .lbl-short{display:inline}
     .app{padding:.75rem;gap:1rem}
@@ -209,7 +273,7 @@
   @page{size:A4;margin:12mm}
   @media print{
     html,body{background:#fff}
-    .toolbar,.editor{display:none!important}
+    .toolbar,.editor,dialog{display:none!important}
     .app{display:block;padding:0}
     .paper-wrap{display:block}
     .paper{width:auto;min-height:0;padding:6mm 4mm;box-shadow:none;margin:0;transform:none!important}
@@ -223,8 +287,9 @@
 
   <div class="toolbar">
     <span class="brand">Devis &amp; factures — Enza Duhem</span>
+    <button type="button" id="btn-docs" onclick="openDocs()"><span class="lbl-long">Mes documents</span><span class="lbl-short">Docs</span></button>
     <button type="button" onclick="resetDoc()"><span class="lbl-long" id="lbl-new">Nouveau devis</span><span class="lbl-short">Nouveau</span></button>
-    <button type="button" onclick="window.print()">Imprimer</button>
+    <button type="button" onclick="printDoc()">Imprimer</button>
     <button type="button" class="primary" id="btn-pdf" onclick="downloadPdf()"><span class="lbl-long">Télécharger le PDF</span><span class="lbl-short">PDF</span></button>
   </div>
 
@@ -233,12 +298,13 @@
     <!-- ====================== ÉDITEUR ====================== -->
     <div class="editor">
       <h2 id="ed-title">Remplir le devis</h2>
-      <p class="hint">Les champs se recopient dans le document à droite en temps réel. Tes coordonnées sont mémorisées sur cet appareil. Quand c'est prêt → <b>Télécharger le PDF</b> ou <b>Imprimer</b>.</p>
+      <p class="hint">Les champs se recopient dans le document à droite en temps réel. Quand c'est prêt → <b>Télécharger le PDF</b> ou <b>Imprimer</b> : le document s'enregistre alors dans <b>Mes documents</b> (sur cet appareil).</p>
 
       <div class="mode-switch" role="radiogroup" aria-label="Type de document">
         <label><input type="radio" name="doctype" value="devis" checked><span>Devis</span></label>
         <label><input type="radio" name="doctype" value="facture"><span>Facture</span></label>
       </div>
+      <p class="doc-state" id="doc-state" aria-live="polite"></p>
 
       <fieldset>
         <legend>Mes coordonnées</legend>
@@ -383,11 +449,45 @@
     </div>
   </div>
 
+  <!-- ====================== MES DOCUMENTS ====================== -->
+  <dialog class="docs" id="docs-dlg" aria-labelledby="docs-title">
+    <div class="docs-head">
+      <h2 id="docs-title">Mes documents</h2>
+      <button type="button" class="docs-close" aria-label="Fermer" onclick="closeDocs()">×</button>
+    </div>
+    <div class="docs-body">
+      <p class="docs-note">Chaque devis ou facture téléchargé (ou imprimé) s'enregistre ici avec son historique, <b>sur cet appareil</b>. Garde aussi tes PDF dans un dossier : ce sont eux qui font foi.</p>
+      <div class="docs-backup">
+        <div class="st" id="backup-status"></div>
+        <div class="docs-btns">
+          <button type="button" class="btn primary" onclick="exportBackup()">Sauvegarder</button>
+          <button type="button" class="btn" onclick="$('restore-file').click()">Restaurer</button>
+          <button type="button" class="btn" onclick="exportCsv()">Registre (Excel)</button>
+          <input type="file" id="restore-file" accept=".json,application/json" hidden>
+        </div>
+      </div>
+      <div class="docs-sum" id="docs-sum"></div>
+      <div class="docs-filters">
+        <div class="seg" id="docs-seg">
+          <button type="button" data-f="all" aria-pressed="true">Tous</button>
+          <button type="button" data-f="devis" aria-pressed="false">Devis</button>
+          <button type="button" data-f="facture" aria-pressed="false">Factures</button>
+        </div>
+        <input type="search" id="docs-q" placeholder="Rechercher un client, un numéro…" aria-label="Rechercher">
+      </div>
+      <ul class="docs-list" id="docs-list"></ul>
+    </div>
+  </dialog>
+
 <script>
   const $ = id => document.getElementById(id);
   const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const euro = n => (isFinite(n)?n:0).toLocaleString('fr-BE',{style:'currency',currency:'EUR'});
   const fdate = v => { if(!v) return '—'; const d=new Date(v+'T00:00'); return d.toLocaleDateString('fr-BE',{day:'2-digit',month:'long',year:'numeric'}); };
+  const isoLocal = d => new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); // date du jour en heure belge, pas UTC
+  const today = () => isoLocal(new Date());
+  const frDate = v => v ? new Date(v.length>10 ? v : v+'T00:00').toLocaleDateString('fr-BE') : '';
+  const frDateTime = v => new Date(v).toLocaleString('fr-BE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 
   /* ---------- Types de document ---------- */
   const DOC = {
@@ -405,6 +505,8 @@
     }
   };
   let MODE='devis';
+  let CURRENT_ID=null; // document de « Mes documents » ouvert dans le formulaire (null = nouveau document)
+  let DOCS=[];         // copie en mémoire de « Mes documents »
 
   /* ---------- Line items ---------- */
   function addItem(desc='',qte='1',pu=''){
@@ -455,20 +557,18 @@
     else $('p_objet_wrap').style.display='none';
 
     // items + total
-    let total=0, rows='';
+    let rows='';
     document.querySelectorAll('#items .item-row').forEach(r=>{
       const desc=r.querySelector('.i-desc').value.trim();
       const qte=parseFloat(r.querySelector('.i-qte').value)||0;
       const pu=parseFloat(r.querySelector('.i-pu').value)||0;
       if(!desc && !pu) return;
-      const lt=qte*pu; total+=lt;
-      rows+=`<tr><td>${esc(desc)||'—'}</td><td class="num">${qte||''}</td><td class="num">${pu?euro(pu):''}</td><td class="num">${euro(lt)}</td></tr>`;
+      rows+=`<tr><td>${esc(desc)||'—'}</td><td class="num">${qte||''}</td><td class="num">${pu?euro(pu):''}</td><td class="num">${euro(qte*pu)}</td></tr>`;
     });
     $('p_items').innerHTML = rows || `<tr><td colspan="4" class="empty-hint" style="padding:1.2rem .8rem">Ajoutez vos prestations à gauche…</td></tr>`;
 
     // totaux (facture : acompte déjà reçu déduit)
-    const acompte = MODE==='facture' ? Math.max(0, parseFloat($('f_acompte').value)||0) : 0;
-    const reste = total - acompte;
+    const {total, acompte, du:reste} = computeTotals();
     $('p_totals').innerHTML = acompte>0
       ? `<div class="line"><span>Total</span><span>${euro(total)}</span></div>
          <div class="line"><span>Acompte reçu</span><span>− ${euro(acompte)}</span></div>
@@ -511,8 +611,18 @@
     $('p_foot').innerHTML = foot.filter(Boolean).join(' &nbsp;·&nbsp; ');
 
     saveEmitter();
+    renderDocState();
     fitDensity();
     fitPaper();
+  }
+
+  function computeTotals(){
+    let total=0;
+    document.querySelectorAll('#items .item-row').forEach(r=>{
+      total+=(parseFloat(r.querySelector('.i-qte').value)||0)*(parseFloat(r.querySelector('.i-pu').value)||0);
+    });
+    const acompte = MODE==='facture' ? Math.max(0, parseFloat($('f_acompte').value)||0) : 0;
+    return {total, acompte, du:total-acompte};
   }
 
   /* ---------- Compactage léger tant que le devis dépasse une page (2 niveaux max, puis pages multiples) ---------- */
@@ -563,23 +673,25 @@
      Un numéro n'est « consommé » qu'au téléchargement ou à l'impression (pas à l'ouverture de la page),
      pour éviter les trous dans la série des factures. Suivi par appareil et par année. */
   const numKey=(type,y)=>'enza_num_'+type+'_'+y;
+  const parseNum=num=>{ const m=String(num||'').match(/(\d{4})-(\d+)\s*$/); return m ? {y:+m[1], n:parseInt(m[2],10)} : null; };
   function lastUsed(type,y){
+    let n=0;
     try{
       const v=localStorage.getItem(numKey(type,y));
-      if(v!==null) return parseInt(v,10)||0;
+      if(v!==null) n=parseInt(v,10)||0;
       // ancien compteur de devis (avant l'ajout des factures)
-      if(type==='devis' && y===new Date().getFullYear()) return parseInt(localStorage.getItem('enza_devis_counter')||'0',10)||0;
+      else if(type==='devis' && y===new Date().getFullYear()) n=parseInt(localStorage.getItem('enza_devis_counter')||'0',10)||0;
     }catch(e){}
-    return 0;
+    // les documents enregistrés comptent aussi (ex. après une restauration sur un nouvel appareil)
+    DOCS.forEach(d=>{ const p=d.type===type && parseNum(d.num); if(p && p.y===y) n=Math.max(n,p.n); });
+    return n;
   }
   const formatNum=(type,y,n)=>DOC[type].prefix+y+'-'+String(n).padStart(3,'0');
-  const yearOf=num=>{ const m=String(num).match(/(\d{4})-\d+\s*$/); return m ? +m[1] : new Date().getFullYear(); };
+  const yearOf=num=>{ const p=parseNum(num); return p ? p.y : new Date().getFullYear(); };
   function suggestNumber(type){ const y=new Date().getFullYear(); return formatNum(type, y, lastUsed(type,y)+1); }
   function markUsed(){
-    const m=$('d_num').value.trim().match(/(\d{4})-(\d+)\s*$/);
-    if(!m) return;
-    const y=+m[1], n=parseInt(m[2],10);
-    try{ if(n>lastUsed(MODE,y)) localStorage.setItem(numKey(MODE,y), n); }catch(e){}
+    const p=parseNum($('d_num').value.trim());
+    if(p) try{ if(p.n>(parseInt(localStorage.getItem(numKey(MODE,p.y))||'0',10)||0)) localStorage.setItem(numKey(MODE,p.y), p.n); }catch(e){}
     render();
   }
 
@@ -596,6 +708,7 @@
     $('cond-legend').textContent=DOC[m].condLegend;
     document.title=DOC[m].title+' — Enza Duhem';
     if(prev!==m){
+      CURRENT_ID=null; // changer de type = nouveau document (l'original reste intact dans Mes documents)
       $('d_num').value=suggestNumber(m);
       // devis → facture : on garde client et prestations, et on note la référence du devis
       if(m==='facture' && prevNum && $('c_nom').value.trim() && !$('f_ref').value.trim()) $('f_ref').value=prevNum;
@@ -608,18 +721,21 @@
 
   /* ---------- Nouveau document ---------- */
   function resetDoc(){
-    const what = MODE==='facture' ? 'une nouvelle facture' : 'un nouveau devis';
-    if(!confirm('Vider le client, les prestations et créer '+what+' ? (Tes coordonnées sont conservées.)')) return;
+    if(!confirmLeave()) return;
+    clearDoc();
+    render();
+  }
+  function clearDoc(){
     ['c_nom','c_adr','c_contact','c_tva','d_objet','f_period','f_ref','f_acompte'].forEach(id=>$(id).value='');
     $('items').innerHTML='';
     $('d_cond').value=DOC[MODE].cond;
+    CURRENT_ID=null;
     initDocMeta();
     addItem();
-    render();
   }
 
   function initDocMeta(){
-    const now=new Date(), iso=d=>d.toISOString().slice(0,10);
+    const now=new Date(), iso=isoLocal;
     const plus=days=>{ const d=new Date(now); d.setDate(d.getDate()+days); return iso(d); };
     $('d_num').value=suggestNumber(MODE);
     $('d_date').value=iso(now);
@@ -655,6 +771,7 @@
   }
 
   async function downloadPdf(){
+    if(!checkBeforeIssue()) return;
     const btn=$('btn-pdf');
     const label=btn.innerHTML;
     const sx=window.scrollX, sy=window.scrollY;
@@ -678,7 +795,7 @@
         // devis long : jamais de coupure au milieu d'une ligne, du total, des conditions ou des signatures
         pagebreak: { mode:['css'], avoid:['tr','.d-total-block','.d-pay','.d-conditions','.d-sign','.d-foot'] }
       }).from(sheet).save();
-      markUsed();
+      recordDoc('pdf');
     }catch(e){
       alert("Le PDF n'a pas pu être généré (connexion internet nécessaire la première fois). Tu peux utiliser « Imprimer » puis « Enregistrer au format PDF ».");
     }finally{
@@ -707,14 +824,330 @@
     svg.replaceWith(img);
   }
 
+  /* ==================== Mes documents ====================
+     Registre local (localStorage « enza_docs ») : chaque devis/facture émis (PDF téléchargé ou impression)
+     est enregistré avec son contenu, son statut et un historique horodaté. Sauvegarde/restauration par
+     fichier JSON pour ne rien perdre et passer d'un appareil à l'autre ; export CSV pour la comptabilité. */
+  const DOCS_KEY='enza_docs', BACKUP_KEY='enza_last_backup';
+  const DOC_FIELDS=['d_num','d_date','d_valid','f_due','f_period','f_ref','f_acompte','c_nom','c_adr','c_contact','c_tva','d_objet','d_cond'];
+  let DOCS_FILTER='all';
+
+  function loadDocs(){ try{ const v=JSON.parse(localStorage.getItem(DOCS_KEY)||'[]'); return Array.isArray(v)?v:[]; }catch(e){ return []; } }
+  function refreshDocs(){ DOCS=loadDocs(); return DOCS; }
+  function saveDocs(docs){
+    DOCS=docs;
+    try{ localStorage.setItem(DOCS_KEY, JSON.stringify(docs)); return true; }
+    catch(e){ alert("Impossible d'enregistrer dans « Mes documents » (stockage du navigateur indisponible). Garde bien le PDF."); return false; }
+  }
+  const findDoc=id=>DOCS.find(d=>d.id===id);
+  const nowIso=()=>new Date().toISOString();
+
+  function snapshot(){
+    const s={};
+    DOC_FIELDS.forEach(id=>s[id]=$(id).value);
+    s.items=[...document.querySelectorAll('#items .item-row')]
+      .map(r=>[r.querySelector('.i-desc').value, r.querySelector('.i-qte').value, r.querySelector('.i-pu').value])
+      .filter(([d,,u])=>d.trim()||u);
+    return s;
+  }
+  function applySnapshot(s){
+    DOC_FIELDS.forEach(id=>{ if(id in s) $(id).value=s[id]; });
+    $('items').innerHTML='';
+    (s.items||[]).forEach(([d,q,u])=>addItem(d,q,u));
+    if(!(s.items||[]).length) addItem();
+  }
+  const sameData=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+
+  // le formulaire contient-il un travail non enregistré ?
+  function isDirty(){
+    const s=snapshot(), rec=CURRENT_ID && findDoc(CURRENT_ID);
+    if(rec) return !sameData(rec.data,s);
+    return !!(s.c_nom.trim() || s.d_objet.trim() || s.items.some(([,,u])=>u));
+  }
+  function confirmLeave(){
+    return !isDirty() || confirm("Le document en cours n'est pas enregistré (il ne l'est qu'au téléchargement ou à l'impression).\n\nL'abandonner ?");
+  }
+
+  // avant d'émettre : jamais deux documents avec le même numéro ; une facture émise ne se modifie pas en silence
+  function checkBeforeIssue(){
+    refreshDocs();
+    const num=$('d_num').value.trim(), what=MODE==='facture'?'de facture':'de devis';
+    if(!num){ alert('Indique un numéro '+what+'.'); $('d_num').focus(); return false; }
+    const rec=findDoc(MODE+':'+num);
+    if(rec && rec.id!==CURRENT_ID){
+      const next=suggestNumber(MODE);
+      if(!confirm('Le numéro '+num+' est déjà utilisé dans Mes documents ('+(rec.client||'sans client')+', '+frDate(rec.date)+').\n\nUtiliser le numéro suivant libre, '+next+' ?')) return false;
+      $('d_num').value=next; render();
+      return true;
+    }
+    if(rec && MODE==='facture' && !sameData(rec.data,snapshot()))
+      return confirm("Cette facture a déjà été émise. En principe, une facture envoyée ne se modifie plus : pour corriger un montant, on établit une note de crédit.\n\nEnregistrer quand même cette nouvelle version ? (L'historique gardera la trace de la modification.)");
+    return true;
+  }
+
+  function recordDoc(how){
+    const docs=refreshDocs(), s=snapshot(), num=s.d_num.trim();
+    if(!num) return;
+    const id=MODE+':'+num, at=nowIso(), t=computeTotals();
+    const how1 = how==='pdf' ? 'PDF téléchargé' : 'impression lancée';
+    let rec=docs.find(d=>d.id===id);
+    if(rec){
+      if(rec.id!==CURRENT_ID) return; // numéro pris par un autre document (impression sans vérification) : on n'écrase rien
+      rec.log.push({at, what: sameData(rec.data,s) ? 'Nouvel exemplaire ('+how1+')' : 'Modifié puis réémis ('+how1+')'});
+    }else{
+      rec={id, type:MODE, status: MODE==='devis'?'attente':'a_payer', createdAt:at,
+           log:[{at, what:(MODE==='devis'?'Devis émis':'Facture émise')+' ('+how1+')'}]};
+      docs.push(rec);
+      // facture établie d'après un devis : le devis passe en « Facturé »
+      const dv = MODE==='facture' && s.f_ref.trim() && docs.find(d=>d.id==='devis:'+s.f_ref.trim());
+      if(dv){
+        dv.status='facture'; dv.invoice=num; dv.updatedAt=at;
+        dv.log.push({at, what:'Facturé → '+num});
+        rec.log.push({at, what:"Établie d'après le devis "+dv.num});
+      }
+    }
+    Object.assign(rec,{num, data:s, client:s.c_nom.trim(), objet:s.d_objet.trim(), date:s.d_date,
+      due: MODE==='devis' ? s.d_valid : s.f_due, total:t.total, acompte:t.acompte, du:t.du, ref:s.f_ref.trim(), updatedAt:at});
+    saveDocs(docs);
+    CURRENT_ID=id;
+    markUsed(); // met aussi à jour l'affichage
+    if($('docs-dlg').open) renderDocs();
+  }
+
+  function statusOf(d){
+    const t=today();
+    if(d.type==='devis'){
+      if(d.status==='facture') return {label:'Facturé'+(d.invoice?' ('+d.invoice+')':''), cls:'st-ok'};
+      if(d.status==='refuse') return {label:'Refusé', cls:'st-off'};
+      return d.due && d.due<t ? {label:'Expiré', cls:'st-off'} : {label:'En attente', cls:'st-wait'};
+    }
+    if(d.status==='payee') return {label:'Payée'+(d.paidAt?' le '+frDate(d.paidAt):''), cls:'st-ok'};
+    return d.due && d.due<t ? {label:'En retard', cls:'st-late'} : {label:'À payer', cls:'st-wait'};
+  }
+
+  // ligne d'état sous le sélecteur Devis / Facture
+  function renderDocState(){
+    const el=$('doc-state'), rec=CURRENT_ID && findDoc(CURRENT_ID);
+    if(!rec){ el.innerHTML='Nouveau document — il s\'enregistrera dans <b>Mes documents</b> au téléchargement ou à l\'impression.'; }
+    else{
+      el.innerHTML='Ouvert depuis Mes documents : <b>'+esc(rec.num)+'</b> · '+esc(statusOf(rec).label)
+        + (isDirty() ? ' · <span class="warn">modifications pas encore enregistrées (retélécharge pour les enregistrer)</span>' : '');
+    }
+    $('btn-docs').classList.toggle('has-dot', unsavedCount()>0);
+  }
+
+  function lastBackup(){ try{ return localStorage.getItem(BACKUP_KEY)||''; }catch(e){ return ''; } }
+  function unsavedCount(){ const b=lastBackup(); return DOCS.filter(d=>!b || (d.updatedAt||'')>b).length; }
+
+  function openDocs(){
+    renderDocs();
+    const dlg=$('docs-dlg');
+    if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+  }
+  function closeDocs(){ const dlg=$('docs-dlg'); if(dlg.close) dlg.close(); else dlg.removeAttribute('open'); }
+
+  function renderDocs(){
+    refreshDocs();
+    const t=today();
+    // sauvegarde
+    const b=lastBackup(), n=unsavedCount(), st=$('backup-status');
+    if(!DOCS.length){ st.className='st'; st.textContent='Aucun document enregistré pour l\'instant.'; }
+    else if(!b){ st.className='st warn'; st.innerHTML='<b>Jamais sauvegardé.</b> Clique sur « Sauvegarder » et garde le fichier en lieu sûr (mail, cloud, clé USB).'; }
+    else if(n){ st.className='st warn'; st.innerHTML='<b>'+n+' document'+(n>1?'s':'')+' à sauvegarder</b> (dernière sauvegarde : '+esc(frDateTime(b))+').'; }
+    else{ st.className='st ok'; st.textContent='Tout est sauvegardé (dernière sauvegarde : '+frDateTime(b)+').'; }
+    // synthèse
+    const unpaid=DOCS.filter(d=>d.type==='facture' && d.status!=='payee');
+    const late=unpaid.filter(d=>d.due && d.due<t);
+    const pending=DOCS.filter(d=>d.type==='devis' && d.status==='attente' && !(d.due && d.due<t));
+    $('docs-sum').innerHTML = DOCS.length ?
+        '<div><span>À encaisser</span><b>'+euro(unpaid.reduce((a,d)=>a+(d.du||0),0))+'</b><small>'+unpaid.length+' facture'+(unpaid.length>1?'s':'')+' à payer'
+        + (late.length ? ' · <em>'+late.length+' en retard</em>' : '')+'</small></div>'
+      + '<div><span>Devis en attente</span><b>'+pending.length+'</b><small>de réponse du client</small></div>' : '';
+    // filtres
+    document.querySelectorAll('#docs-seg button').forEach(bt=>{
+      const f=bt.dataset.f, c=f==='all'?DOCS.length:DOCS.filter(d=>d.type===f).length;
+      bt.textContent={all:'Tous',devis:'Devis',facture:'Factures'}[f]+' ('+c+')';
+      bt.setAttribute('aria-pressed', f===DOCS_FILTER);
+    });
+    // liste (plus récents d'abord)
+    const q=$('docs-q').value.trim().toLowerCase();
+    const list=DOCS.filter(d=>(DOCS_FILTER==='all'||d.type===DOCS_FILTER)
+        && (!q || [d.num,d.client,d.objet].join(' ').toLowerCase().includes(q)))
+      .sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+    if(!list.length){
+      $('docs-list').innerHTML='<li class="docs-empty">'+(DOCS.length ? 'Aucun document ne correspond.'
+        : 'Aucun document pour l\'instant.<br>Chaque devis ou facture que tu télécharges (ou imprimes) s\'enregistre ici automatiquement.')+'</li>';
+      return;
+    }
+    $('docs-list').innerHTML=list.map(d=>{
+      const s=statusOf(d), id=esc(d.id), isF=d.type==='facture';
+      const meta=[frDate(d.date), d.due ? (isF?'échéance ':'valable jusqu\'au ')+frDate(d.due) : '',
+                  isF && d.ref ? 'réf. devis '+d.ref : '', isF && d.acompte ? 'acompte '+euro(d.acompte)+' déduit' : ''].filter(Boolean);
+      const acts=['<button type="button" class="btn" data-act="open" data-id="'+id+'">Rouvrir</button>'];
+      if(!isF && d.status==='attente') acts.push('<button type="button" class="btn primary" data-act="invoice" data-id="'+id+'">Faire la facture</button>',
+                                               '<button type="button" class="btn" data-act="refuse" data-id="'+id+'">Refusé</button>');
+      if(!isF && d.status==='refuse') acts.push('<button type="button" class="btn" data-act="attente" data-id="'+id+'">Remettre en attente</button>');
+      if(isF && d.status!=='payee') acts.push('<button type="button" class="btn primary" data-act="payee" data-id="'+id+'">Marquer payée</button>');
+      if(isF && d.status==='payee') acts.push('<button type="button" class="btn" data-act="a_payer" data-id="'+id+'">Annuler « payée »</button>');
+      acts.push('<button type="button" class="del" data-act="delete" data-id="'+id+'">Supprimer</button>');
+      const log=(d.log||[]).slice().reverse().map(l=>'<li><time>'+esc(frDateTime(l.at))+'</time>'+esc(l.what)+'</li>').join('');
+      return '<li class="doc-card'+(d.id===CURRENT_ID?' current':'')+'" data-type="'+esc(d.type)+'">'
+        + '<div class="dc-top"><span class="dc-type">'+(isF?'Facture':'Devis')+'</span><b class="dc-num">'+esc(d.num)+'</b>'
+        + '<span class="chip '+s.cls+'">'+esc(s.label)+'</span><span class="dc-amount">'+euro(isF?d.du:d.total)+'</span></div>'
+        + '<div class="dc-client">'+(esc(d.client)||'<i>Sans client</i>')+(d.objet?' <span>— '+esc(d.objet)+'</span>':'')+'</div>'
+        + '<div class="dc-meta">'+esc(meta.join(' · '))+'</div>'
+        + '<div class="dc-actions">'+acts.join('')+'</div>'
+        + '<details class="dc-log"><summary>Historique ('+(d.log||[]).length+')</summary><ol>'+log+'</ol></details>'
+        + '</li>';
+    }).join('');
+  }
+
+  function openDoc(id){
+    const rec=findDoc(id);
+    if(!rec || !confirmLeave()) return;
+    setMode(rec.type);
+    applySnapshot(rec.data);
+    CURRENT_ID=rec.id;
+    closeDocs(); render(); window.scrollTo(0,0);
+  }
+
+  // devis accepté → facture pré-remplie (client, objet, prestations, réf. du devis), datée du jour
+  function invoiceFromDevis(id){
+    const rec=findDoc(id);
+    if(!rec || !confirmLeave()) return;
+    setMode('devis');
+    applySnapshot(rec.data);
+    ['f_ref','f_period','f_acompte'].forEach(k=>$(k).value='');
+    CURRENT_ID=null;
+    initDocMeta();             // dates du jour (le numéro est remplacé juste après)
+    $('d_num').value=rec.num;  // pour que la facture reprenne la référence du devis
+    setMode('facture');
+    $('f_ref').value=rec.num;
+    $('d_cond').value=DOC.facture.cond;
+    closeDocs(); render(); window.scrollTo(0,0);
+  }
+
+  function setStatus(id,status){
+    const docs=refreshDocs(), rec=docs.find(d=>d.id===id);
+    if(!rec) return;
+    const at=nowIso();
+    const what={payee:'Marquée payée', a_payer:'Paiement annulé (remise « à payer »)', refuse:'Marqué refusé', attente:'Remis en attente'}[status];
+    rec.status=status;
+    if(status==='payee') rec.paidAt=today(); else delete rec.paidAt;
+    rec.log.push({at, what}); rec.updatedAt=at;
+    saveDocs(docs); renderDocs(); render();
+  }
+
+  function deleteDoc(id){
+    const docs=refreshDocs(), rec=docs.find(d=>d.id===id);
+    if(!rec) return;
+    const msg = rec.type==='facture'
+      ? 'Supprimer la facture '+rec.num+' ?\n\nUne facture réellement envoyée doit rester dans tes registres (on l\'annule ou on la corrige par une note de crédit). Ne supprime que les essais.'
+      : 'Supprimer le devis '+rec.num+' ?';
+    if(!confirm(msg)) return;
+    const at=nowIso();
+    if(rec.type==='facture') docs.forEach(d=>{
+      if(d.type==='devis' && d.invoice===rec.num){
+        d.status='attente'; delete d.invoice; d.updatedAt=at;
+        d.log.push({at, what:'Facture '+rec.num+' supprimée — devis remis en attente'});
+      }
+    });
+    // un essai supprimé libère son numéro s'il était le dernier attribué
+    const p=parseNum(rec.num);
+    if(p) try{ if((parseInt(localStorage.getItem(numKey(rec.type,p.y))||'0',10)||0)===p.n) localStorage.setItem(numKey(rec.type,p.y), p.n-1); }catch(e){}
+    if(CURRENT_ID===id) CURRENT_ID=null;
+    saveDocs(docs.filter(d=>d.id!==id));
+    renderDocs(); render();
+  }
+
+  function downloadFile(text,type,name){
+    const url=URL.createObjectURL(new Blob([text],{type}));
+    const a=document.createElement('a');
+    a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+  }
+
+  function exportBackup(){
+    refreshDocs();
+    const counters={};
+    try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(/^enza_num_|^enza_devis_counter$/.test(k)) counters[k]=localStorage.getItem(k); } }catch(e){}
+    let emitter={}; try{ emitter=JSON.parse(localStorage.getItem('enza_devis_emetteur')||'{}'); }catch(e){}
+    const at=nowIso();
+    downloadFile(JSON.stringify({format:'enza-documents', version:1, exportedAt:at, docs:DOCS, counters, emitter},null,1),
+      'application/json', 'Enza-sauvegarde-documents_'+today()+'.json');
+    try{ localStorage.setItem(BACKUP_KEY, at); }catch(e){}
+    renderDocs(); render();
+  }
+
+  async function restoreBackup(file){
+    let data;
+    try{ data=JSON.parse(await file.text()); }catch(e){ alert("Ce fichier n'est pas une sauvegarde valide."); return; }
+    if(!data || data.format!=='enza-documents' || !Array.isArray(data.docs)){ alert("Ce fichier n'est pas une sauvegarde de « Mes documents »."); return; }
+    const docs=refreshDocs(); let added=0, updated=0;
+    data.docs.forEach(d=>{
+      if(!d || typeof d.id!=='string' || !['devis','facture'].includes(d.type) || !d.data || !Array.isArray(d.log)) return;
+      const i=docs.findIndex(x=>x.id===d.id);
+      if(i<0){ docs.push(d); added++; }
+      else if((d.updatedAt||'')>(docs[i].updatedAt||'')){ docs[i]=d; updated++; } // la version la plus récente l'emporte
+    });
+    if(!saveDocs(docs)) return;
+    try{
+      Object.entries(data.counters||{}).forEach(([k,v])=>{
+        if(!/^enza_num_|^enza_devis_counter$/.test(k)) return;
+        if((parseInt(v,10)||0)>(parseInt(localStorage.getItem(k)||'0',10)||0)) localStorage.setItem(k, parseInt(v,10));
+      });
+      if(data.exportedAt && data.exportedAt>lastBackup()) localStorage.setItem(BACKUP_KEY, data.exportedAt);
+    }catch(e){}
+    // coordonnées (n° d'entreprise, IBAN…) : ne complète que les champs vides de cet appareil
+    Object.entries(data.emitter||{}).forEach(([id,v])=>{ const el=$(id); if(el && el.hasAttribute('data-save') && !el.value.trim() && v) el.value=v; });
+    if(!CURRENT_ID && !isDirty()) $('d_num').value=suggestNumber(MODE);
+    render(); renderDocs();
+    alert('Restauration terminée : '+added+' document'+(added>1?'s':'')+' ajouté'+(added>1?'s':'')+', '+updated+' mis à jour.');
+  }
+
+  // registre pour la comptabilité (ouvre dans Excel / LibreOffice / Numbers)
+  function exportCsv(){
+    refreshDocs();
+    if(!DOCS.length){ alert('Aucun document à exporter pour l\'instant.'); return; }
+    const amount=v=>(isFinite(v)?v:0).toFixed(2).replace('.',',');
+    const txt=v=>{ v=String(v??''); return /^[=+\-@]/.test(v) ? "'"+v : v; }; // pas de formule involontaire dans Excel
+    const head=['Type','Numéro','Date','Client','N° TVA client','Objet','Total (€)','Acompte (€)','Montant dû (€)','Échéance / validité','Statut','Payée le','Lien','Dernière action'];
+    const rows=DOCS.slice().sort((a,b)=>a.type===b.type ? String(a.num).localeCompare(String(b.num),'fr',{numeric:true}) : (a.type==='facture'?-1:1))
+      .map(d=>{ const last=(d.log||[]).slice(-1)[0];
+        return [d.type==='facture'?'Facture':'Devis', txt(d.num), frDate(d.date), txt(d.client), txt(d.data&&d.data.c_tva), txt(d.objet),
+          amount(d.total), amount(d.acompte), amount(d.type==='facture'?d.du:d.total), frDate(d.due), statusOf(d).label,
+          d.paidAt?frDate(d.paidAt):'', d.type==='facture' ? (d.ref?'Devis '+d.ref:'') : (d.invoice?'Facture '+d.invoice:''),
+          last ? frDateTime(last.at)+' — '+last.what : '']; });
+    const csv='﻿'+[head,...rows].map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');
+    downloadFile(csv,'text/csv;charset=utf-8','Registre-Enza_'+today()+'.csv');
+  }
+
+  function printDoc(){ if(checkBeforeIssue()) window.print(); }
+
   /* ---------- Init ---------- */
+  refreshDocs();
   loadEmitter();
   initDocMeta();
   $('d_cond').value=DOC.devis.cond;
   addItem('Atelier collectif de musicothérapie (1h)','1','');
   document.querySelectorAll('.editor input, .editor textarea').forEach(i=>i.addEventListener('input',render));
   document.querySelectorAll('input[name=doctype]').forEach(r=>r.addEventListener('change',()=>setMode(r.value)));
-  window.addEventListener('afterprint',markUsed);
+  window.addEventListener('afterprint',()=>recordDoc('print'));
+  // Mes documents : actions sur les fiches, filtres, recherche, restauration
+  $('docs-list').addEventListener('click',e=>{
+    const b=e.target.closest('button[data-act]'); if(!b) return;
+    const id=b.dataset.id, act=b.dataset.act;
+    if(act==='open') openDoc(id);
+    else if(act==='invoice') invoiceFromDevis(id);
+    else if(act==='delete') deleteDoc(id);
+    else setStatus(id,act);
+  });
+  $('docs-seg').addEventListener('click',e=>{ const b=e.target.closest('button[data-f]'); if(b){ DOCS_FILTER=b.dataset.f; renderDocs(); } });
+  $('docs-q').addEventListener('input',renderDocs);
+  $('restore-file').addEventListener('change',e=>{ const f=e.target.files[0]; e.target.value=''; if(f) restoreBackup(f); });
+  $('docs-dlg').addEventListener('click',e=>{ if(e.target===$('docs-dlg')) closeDocs(); }); // clic hors de la fenêtre
+  // un autre onglet a enregistré un document : on se met à jour
+  window.addEventListener('storage',e=>{ if(e.key===DOCS_KEY){ refreshDocs(); render(); if($('docs-dlg').open) renderDocs(); } });
   window.addEventListener('resize',fitPaper);
   // ouverture directe en mode facture : devis.html?type=facture (ou facture.html)
   if(new URLSearchParams(location.search).get('type')==='facture' || location.hash==='#facture') setMode('facture');
