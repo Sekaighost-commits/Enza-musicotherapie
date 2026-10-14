@@ -175,6 +175,7 @@
   .item-row input{padding:.45rem .55rem;font-size:.85rem}
   .item-row .del{border:none;background:none;color:var(--slate-mid);cursor:pointer;font-size:1.1rem;line-height:1;padding:.2rem}
   .item-row .del:hover{color:#b4553f}
+  input.bad{border-color:#b4553f;background:#fbefe7} /* nombre illisible */
   .add-item{margin-top:.3rem;font-size:.78rem;font-weight:600;color:var(--green-primary);background:var(--green-pale);border:1px dashed var(--green-light);border-radius:4px;padding:.5rem;width:100%;cursor:pointer}
   .add-item:hover{background:var(--green-light);color:var(--green-darkest)}
   .i-f{display:block;min-width:0}
@@ -355,7 +356,7 @@
         <div class="items-head"><span>Description</span><span>Qté</span><span>Prix unit.</span><span></span></div>
         <div id="items"></div>
         <button type="button" class="add-item" onclick="addItem()">+ Ajouter une ligne</button>
-        <label class="fld only-facture" style="margin-top:.9rem"><span>Acompte déjà reçu (€, optionnel)</span><input id="f_acompte" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0"></label>
+        <label class="fld only-facture" style="margin-top:.9rem"><span>Acompte déjà reçu (€, optionnel)</span><input id="f_acompte" inputmode="decimal" autocomplete="off" placeholder="0"></label>
       </fieldset>
 
       <fieldset>
@@ -516,8 +517,8 @@
     const row=document.createElement('div');
     row.className='item-row';
     row.innerHTML=`<label class="i-f i-f-desc"><span class="i-l">Description</span><input class="i-desc" placeholder="Ex. : Atelier collectif (1h)" value="${esc(desc)}"></label>
-      <label class="i-f"><span class="i-l">Quantité</span><input class="i-qte" type="number" inputmode="decimal" min="0" step="any" value="${esc(qte)}"></label>
-      <label class="i-f"><span class="i-l">Prix unitaire (€)</span><input class="i-pu" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" value="${esc(pu)}"></label>
+      <label class="i-f"><span class="i-l">Quantité</span><input class="i-qte" inputmode="decimal" autocomplete="off" value="${esc(qte)}"></label>
+      <label class="i-f"><span class="i-l">Prix unitaire (€)</span><input class="i-pu" inputmode="decimal" autocomplete="off" placeholder="0" value="${esc(pu)}"></label>
       <button type="button" class="del" aria-label="Supprimer la ligne" title="Supprimer" onclick="this.parentNode.remove();render()">×</button>`;
     row.querySelectorAll('input').forEach(i=>i.addEventListener('input',render));
     wrap.appendChild(row);
@@ -560,12 +561,11 @@
 
     // items + total
     let rows='';
-    document.querySelectorAll('#items .item-row').forEach(r=>{
-      const desc=r.querySelector('.i-desc').value.trim();
-      const qte=parseFloat(r.querySelector('.i-qte').value)||0;
-      const pu=parseFloat(r.querySelector('.i-pu').value)||0;
-      if(!desc && !pu) return;
-      rows+=`<tr><td>${esc(desc)||'—'}</td><td class="num">${qte?qte.toLocaleString('fr-BE'):''}</td><td class="num">${pu?euro(pu):''}</td><td class="num">${euro(cents(qte*pu))}</td></tr>`;
+    readItems().forEach(it=>{
+      if(!it.used) return;
+      const qs=isNaN(it.q) ? '?' : it.q ? it.q.toLocaleString('fr-BE') : '';
+      const us=isNaN(it.u) ? '?' : it.u ? euro(it.u) : '';
+      rows+=`<tr><td>${esc(it.desc)||'—'}</td><td class="num">${qs}</td><td class="num">${us}</td><td class="num">${it.bad?'?':euro(cents(it.q*it.u))}</td></tr>`;
     });
     $('p_items').innerHTML = rows || `<tr><td colspan="4" class="empty-hint" style="padding:1.2rem .8rem">Ajoutez vos prestations à gauche…</td></tr>`;
 
@@ -594,17 +594,15 @@
     $('p_cond_wrap').style.display = $('d_cond').value.trim() ? '' : 'none';
 
     // aides dans le formulaire (facture)
-    const missing=[], docIssues=[];
+    const missing=[];
     if(!$('e_bce').value.trim()) missing.push("le n° d'entreprise (obligatoire sur les devis et factures)");
     if(MODE==='facture' && !$('e_iban').value.trim()) missing.push("l'IBAN (pour le paiement)");
     $('hint-peppol').hidden = !(MODE==='facture' && $('c_tva').value.trim()); // facturation électronique B2B obligatoire (2026)
     $('hint-legal').hidden = !missing.length;
     $('hint-legal').textContent = missing.length ? 'À compléter : '+missing.join(' et ')+'.' : '';
-    if(!$('d_date').value) docIssues.push('la date est vide');
-    if(MODE==='facture' && !$('f_due').value) docIssues.push("l'échéance de paiement est vide");
-    if(MODE==='facture' && acompte>total) docIssues.push("l'acompte déduit dépasse le total des prestations");
-    $('hint-doc').hidden = !docIssues.length;
-    $('hint-doc').textContent = docIssues.length ? 'Attention : '+docIssues.join(' ; ')+'.' : '';
+    const live=docProblems().live;
+    $('hint-doc').hidden = !live.length;
+    $('hint-doc').textContent = live.length ? 'Attention : '+live.join(' ; ')+'.' : '';
     if(MODE==='facture'){
       const y=yearOf($('d_num').value), last=lastUsed('facture', y);
       $('hint-num').textContent = 'Les factures doivent se suivre sans trou ni doublon. '
@@ -627,14 +625,58 @@
 
   // chaque ligne est arrondie au centime : le total est toujours la somme exacte des lignes affichées
   const cents = v => Math.round(v*100)/100;
-  function computeTotals(){
-    let total=0;
-    document.querySelectorAll('#items .item-row').forEach(r=>{
-      total+=cents((parseFloat(r.querySelector('.i-qte').value)||0)*(parseFloat(r.querySelector('.i-pu').value)||0));
+  // nombre tapé à la française ou non (« 33,5 », « 33.5 », « 1 200,50 ») ; vide → 0 ; illisible → NaN (signalé, jamais compté 0 en silence)
+  const toNum = v => {
+    let s=String(v??'').trim().replace(/[\s  €]/g,'');
+    if(!s) return 0;
+    if(s.includes(',')) s=s.replace(/\./g,'').replace(',','.');
+    return /^[-+]?(\d+\.?\d*|\.\d+)$/.test(s) ? parseFloat(s) : NaN;
+  };
+  function readItems(){
+    return [...document.querySelectorAll('#items .item-row')].map(r=>{
+      const qi=r.querySelector('.i-qte'), ui=r.querySelector('.i-pu');
+      const desc=r.querySelector('.i-desc').value.trim(), q=toNum(qi.value), u=toNum(ui.value);
+      qi.classList.toggle('bad',isNaN(q)); ui.classList.toggle('bad',isNaN(u));
+      return {desc, q, u, used:!!(desc || ui.value.trim()), bad:isNaN(q)||isNaN(u)};
     });
+  }
+  function computeTotals(){
+    let total=0, lines=0, bad=0;
+    readItems().forEach(it=>{ if(!it.used) return; lines++; if(it.bad) bad++; else total+=cents(it.q*it.u); });
     total=cents(total);
-    const acompte = MODE==='facture' ? cents(Math.max(0, parseFloat($('f_acompte').value)||0)) : 0;
-    return {total, acompte, du:cents(total-acompte)};
+    let acompte=0;
+    if(MODE==='facture'){
+      const a=toNum($('f_acompte').value), wrong=isNaN(a)||a<0;
+      $('f_acompte').classList.toggle('bad',wrong);
+      if(wrong) bad++; else acompte=cents(a);
+    }
+    return {total, acompte, du:cents(total-acompte), lines, bad};
+  }
+
+  /* Contrôles du document : « block » empêche d'émettre, « warn » demande confirmation,
+     « live » s'affiche en direct dans le formulaire (erreurs probables de saisie uniquement). */
+  function docProblems(){
+    const g=id=>$(id).value.trim(), t=computeTotals(), F=MODE==='facture', block=[], warn=[], live=[];
+    const both=(list,msg)=>{ list.push(msg); live.push(msg); };
+    if(t.bad) both(block,"un prix, une quantité ou l'acompte n'est pas un nombre valide (case en rouge)");
+    if(!t.lines) block.push('aucune prestation');
+    if(!g('d_date')) both(block,'la date est vide');
+    if(F){
+      if(!g('c_nom')) block.push('le nom du client');
+      if(!g('c_adr')) block.push("l'adresse du client");
+      if(!g('f_due')) both(block,"l'échéance de paiement est vide");
+      else if(g('d_date') && g('f_due')<g('d_date')) both(warn,"l'échéance est antérieure à la date de la facture");
+      if(t.acompte>t.total) both(block,"l'acompte déduit dépasse le total des prestations");
+      if(!g('e_bce')) warn.push("ton n° d'entreprise n'est pas rempli (obligatoire sur une facture)");
+      if(!g('e_iban')) warn.push("ton IBAN n'est pas rempli (la facture affichera « IBAN à compléter »)");
+    }else{
+      if(!g('c_nom')) warn.push("le client n'est pas indiqué");
+      if(!g('d_valid')) warn.push('la date de validité est vide');
+      else if(g('d_date') && g('d_valid')<g('d_date')) both(warn,'la date de validité est antérieure à la date du devis');
+      if(!g('e_bce')) warn.push("ton n° d'entreprise n'est pas rempli");
+    }
+    if(t.lines && !t.bad && t.total<=0) warn.push('le total est de 0 € (ou moins)');
+    return {block, warn, live};
   }
 
   /* ---------- Compactage léger tant que le devis dépasse une page (2 niveaux max, puis pages multiples) ---------- */
@@ -702,10 +744,12 @@
   const formatNum=(type,y,n)=>DOC[type].prefix+y+'-'+String(n).padStart(3,'0');
   const yearOf=num=>{ const p=parseNum(num); return p ? p.y : new Date().getFullYear(); };
   function suggestNumber(type){ const y=new Date().getFullYear(); return formatNum(type, y, lastUsed(type,y)+1); }
-  function markUsed(){
-    const p=parseNum($('d_num').value.trim());
-    if(p) try{ if(p.n>(parseInt(localStorage.getItem(numKey(MODE,p.y))||'0',10)||0)) localStorage.setItem(numKey(MODE,p.y), p.n); }catch(e){}
-    render();
+  // même numéro, même s'il est écrit autrement (« F2026-3 », « f2026-003 » = « F2026-003 »)
+  function sameNumber(a,b){
+    const pa=parseNum(a), pb=parseNum(b);
+    if(pa && pb) return pa.y===pb.y && pa.n===pb.n;
+    const k=v=>String(v||'').replace(/\s+/g,'').toUpperCase();
+    return k(a)!=='' && k(a)===k(b);
   }
 
   /* ---------- Devis ↔ Facture ---------- */
@@ -723,8 +767,9 @@
     if(prev!==m){
       CURRENT_ID=null; // changer de type = nouveau document (l'original reste intact dans Mes documents)
       $('d_num').value=suggestNumber(m);
-      // devis → facture : on garde client et prestations, et on note la référence du devis
-      if(m==='facture' && prevNum && $('c_nom').value.trim() && !$('f_ref').value.trim()) $('f_ref').value=prevNum;
+      // devis → facture : on garde client et prestations ; la référence est celle du devis affiché s'il a bien été
+      // émis (présent dans Mes documents), sinon aucune — jamais une ancienne référence restée dans le champ
+      if(m==='facture') $('f_ref').value = prevNum && DOCS.some(d=>d.type==='devis' && sameNumber(d.num,prevNum)) ? prevNum : '';
     }
     const c=$('d_cond').value;
     if(!c.trim() || c===DOC[prev].cond) $('d_cond').value=DOC[m].cond;
@@ -777,7 +822,7 @@
   }
 
   function pdfFileName(){
-    const clean = s => String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'')
+    const clean = s => String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
       .replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
     const parts=[DOC[MODE].file, clean($('d_num').value), clean($('c_nom').value)].filter(Boolean);
     return parts.join('_')+'.pdf';
@@ -785,11 +830,12 @@
 
   async function downloadPdf(){
     if(!checkBeforeIssue()) return;
-    const btn=$('btn-pdf');
+    const st=captureDoc(); // ce qui est enregistré = exactement ce qui part dans le PDF, même si on tape pendant la génération
+    const btn=$('btn-pdf'), tbtns=[...document.querySelectorAll('.toolbar button')];
     const label=btn.innerHTML;
     const sx=window.scrollX, sy=window.scrollY;
     let saved=false;
-    btn.disabled=true; btn.textContent='Génération…';
+    tbtns.forEach(b=>b.disabled=true); btn.textContent='Génération…';
     try{
       await loadPdfLib();
       if(document.fonts) await document.fonts.ready;
@@ -813,11 +859,11 @@
     }catch(e){
       alert("Le PDF n'a pas pu être généré (connexion internet nécessaire la première fois). Tu peux utiliser « Imprimer » puis « Enregistrer au format PDF ».");
     }finally{
-      btn.disabled=false; btn.innerHTML=label;
+      tbtns.forEach(b=>b.disabled=false); btn.innerHTML=label;
       window.scrollTo(sx,sy);
       setTimeout(()=>window.scrollTo(sx,sy),150); // la bibliothèque peut encore bouger la page juste après
     }
-    if(saved) recordDoc('pdf');
+    if(saved) recordDoc('pdf',st);
   }
 
   /* Le moteur de capture rend mal un SVG coloré par CSS (currentColor) : dans la copie destinée au PDF,
@@ -866,10 +912,11 @@
     return s;
   }
   function applySnapshot(s){
-    DOC_FIELDS.forEach(id=>{ if(id in s) $(id).value=s[id]; });
+    DOC_FIELDS.forEach(id=>{ if(id in s) $(id).value=s[id]??''; });
     $('items').innerHTML='';
-    (s.items||[]).forEach(([d,q,u])=>addItem(d,q,u));
-    if(!(s.items||[]).length) addItem();
+    const items=(Array.isArray(s.items)?s.items:[]).filter(Array.isArray);
+    items.forEach(([d,q,u])=>addItem(d??'',q??'',u??''));
+    if(!items.length) addItem();
   }
   const sameData=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 
@@ -880,15 +927,22 @@
     return !!(s.c_nom.trim() || s.d_objet.trim() || s.items.some(([,,u])=>u));
   }
   function confirmLeave(){
-    return !isDirty() || confirm("Le document en cours n'est pas enregistré (il ne l'est qu'au téléchargement ou à l'impression).\n\nL'abandonner ?");
+    if(!isDirty()) return true;
+    return confirm(CURRENT_ID && findDoc(CURRENT_ID)
+      ? "Les modifications de ce document ne sont pas enregistrées (elles ne le sont qu'au téléchargement ou à l'impression).\n\nLes abandonner ?"
+      : "Le document en cours n'est pas enregistré (il ne l'est qu'au téléchargement ou à l'impression).\n\nL'abandonner ?");
   }
 
-  // avant d'émettre : jamais deux documents avec le même numéro ; une facture émise ne se modifie pas en silence
+  // avant d'émettre : document complet, jamais deux documents avec le même numéro,
+  // pas de trou dans les factures, une facture émise ne se modifie pas en silence
   function checkBeforeIssue(){
     refreshDocs();
-    const num=$('d_num').value.trim(), what=MODE==='facture'?'de facture':'de devis';
-    if(!num){ alert('Indique un numéro '+what+'.'); $('d_num').focus(); return false; }
-    const rec=findDoc(MODE+':'+num);
+    const F=MODE==='facture', num=$('d_num').value.trim(), what=F?'cette facture':'ce devis';
+    if(!num){ alert('Indique un numéro '+(F?'de facture':'de devis')+'.'); $('d_num').focus(); return false; }
+    const pb=docProblems();
+    if(pb.block.length){ alert('Impossible d\'émettre '+what+', il manque ou il y a une erreur :\n\n• '+pb.block.join('\n• ')); return false; }
+    if(pb.warn.length && !confirm('À vérifier avant d\'émettre '+what+' :\n\n• '+pb.warn.join('\n• ')+'\n\nContinuer quand même ?')) return false;
+    const rec=DOCS.find(d=>d.type===MODE && sameNumber(d.num,num));
     if(rec && rec.id!==CURRENT_ID){
       const next=suggestNumber(MODE);
       if(!confirm('Le numéro '+num+' est déjà utilisé dans Mes documents ('+(rec.client||'sans client')+', '+frDate(rec.date)+').\n\nUtiliser le numéro suivant libre, '+next+' ?')) return false;
@@ -912,22 +966,25 @@
     return true;
   }
 
-  function recordDoc(how){
-    const docs=refreshDocs(), s=snapshot(), num=s.d_num.trim();
+  // état exact du document au moment où on l'émet
+  const captureDoc=()=>({mode:MODE, s:snapshot(), t:computeTotals(), cur:CURRENT_ID});
+
+  function recordDoc(how,st){
+    const docs=refreshDocs(), mode=st.mode, s=st.s, t=st.t, num=s.d_num.trim();
     if(!num) return;
-    const id=MODE+':'+num, at=nowIso(), t=computeTotals();
+    const at=nowIso();
     const how1 = how==='pdf' ? 'PDF téléchargé' : 'impression lancée';
-    let rec=docs.find(d=>d.id===id);
+    let rec=docs.find(d=>d.type===mode && sameNumber(d.num,num));
     if(rec){
-      if(rec.id!==CURRENT_ID) return; // numéro pris par un autre document (impression sans vérification) : on n'écrase rien
+      if(rec.id!==st.cur) return; // numéro pris par un autre document : on n'écrase jamais rien
       rec.log.push({at, what: sameData(rec.data,s) ? 'Nouvel exemplaire ('+how1+')' : 'Modifié puis réémis ('+how1+')'});
     }else{
-      rec={id, type:MODE, status: MODE==='devis'?'attente':'a_payer', createdAt:at,
-           log:[{at, what:(MODE==='devis'?'Devis émis':'Facture émise')+' ('+how1+')'}]};
+      rec={id:mode+':'+num, type:mode, status: mode==='devis'?'attente':'a_payer', createdAt:at,
+           log:[{at, what:(mode==='devis'?'Devis émis':'Facture émise')+' ('+how1+')'}]};
       docs.push(rec);
       // facture établie d'après un devis : le devis passe en « Facturé » (un devis peut donner plusieurs factures,
       // ex. un cycle d'ateliers facturé chaque mois)
-      const dv = MODE==='facture' && s.f_ref.trim() && docs.find(d=>d.id==='devis:'+s.f_ref.trim());
+      const dv = mode==='facture' && s.f_ref.trim() && docs.find(d=>d.type==='devis' && sameNumber(d.num,s.f_ref.trim()));
       if(dv){
         const inv=invoicesOf(dv); if(!inv.includes(num)) inv.push(num);
         dv.invoices=inv; dv.invoice=inv.join(', '); dv.status='facture'; dv.updatedAt=at;
@@ -936,10 +993,16 @@
       }
     }
     Object.assign(rec,{num, data:s, client:s.c_nom.trim(), objet:s.d_objet.trim(), date:s.d_date,
-      due: MODE==='devis' ? s.d_valid : s.f_due, total:t.total, acompte:t.acompte, du:t.du, ref:s.f_ref.trim(), updatedAt:at});
-    saveDocs(docs);
-    CURRENT_ID=id;
-    markUsed(); // met aussi à jour l'affichage
+      due: mode==='devis' ? s.d_valid : s.f_due, total:t.total, acompte:t.acompte, du:t.du,
+      ref: mode==='facture' ? s.f_ref.trim() : '', updatedAt:at});
+    if(!saveDocs(docs)) return;
+    if(mode==='devis'){ // compteur des devis (garde aussi ceux d'avant « Mes documents »)
+      const p=parseNum(num);
+      if(p) try{ if(p.n>(parseInt(localStorage.getItem(numKey('devis',p.y))||'0',10)||0)) localStorage.setItem(numKey('devis',p.y), p.n); }catch(e){}
+    }
+    // le formulaire affiche toujours ce document : il devient le document ouvert
+    if(MODE===mode && sameNumber($('d_num').value.trim(),num)) CURRENT_ID=rec.id;
+    render();
     if($('docs-dlg').open) renderDocs();
   }
 
@@ -954,7 +1017,7 @@
       return d.due && d.due<t ? {label:'Expiré', cls:'st-off'} : {label:'En attente', cls:'st-wait'};
     }
     if(d.status==='payee') return {label:'Payée'+(d.paidAt?' le '+frDate(d.paidAt):''), cls:'st-ok'};
-    if(!isUnpaid(d)) return {label:'Réglée (acompte)', cls:'st-ok'};
+    if(!isUnpaid(d)) return {label: d.acompte>0 ? 'Réglée (acompte)' : 'Rien à payer', cls:'st-ok'};
     return d.due && d.due<t ? {label:'En retard', cls:'st-late'} : {label:'À payer', cls:'st-wait'};
   }
 
@@ -1003,7 +1066,7 @@
       bt.setAttribute('aria-pressed', f===DOCS_FILTER);
     });
     // liste (plus récents d'abord)
-    const fold=v=>String(v||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); // « creche » trouve « Crèche »
+    const fold=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); // « creche » trouve « Crèche »
     const q=fold($('docs-q').value.trim());
     const list=DOCS.filter(d=>(DOCS_FILTER==='all'||d.type===DOCS_FILTER)
         && (!q || fold([d.num,d.client,d.objet].join(' ')).includes(q)))
@@ -1120,12 +1183,19 @@
     let data;
     try{ data=JSON.parse(await file.text()); }catch(e){ alert("Ce fichier n'est pas une sauvegarde valide."); return; }
     if(!data || data.format!=='enza-documents' || !Array.isArray(data.docs)){ alert("Ce fichier n'est pas une sauvegarde de « Mes documents »."); return; }
-    const docs=refreshDocs(); let added=0, updated=0;
+    const docs=refreshDocs(); let added=0, updated=0, skipped=0; const conflicts=[];
     data.docs.forEach(d=>{
-      if(!d || typeof d.id!=='string' || !['devis','facture'].includes(d.type) || !d.data || !Array.isArray(d.log)) return;
-      const i=docs.findIndex(x=>x.id===d.id);
-      if(i<0){ docs.push(d); added++; }
-      else if((d.updatedAt||'')>(docs[i].updatedAt||'')){ docs[i]=d; updated++; } // la version la plus récente l'emporte
+      if(!d || typeof d.id!=='string' || typeof d.num!=='string' || !['devis','facture'].includes(d.type)
+         || !d.data || typeof d.data!=='object' || !Array.isArray(d.log)){ skipped++; return; }
+      const i=docs.findIndex(x=>x.type===d.type && (x.id===d.id || sameNumber(x.num,d.num)));
+      if(i<0){ docs.push(d); added++; return; }
+      const mine=docs[i];
+      // même numéro mais document différent (créé séparément sur deux appareils) : on n'écrase rien, on signale
+      if(mine.createdAt && d.createdAt && mine.createdAt!==d.createdAt && !sameData(mine.data,d.data)){
+        conflicts.push((d.type==='facture'?'Facture ':'Devis ')+d.num+' : « '+(mine.client||'sans client')+' » ici, « '+(d.client||'sans client')+' » dans le fichier');
+        return;
+      }
+      if((d.updatedAt||'')>(mine.updatedAt||'')){ docs[i]=d; updated++; } // même document : la version la plus récente l'emporte
     });
     if(!saveDocs(docs)) return;
     try{
@@ -1139,7 +1209,9 @@
     Object.entries(data.emitter||{}).forEach(([id,v])=>{ const el=$(id); if(el && el.hasAttribute('data-save') && !el.value.trim() && v) el.value=v; });
     if(!CURRENT_ID && !isDirty()) $('d_num').value=suggestNumber(MODE);
     render(); renderDocs();
-    alert('Restauration terminée : '+added+' document'+(added>1?'s':'')+' ajouté'+(added>1?'s':'')+', '+updated+' mis à jour.');
+    alert('Restauration terminée : '+added+' document'+(added>1?'s':'')+' ajouté'+(added>1?'s':'')+', '+updated+' mis à jour.'
+      + (skipped ? '\n'+skipped+' élément(s) illisible(s) ignoré(s).' : '')
+      + (conflicts.length ? '\n\nATTENTION — même numéro utilisé pour deux documents différents (la version de cet appareil est gardée, l\'autre reste dans le fichier) :\n• '+conflicts.join('\n• ')+'\n\nVérifie ces numéros : chaque facture doit avoir un numéro unique.' : ''));
   }
 
   // registre pour la comptabilité (ouvre dans Excel / LibreOffice / Numbers)
@@ -1155,11 +1227,13 @@
           amount(d.total), amount(d.acompte), amount(d.type==='facture'?d.du:d.total), frDate(d.due), statusOf(d).label,
           d.paidAt?frDate(d.paidAt):'', d.type==='facture' ? (d.ref?'Devis '+d.ref:'') : (d.invoice?'Facture '+d.invoice:''),
           last ? frDateTime(last.at)+' — '+last.what : '']; });
-    const csv='﻿'+[head,...rows].map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');
+    const csv='\uFEFF'+[head,...rows].map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');
     downloadFile(csv,'text/csv;charset=utf-8','Registre-Enza_'+today()+'.csv');
   }
 
-  function printDoc(){ if(checkBeforeIssue()) window.print(); }
+  // impression via le bouton : contrôles + enregistrement (une impression lancée autrement — Ctrl+P — n'est pas enregistrée)
+  let PENDING_PRINT=null;
+  function printDoc(){ if(checkBeforeIssue()){ PENDING_PRINT=captureDoc(); window.print(); } }
 
   /* ---------- Init ---------- */
   refreshDocs();
@@ -1169,7 +1243,9 @@
   addItem('Atelier collectif de musicothérapie (1h)','1','');
   document.querySelectorAll('.editor input, .editor textarea').forEach(i=>i.addEventListener('input',render));
   document.querySelectorAll('input[name=doctype]').forEach(r=>r.addEventListener('change',()=>setMode(r.value)));
-  window.addEventListener('afterprint',()=>recordDoc('print'));
+  window.addEventListener('afterprint',()=>{ if(PENDING_PRINT){ const st=PENDING_PRINT; PENDING_PRINT=null; recordDoc('print',st); } });
+  // fermeture de l'onglet avec un document non enregistré : le navigateur demande confirmation
+  window.addEventListener('beforeunload',e=>{ if(isDirty()){ e.preventDefault(); e.returnValue=''; } });
   // Mes documents : actions sur les fiches, filtres, recherche, restauration
   $('docs-list').addEventListener('click',e=>{
     const b=e.target.closest('button[data-act]'); if(!b) return;
