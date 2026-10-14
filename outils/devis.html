@@ -6,9 +6,9 @@
 <!-- Outil interne : non référencé, lié nulle part sur le site. Aucune donnée privée dans ce fichier
      (n° d'entreprise, IBAN et infos clients restent dans le navigateur de l'appareil). -->
 <meta name="robots" content="noindex, nofollow">
-<title>Générateur de devis — Enza Duhem</title>
+<title>Devis — Enza Duhem</title>
 <meta name="theme-color" content="#1a3028">
-<meta name="apple-mobile-web-app-title" content="Devis Enza">
+<meta name="apple-mobile-web-app-title" content="Devis &amp; Factures">
 <link rel="icon" href="../logo_Enza.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="devis-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,6 +41,18 @@
   .toolbar button:hover{background:var(--green);color:var(--cream);border-color:var(--green)}
   .toolbar button:disabled{opacity:.65;cursor:wait}
   .lbl-short{display:none}
+
+  /* ---------- Devis / Facture : un seul outil, deux types de document ---------- */
+  body[data-mode="devis"] .only-facture{display:none!important}
+  body[data-mode="facture"] .only-devis{display:none!important}
+  .mode-switch{display:flex;border:1px solid var(--green);border-radius:6px;overflow:hidden;margin-bottom:1.1rem}
+  .mode-switch label{flex:1;text-align:center;cursor:pointer;position:relative}
+  .mode-switch input{position:absolute;opacity:0;pointer-events:none}
+  .mode-switch span{display:block;padding:.65rem .5rem;font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green-dark);background:var(--white);transition:background .2s,color .2s}
+  .mode-switch input:checked + span{background:var(--green-primary);color:var(--cream)}
+  .mode-switch input:focus-visible + span{outline:2px solid var(--green);outline-offset:-4px}
+  .fld-hint{font-size:.74rem;line-height:1.5;color:#8a4b2e;background:#fbefe7;border-radius:4px;padding:.45rem .6rem;margin:-.2rem 0 .7rem}
+  .fld-hint.info{color:var(--slate-soft);background:var(--green-pale)}
   /* pendant la génération du PDF : les marges (15 mm) sont portées par chaque page du PDF, la feuille n'a
      donc plus de marge propre ni de largeur fixe. Hauteur mini = hauteur utile d'une page (297 − 2×15 mm,
      arrondi bas) pour garder les signatures en bas d'un devis d'une page ; un devis long continue sur la suivante. */
@@ -58,6 +70,7 @@
   .fit-1 .d-sign{padding-top:1.6rem}
   .fit-1 .d-sign .sl{margin-bottom:2rem}
   .fit-1 .d-foot{margin-top:1.1rem}
+  .fit-1 .d-pay{margin-top:1.1rem}
 
   .fit-2 .d-logo{width:13mm}
   .fit-2 .d-emetteur .who{font-size:1.3rem}
@@ -71,6 +84,7 @@
   .fit-2 .d-conditions{font-size:.72rem;line-height:1.5;margin-top:.9rem}
   .fit-2 .d-sign{padding-top:1.1rem}
   .fit-2 .d-sign .sl{margin-bottom:1.6rem}
+  .fit-2 .d-pay{font-size:.76rem;padding:.65rem .85rem}
 
   /* ---------- Layout ---------- */
   .app{display:grid;grid-template-columns:minmax(320px,420px) minmax(0,1fr);gap:1.5rem;padding:1.5rem;align-items:start}
@@ -169,7 +183,8 @@
   .d-totals .grand{background:var(--green-pale);border-top:2px solid var(--green-primary);font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--green-darkest);padding:.7rem .8rem;font-weight:600}
   .d-tva{font-size:.72rem;font-style:italic;color:var(--slate-soft);text-align:right;margin-top:.5rem}
 
-  .d-conditions{margin-top:1.8rem;font-size:.78rem;line-height:1.7;color:var(--slate-soft);white-space:pre-line}
+  .d-conditions{margin-top:1.8rem;font-size:.78rem;line-height:1.7;color:var(--slate-soft)}
+  #p_cond{white-space:pre-line}
   .d-conditions .lbl{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green-dark);margin-bottom:.4rem;font-style:normal}
 
   .d-sign{display:flex;justify-content:space-between;gap:3rem;margin-top:auto;padding-top:2.5rem}
@@ -180,6 +195,12 @@
   .d-foot{border-top:1px solid var(--line);margin-top:1.6rem;padding-top:.7rem;font-size:.66rem;color:var(--slate-mid);text-align:center;line-height:1.6}
 
   .empty-hint{color:var(--slate-light);font-style:italic}
+
+  /* facture : bloc de paiement (remplace les signatures du devis) */
+  .d-pay{margin-top:1.6rem;border:1px solid var(--green-light);background:#f6f9f6;border-radius:4px;padding:.9rem 1rem;font-size:.84rem;line-height:1.65;color:var(--slate)}
+  .d-pay .lbl{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green-dark);margin-bottom:.35rem}
+  .d-pay b{color:var(--green-darkest);font-weight:600}
+  .d-pay .todo{color:#a0522d;font-style:italic}
 
   /* ---------- Impression ---------- */
   /* Impression : les marges sont portées par la page (12 mm, répétées sur chaque page d'un devis long),
@@ -194,15 +215,15 @@
     .paper{width:auto;min-height:0;padding:6mm 4mm;box-shadow:none;margin:0;transform:none!important}
     .paper-wrap{height:auto!important;overflow:visible!important}
     .d-sign{margin-top:0}
-    tr,.d-total-block,.d-conditions,.d-sign,.d-foot{break-inside:avoid}
+    tr,.d-total-block,.d-conditions,.d-sign,.d-pay,.d-foot{break-inside:avoid}
   }
 </style>
 </head>
-<body>
+<body data-mode="devis">
 
   <div class="toolbar">
-    <span class="brand">Devis — Enza Duhem</span>
-    <button type="button" onclick="resetDevis()"><span class="lbl-long">Nouveau devis</span><span class="lbl-short">Nouveau</span></button>
+    <span class="brand">Devis &amp; factures — Enza Duhem</span>
+    <button type="button" onclick="resetDoc()"><span class="lbl-long" id="lbl-new">Nouveau devis</span><span class="lbl-short">Nouveau</span></button>
     <button type="button" onclick="window.print()">Imprimer</button>
     <button type="button" class="primary" id="btn-pdf" onclick="downloadPdf()"><span class="lbl-long">Télécharger le PDF</span><span class="lbl-short">PDF</span></button>
   </div>
@@ -211,8 +232,13 @@
 
     <!-- ====================== ÉDITEUR ====================== -->
     <div class="editor">
-      <h2>Remplir le devis</h2>
-      <p class="hint">Les champs se recopient dans le devis à droite en temps réel. Tes coordonnées sont mémorisées sur cet ordinateur. Quand c'est prêt → <b>Imprimer / PDF</b>.</p>
+      <h2 id="ed-title">Remplir le devis</h2>
+      <p class="hint">Les champs se recopient dans le document à droite en temps réel. Tes coordonnées sont mémorisées sur cet appareil. Quand c'est prêt → <b>Télécharger le PDF</b> ou <b>Imprimer</b>.</p>
+
+      <div class="mode-switch" role="radiogroup" aria-label="Type de document">
+        <label><input type="radio" name="doctype" value="devis" checked><span>Devis</span></label>
+        <label><input type="radio" name="doctype" value="facture"><span>Facture</span></label>
+      </div>
 
       <fieldset>
         <legend>Mes coordonnées</legend>
@@ -227,15 +253,20 @@
           <label class="fld"><span>N° d'entreprise (BCE)</span><input id="e_bce" data-save placeholder="BE 0xxx.xxx.xxx"></label>
           <label class="fld"><span>IBAN</span><input id="e_iban" data-save placeholder="BE.. .... .... ...."></label>
         </div>
+        <p class="fld-hint" id="hint-legal" hidden></p>
       </fieldset>
 
       <fieldset>
-        <legend>Devis</legend>
+        <legend id="doc-legend">Devis</legend>
         <div class="row2">
-          <label class="fld"><span>N° de devis</span><input id="d_num" value=""></label>
+          <label class="fld"><span id="lbl-num">N° de devis</span><input id="d_num" value=""></label>
           <label class="fld"><span>Date</span><input id="d_date" type="date"></label>
         </div>
-        <label class="fld"><span>Valable jusqu'au</span><input id="d_valid" type="date"></label>
+        <p class="fld-hint info only-facture" id="hint-num"></p>
+        <label class="fld only-devis"><span>Valable jusqu'au</span><input id="d_valid" type="date"></label>
+        <label class="fld only-facture"><span>Échéance de paiement</span><input id="f_due" type="date"></label>
+        <label class="fld only-facture"><span>Période / date de la prestation (optionnel)</span><input id="f_period" placeholder="Ex. : mars 2026 — 4 ateliers"></label>
+        <label class="fld only-facture"><span>Réf. du devis (optionnel)</span><input id="f_ref" placeholder="Ex. : 2026-001"></label>
       </fieldset>
 
       <fieldset>
@@ -243,10 +274,11 @@
         <label class="fld"><span>Établissement / Nom</span><input id="c_nom" placeholder="Ex. : Maison de repos Les Tilleuls"></label>
         <label class="fld"><span>Adresse</span><textarea id="c_adr" placeholder="Rue, n°&#10;Code postal, Ville"></textarea></label>
         <label class="fld"><span>Personne de contact (optionnel)</span><input id="c_contact" placeholder="Ex. : Mme Dupont, Directrice"></label>
+        <label class="fld"><span>N° TVA / BCE du client (institution, optionnel)</span><input id="c_tva" placeholder="BE 0xxx.xxx.xxx"></label>
       </fieldset>
 
       <fieldset>
-        <legend>Objet du devis</legend>
+        <legend>Objet</legend>
         <label class="fld"><input id="d_objet" placeholder="Ex. : Cycle d'ateliers de musicothérapie en gériatrie"></label>
       </fieldset>
 
@@ -254,10 +286,12 @@
         <legend>Prestations</legend>
         <div class="items-head"><span>Description</span><span>Qté</span><span>Prix unit.</span><span></span></div>
         <div id="items"></div>
-        <button type="button" class="add-item" onclick="addItem()">+ Ajouter une ligne</button>      </fieldset>
+        <button type="button" class="add-item" onclick="addItem()">+ Ajouter une ligne</button>
+        <label class="fld only-facture" style="margin-top:.9rem"><span>Acompte déjà reçu (€, optionnel)</span><input id="f_acompte" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0"></label>
+      </fieldset>
 
       <fieldset>
-        <legend>Conditions</legend>
+        <legend id="cond-legend">Conditions</legend>
         <label class="fld"><textarea id="d_cond" rows="4"></textarea></label>
       </fieldset>
     </div>
@@ -283,11 +317,11 @@
             </div>
           </div>
           <div class="d-title">
-            <h1>Devis</h1>
+            <h1 id="p_title">Devis</h1>
             <div class="meta">
               <div>N° <b id="p_num">—</b></div>
               <div>Date : <span id="p_date">—</span></div>
-              <div>Valable jusqu'au : <span id="p_valid">—</span></div>
+              <div id="p_meta_extra"></div>
             </div>
           </div>
         </div>
@@ -320,19 +354,19 @@
 
         <div class="d-total-block"><!-- total + mention TVA : ne se séparent jamais d'une page à l'autre -->
           <div class="d-totals">
-            <div class="box">
-              <div class="line grand"><span>Total à payer</span><span id="p_total">0,00 €</span></div>
-            </div>
+            <div class="box" id="p_totals"></div>
           </div>
-          <div class="d-tva">TVA non applicable — régime de la franchise de la taxe (art. 56bis du Code de la TVA).</div>
+          <div class="d-tva" id="p_tva"></div>
         </div>
 
-        <div class="d-conditions">
-          <div class="lbl">Conditions</div>
+        <div class="d-pay only-facture" id="p_pay"></div>
+
+        <div class="d-conditions" id="p_cond_wrap">
+          <div class="lbl" id="p_cond_lbl">Conditions</div>
           <div id="p_cond"></div>
         </div>
 
-        <div class="d-sign">
+        <div class="d-sign only-devis">
           <div class="col">
             <div class="sl">Bon pour accord — le client<br>(date, nom et signature)</div>
             <div class="ln">Signature précédée de la mention « Bon pour accord »</div>
@@ -355,7 +389,22 @@
   const euro = n => (isFinite(n)?n:0).toLocaleString('fr-BE',{style:'currency',currency:'EUR'});
   const fdate = v => { if(!v) return '—'; const d=new Date(v+'T00:00'); return d.toLocaleDateString('fr-BE',{day:'2-digit',month:'long',year:'numeric'}); };
 
-  const DEFAULT_COND = "• Devis valable 30 jours à compter de sa date d'émission.\n• TVA non applicable — régime de la franchise de la taxe (art. 56bis du Code de la TVA).\n• Acompte de 30 % à la réservation, solde à l'issue de la prestation.\n• Merci de retourner ce devis daté et signé, précédé de la mention « Bon pour accord ».";
+  /* ---------- Types de document ---------- */
+  const DOC = {
+    devis: {
+      title:'Devis', prefix:'', legend:'Devis', numLabel:'N° de devis', newLabel:'Nouveau devis', file:'Devis',
+      edTitle:'Remplir le devis', condLegend:'Conditions', condLbl:'Conditions',
+      tva:'TVA non applicable — régime de la franchise de la taxe (art. 56bis du Code de la TVA).',
+      cond:"• Devis valable 30 jours à compter de sa date d'émission.\n• TVA non applicable — régime de la franchise de la taxe (art. 56bis du Code de la TVA).\n• Acompte de 30 % à la réservation, solde à l'issue de la prestation.\n• Merci de retourner ce devis daté et signé, précédé de la mention « Bon pour accord »."
+    },
+    facture: {
+      title:'Facture', prefix:'F', legend:'Facture', numLabel:'N° de facture', newLabel:'Nouvelle facture', file:'Facture',
+      edTitle:'Remplir la facture', condLegend:'Remarque (optionnel)', condLbl:'Remarque',
+      tva:'Régime particulier de franchise des petites entreprises — TVA non applicable (art. 56bis du Code de la TVA).',
+      cond:'Merci pour votre confiance.'
+    }
+  };
+  let MODE='devis';
 
   /* ---------- Line items ---------- */
   function addItem(desc='',qte='1',pu=''){
@@ -384,13 +433,20 @@
     $('p_prest').innerHTML = prest.filter(Boolean).join('<br>');
     $('p_sign').textContent = ($('e_nom').value||'Enza Duhem')+ ($('e_role').value?' — '+$('e_role').value:'');
 
-    // devis meta
+    // en-tête du document
+    $('p_title').textContent = DOC[MODE].title;
     $('p_num').textContent = $('d_num').value || '—';
     $('p_date').textContent = fdate($('d_date').value);
-    $('p_valid').textContent = fdate($('d_valid').value);
+    const extra = MODE==='devis'
+      ? ['Valable jusqu\'au : '+fdate($('d_valid').value)]
+      : ['Échéance : <b>'+fdate($('f_due').value)+'</b>'];
+    if(MODE==='facture' && $('f_period').value.trim()) extra.push('Prestation : '+esc($('f_period').value.trim()));
+    if(MODE==='facture' && $('f_ref').value.trim()) extra.push('Réf. devis : '+esc($('f_ref').value.trim()));
+    $('p_meta_extra').innerHTML = extra.map(l=>'<div>'+l+'</div>').join('');
 
     // client
-    const cl=[$('c_nom').value,$('c_adr').value,$('c_contact').value].filter(Boolean).join('\n');
+    const cl=[$('c_nom').value,$('c_adr').value,$('c_contact').value,
+              $('c_tva').value.trim() ? 'N° TVA : '+$('c_tva').value.trim() : ''].filter(Boolean).join('\n');
     $('p_client').textContent = cl || '';
     if(!cl) $('p_client').innerHTML='<span class="empty-hint">À compléter…</span>';
 
@@ -409,10 +465,43 @@
       rows+=`<tr><td>${esc(desc)||'—'}</td><td class="num">${qte||''}</td><td class="num">${pu?euro(pu):''}</td><td class="num">${euro(lt)}</td></tr>`;
     });
     $('p_items').innerHTML = rows || `<tr><td colspan="4" class="empty-hint" style="padding:1.2rem .8rem">Ajoutez vos prestations à gauche…</td></tr>`;
-    $('p_total').textContent = euro(total);
 
-    // conditions
+    // totaux (facture : acompte déjà reçu déduit)
+    const acompte = MODE==='facture' ? Math.max(0, parseFloat($('f_acompte').value)||0) : 0;
+    const reste = total - acompte;
+    $('p_totals').innerHTML = acompte>0
+      ? `<div class="line"><span>Total</span><span>${euro(total)}</span></div>
+         <div class="line"><span>Acompte reçu</span><span>− ${euro(acompte)}</span></div>
+         <div class="line grand"><span>Reste à payer</span><span>${euro(reste)}</span></div>`
+      : `<div class="line grand"><span>Total à payer</span><span>${euro(total)}</span></div>`;
+    $('p_tva').textContent = DOC[MODE].tva;
+
+    // paiement (facture)
+    if(MODE==='facture'){
+      const iban=$('e_iban').value.trim(), num=$('d_num').value.trim();
+      $('p_pay').innerHTML = '<div class="lbl">Paiement</div>'
+        + 'Merci de régler <b>'+euro(reste)+'</b> au plus tard le <b>'+fdate($('f_due').value)+'</b>, par virement sur le compte '
+        + (iban ? '<b>'+esc(iban)+'</b>' : '<span class="todo">IBAN à compléter</span>')
+        + (num ? ', en indiquant en communication : <b>'+esc(num)+'</b>.' : '.');
+    }
+
+    // conditions / remarque (masquée si vide)
+    $('p_cond_lbl').textContent = DOC[MODE].condLbl;
     $('p_cond').textContent = $('d_cond').value || '';
+    $('p_cond_wrap').style.display = $('d_cond').value.trim() ? '' : 'none';
+
+    // aides dans le formulaire (facture)
+    const missing=[];
+    if(MODE==='facture' && !$('e_bce').value.trim()) missing.push("le n° d'entreprise (obligatoire sur une facture)");
+    if(MODE==='facture' && !$('e_iban').value.trim()) missing.push("l'IBAN (pour le paiement)");
+    $('hint-legal').hidden = !missing.length;
+    $('hint-legal').textContent = missing.length ? 'À compléter : '+missing.join(' et ')+'.' : '';
+    if(MODE==='facture'){
+      const y=yearOf($('d_num').value), last=lastUsed('facture', y);
+      $('hint-num').textContent = 'Les factures doivent se suivre sans trou ni doublon. '
+        + (last ? 'Dernière enregistrée sur cet appareil : '+formatNum('facture', y, last)+'. ' : '')
+        + 'Si tu factures aussi depuis un autre appareil, vérifie ce numéro.';
+    }
 
     // footer
     const foot=[];
@@ -470,27 +559,72 @@
     }catch(e){}
   }
 
-  /* ---------- Nouveau devis ---------- */
-  function resetDevis(){
-    if(!confirm('Vider le client, les prestations et créer un nouveau devis ? (Tes coordonnées sont conservées.)')) return;
-    ['c_nom','c_adr','c_contact','d_objet'].forEach(id=>$(id).value='');
+  /* ---------- Numérotation : devis AAAA-NNN, factures FAAAA-NNN ----------
+     Un numéro n'est « consommé » qu'au téléchargement ou à l'impression (pas à l'ouverture de la page),
+     pour éviter les trous dans la série des factures. Suivi par appareil et par année. */
+  const numKey=(type,y)=>'enza_num_'+type+'_'+y;
+  function lastUsed(type,y){
+    try{
+      const v=localStorage.getItem(numKey(type,y));
+      if(v!==null) return parseInt(v,10)||0;
+      // ancien compteur de devis (avant l'ajout des factures)
+      if(type==='devis' && y===new Date().getFullYear()) return parseInt(localStorage.getItem('enza_devis_counter')||'0',10)||0;
+    }catch(e){}
+    return 0;
+  }
+  const formatNum=(type,y,n)=>DOC[type].prefix+y+'-'+String(n).padStart(3,'0');
+  const yearOf=num=>{ const m=String(num).match(/(\d{4})-\d+\s*$/); return m ? +m[1] : new Date().getFullYear(); };
+  function suggestNumber(type){ const y=new Date().getFullYear(); return formatNum(type, y, lastUsed(type,y)+1); }
+  function markUsed(){
+    const m=$('d_num').value.trim().match(/(\d{4})-(\d+)\s*$/);
+    if(!m) return;
+    const y=+m[1], n=parseInt(m[2],10);
+    try{ if(n>lastUsed(MODE,y)) localStorage.setItem(numKey(MODE,y), n); }catch(e){}
+    render();
+  }
+
+  /* ---------- Devis ↔ Facture ---------- */
+  function setMode(m){
+    const prev=MODE, prevNum=$('d_num').value.trim();
+    MODE=m;
+    document.body.dataset.mode=m;
+    document.querySelector('input[name=doctype][value='+m+']').checked=true;
+    $('ed-title').textContent=DOC[m].edTitle;
+    $('doc-legend').textContent=DOC[m].legend;
+    $('lbl-num').textContent=DOC[m].numLabel;
+    $('lbl-new').textContent=DOC[m].newLabel;
+    $('cond-legend').textContent=DOC[m].condLegend;
+    document.title=DOC[m].title+' — Enza Duhem';
+    if(prev!==m){
+      $('d_num').value=suggestNumber(m);
+      // devis → facture : on garde client et prestations, et on note la référence du devis
+      if(m==='facture' && prevNum && $('c_nom').value.trim() && !$('f_ref').value.trim()) $('f_ref').value=prevNum;
+    }
+    const c=$('d_cond').value;
+    if(!c.trim() || c===DOC[prev].cond) $('d_cond').value=DOC[m].cond;
+    try{ history.replaceState(null,'', m==='facture' ? '?type=facture' : location.pathname); }catch(e){}
+    render();
+  }
+
+  /* ---------- Nouveau document ---------- */
+  function resetDoc(){
+    const what = MODE==='facture' ? 'une nouvelle facture' : 'un nouveau devis';
+    if(!confirm('Vider le client, les prestations et créer '+what+' ? (Tes coordonnées sont conservées.)')) return;
+    ['c_nom','c_adr','c_contact','c_tva','d_objet','f_period','f_ref','f_acompte'].forEach(id=>$(id).value='');
     $('items').innerHTML='';
-    initDevisMeta();
+    $('d_cond').value=DOC[MODE].cond;
+    initDocMeta();
     addItem();
     render();
   }
 
-  function initDevisMeta(){
-    const now=new Date();
-    const y=now.getFullYear();
-    // numéro suggéré : AAAA-NNN (compteur local)
-    let n=parseInt(localStorage.getItem('enza_devis_counter')||'0',10)+1;
-    localStorage.setItem('enza_devis_counter',n);
-    $('d_num').value = y+'-'+String(n).padStart(3,'0');
-    const iso=d=>d.toISOString().slice(0,10);
+  function initDocMeta(){
+    const now=new Date(), iso=d=>d.toISOString().slice(0,10);
+    const plus=days=>{ const d=new Date(now); d.setDate(d.getDate()+days); return iso(d); };
+    $('d_num').value=suggestNumber(MODE);
     $('d_date').value=iso(now);
-    const v=new Date(now); v.setDate(v.getDate()+30);
-    $('d_valid').value=iso(v);
+    $('d_valid').value=plus(30);  // devis valable 30 jours
+    $('f_due').value=plus(15);    // facture payable à 15 jours
   }
 
   /* ---------- Téléchargement direct du PDF (sans fenêtre d'impression) ---------- */
@@ -516,7 +650,7 @@
   function pdfFileName(){
     const clean = s => String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'')
       .replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
-    const parts=['Devis', clean($('d_num').value), clean($('c_nom').value)].filter(Boolean);
+    const parts=[DOC[MODE].file, clean($('d_num').value), clean($('c_nom').value)].filter(Boolean);
     return parts.join('_')+'.pdf';
   }
 
@@ -542,8 +676,9 @@
         html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
         jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
         // devis long : jamais de coupure au milieu d'une ligne, du total, des conditions ou des signatures
-        pagebreak: { mode:['css'], avoid:['tr','.d-total-block','.d-conditions','.d-sign','.d-foot'] }
+        pagebreak: { mode:['css'], avoid:['tr','.d-total-block','.d-pay','.d-conditions','.d-sign','.d-foot'] }
       }).from(sheet).save();
+      markUsed();
     }catch(e){
       alert("Le PDF n'a pas pu être généré (connexion internet nécessaire la première fois). Tu peux utiliser « Imprimer » puis « Enregistrer au format PDF ».");
     }finally{
@@ -574,11 +709,15 @@
 
   /* ---------- Init ---------- */
   loadEmitter();
-  initDevisMeta();
-  $('d_cond').value=DEFAULT_COND;
+  initDocMeta();
+  $('d_cond').value=DOC.devis.cond;
   addItem('Atelier collectif de musicothérapie (1h)','1','');
   document.querySelectorAll('.editor input, .editor textarea').forEach(i=>i.addEventListener('input',render));
+  document.querySelectorAll('input[name=doctype]').forEach(r=>r.addEventListener('change',()=>setMode(r.value)));
+  window.addEventListener('afterprint',markUsed);
   window.addEventListener('resize',fitPaper);
+  // ouverture directe en mode facture : devis.html?type=facture (ou facture.html)
+  if(new URLSearchParams(location.search).get('type')==='facture' || location.hash==='#facture') setMode('facture');
   if(document.fonts) document.fonts.ready.then(render); // le compactage dépend des polices chargées
   render();
 </script>
