@@ -39,6 +39,12 @@
   }
   .toolbar button.primary{background:var(--green-light);color:var(--green-darkest);border-color:var(--green-light)}
   .toolbar button:hover{background:var(--green);color:var(--cream);border-color:var(--green)}
+  .toolbar button:disabled{opacity:.65;cursor:wait}
+  .lbl-short{display:none}
+  /* pendant la génération du PDF : feuille A4 à plat, sans ombre ni mise à l'échelle */
+  /* les marges sont portées par les pages du PDF (15 mm) : la feuille n'a plus de marge propre ni de largeur fixe,
+     et sa hauteur mini = hauteur utile d'une page A4 (297 − 2×15 mm, arrondi bas) pour garder les signatures en bas */
+  .paper.exporting{box-shadow:none!important;transform:none!important;width:auto!important;padding:0!important;min-height:265mm!important}
 
   /* ---------- Layout ---------- */
   .app{display:grid;grid-template-columns:minmax(320px,420px) minmax(0,1fr);gap:1.5rem;padding:1.5rem;align-items:start}
@@ -77,7 +83,9 @@
   @media(max-width:600px){
     .toolbar{padding:.6rem .75rem;gap:.5rem;flex-wrap:nowrap}
     .toolbar .brand{display:none}
-    .toolbar button{flex:1;padding:.7rem .5rem}
+    .toolbar button{flex:1;padding:.7rem .4rem;letter-spacing:.06em}
+    .lbl-long{display:none}
+    .lbl-short{display:inline}
     .app{padding:.75rem;gap:1rem}
     .editor{padding:1rem}
     input,textarea{font-size:16px} /* évite le zoom auto sur iPhone */
@@ -163,8 +171,9 @@
 
   <div class="toolbar">
     <span class="brand">Devis — Enza Duhem</span>
-    <button type="button" onclick="resetDevis()">Nouveau devis</button>
-    <button type="button" class="primary" onclick="window.print()">Imprimer / PDF</button>
+    <button type="button" onclick="resetDevis()"><span class="lbl-long">Nouveau devis</span><span class="lbl-short">Nouveau</span></button>
+    <button type="button" onclick="window.print()">Imprimer</button>
+    <button type="button" class="primary" id="btn-pdf" onclick="downloadPdf()"><span class="lbl-long">Télécharger le PDF</span><span class="lbl-short">PDF</span></button>
   </div>
 
   <div class="app">
@@ -439,6 +448,85 @@
     $('d_date').value=iso(now);
     const v=new Date(now); v.setDate(v.getDate()+30);
     $('d_valid').value=iso(v);
+  }
+
+  /* ---------- Téléchargement direct du PDF (sans fenêtre d'impression) ---------- */
+  const PDF_LIB = {
+    src: 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
+    integrity: 'sha384-Yv5O+t3uE3hunW8uyrbpPW3iw6/5/Y7HitWJBLgqfMoA36NogMmy+8wWZMpn3HWc'
+  };
+  let pdfLibPromise = null;
+  function loadPdfLib(){
+    if(window.html2pdf) return Promise.resolve();
+    if(!pdfLibPromise){
+      pdfLibPromise = new Promise((resolve,reject)=>{
+        const s=document.createElement('script');
+        s.src=PDF_LIB.src; s.integrity=PDF_LIB.integrity; s.crossOrigin='anonymous';
+        s.onload=resolve;
+        s.onerror=()=>{ pdfLibPromise=null; reject(new Error('chargement impossible')); };
+        document.head.appendChild(s);
+      });
+    }
+    return pdfLibPromise;
+  }
+
+  function pdfFileName(){
+    const clean = s => String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'')
+      .replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
+    const parts=['Devis', clean($('d_num').value), clean($('c_nom').value)].filter(Boolean);
+    return parts.join('_')+'.pdf';
+  }
+
+  async function downloadPdf(){
+    const btn=$('btn-pdf');
+    const label=btn.innerHTML;
+    const sx=window.scrollX, sy=window.scrollY;
+    btn.disabled=true; btn.textContent='Génération…';
+    try{
+      await loadPdfLib();
+      if(document.fonts) await document.fonts.ready;
+      // copie isolée de la feuille : l'affichage à l'écran (mis à l'échelle sur mobile) n'est pas touché
+      const sheet=$('paper').cloneNode(true);
+      sheet.removeAttribute('id');
+      sheet.style.transform='none';
+      sheet.classList.add('exporting');
+      await logoAsImage(sheet);
+      window.scrollTo(0,0); // la capture se décale si la page est défilée
+      await html2pdf().set({
+        margin: 15, // mm, sur chaque page (y compris les pages de suite d'un devis long)
+        filename: pdfFileName(),
+        image: { type:'jpeg', quality:0.96 },
+        html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
+        jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
+        // devis long : jamais de coupure au milieu d'une ligne, du total, des conditions ou des signatures
+        pagebreak: { mode:['css'], avoid:['tr','.d-totals','.d-tva','.d-conditions','.d-sign','.d-foot'] }
+      }).from(sheet).save();
+    }catch(e){
+      alert("Le PDF n'a pas pu être généré (connexion internet nécessaire la première fois). Tu peux utiliser « Imprimer » puis « Enregistrer au format PDF ».");
+    }finally{
+      btn.disabled=false; btn.innerHTML=label;
+      window.scrollTo(sx,sy);
+      setTimeout(()=>window.scrollTo(sx,sy),150); // la bibliothèque peut encore bouger la page juste après
+    }
+  }
+
+  /* Le moteur de capture rend mal un SVG coloré par CSS (currentColor) : dans la copie destinée au PDF,
+     on le remplace par une image SVG à couleur et dimensions explicites. */
+  async function logoAsImage(sheet){
+    const svg=sheet.querySelector('.d-logo svg');
+    if(!svg) return;
+    const color=getComputedStyle($('paper').querySelector('.d-logo')).color;
+    const vb=svg.getAttribute('viewBox').split(/[\s,]+/).map(Number);
+    const w=16*96/25.4, h=w*vb[3]/vb[2]; // .d-logo fait 16 mm de large
+    const s=svg.cloneNode(true);
+    s.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    s.setAttribute('width',w); s.setAttribute('height',h);
+    s.setAttribute('fill',color);
+    const img=new Image();
+    img.alt=''; img.style.cssText='display:block;width:'+w+'px;height:'+h+'px';
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(s));
+    try{ await img.decode(); }catch(e){}
+    svg.replaceWith(img);
   }
 
   /* ---------- Init ---------- */
