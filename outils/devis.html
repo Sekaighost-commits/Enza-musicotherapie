@@ -268,16 +268,20 @@
   .d-pay .todo{color:#a0522d;font-style:italic}
 
   /* ---------- Impression ---------- */
-  /* Impression : les marges sont portées par la page (12 mm, répétées sur chaque page d'un devis long),
-     et la feuille ne force plus une hauteur de 297 mm — sinon la moindre marge ajoutée par le navigateur
-     (marges « par défaut », iPhone…) la faisait déborder sur une 2e page presque vide. */
-  @page{size:A4;margin:12mm}
+  /* Impression : la feuille ne force plus une hauteur de 297 mm — sinon la moindre marge ajoutée par le
+     navigateur (marges « par défaut », iPhone…) la faisait déborder sur une 2e page presque vide.
+     Marges : 10 mm (haut/bas) et 6 mm (côtés) portées par la page, + une marge de sécurité DANS la feuille
+     (8 mm haut/bas, 10 mm côtés). Ainsi, même si le navigateur imprime « sans marges » (réglage « Aucune »,
+     ou navigateur qui ignore @page), le texte reste à ≥ 8-10 mm du bord du papier, hors de la zone
+     que les imprimantes ne savent pas imprimer (3 à 5 mm). Largeur utile inchangée : 178 mm. */
+  @page{size:A4;margin:10mm 6mm}
   @media print{
     html,body{background:#fff}
     .toolbar,.editor,dialog{display:none!important}
     .app{display:block;padding:0}
     .paper-wrap{display:block}
-    .paper{width:auto;min-height:0;padding:6mm 4mm;box-shadow:none;margin:0;transform:none!important}
+    .paper{width:auto;min-height:0;padding:8mm 10mm;box-shadow:none;margin:0;transform:none!important;
+           -webkit-box-decoration-break:clone;box-decoration-break:clone} /* marge répétée sur chaque page d'un document long */
     .paper-wrap{height:auto!important;overflow:visible!important}
     .d-sign{margin-top:0}
     tr,.d-total-block,.d-conditions,.d-sign,.d-pay,.d-foot{break-inside:avoid}
