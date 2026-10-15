@@ -276,12 +276,20 @@
      que les imprimantes ne savent pas imprimer (3 à 5 mm). Largeur utile inchangée : 178 mm. */
   @page{size:A4;margin:10mm 6mm}
   @media print{
+    /* Proportions A4 garanties : sur téléphone, le navigateur peut mettre la page en forme pour l'impression
+       à la largeur de l'écran (≈ 10 cm) au lieu de la largeur A4 — l'en-tête (titre, n°, dates) débordait
+       alors à droite et était coupé. Toute la feuille est dimensionnée en rem : la taille de base suit la
+       largeur disponible, comme un zoom. Sur une page A4 (198 mm utiles = 46,77 rem à 16 px), elle vaut 16 px :
+       mise en page identique ; plus étroit, tout rétrécit ensemble et rien ne dépasse. */
+    html{font-size:min(16px, calc(100vw / 46.77))}
     html,body{background:#fff}
     .toolbar,.editor,dialog{display:none!important}
     .app{display:block;padding:0}
     .paper-wrap{display:block}
-    .paper{width:auto;min-height:0;padding:8mm 10mm;box-shadow:none;margin:0;transform:none!important;
+    .paper{width:auto;min-height:0;padding:1.89rem 2.36rem;box-shadow:none;margin:0;transform:none!important; /* 8 mm × 10 mm à 16 px */
            -webkit-box-decoration-break:clone;box-decoration-break:clone} /* marge répétée sur chaque page d'un document long */
+    .d-logo{width:3.78rem}        /* 16 mm à 16 px */
+    .fit-2 .d-logo{width:3.07rem} /* 13 mm à 16 px */
     .paper-wrap{height:auto!important;overflow:visible!important}
     .d-sign{margin-top:0}
     tr,.d-total-block,.d-conditions,.d-sign,.d-pay,.d-foot{break-inside:avoid}
