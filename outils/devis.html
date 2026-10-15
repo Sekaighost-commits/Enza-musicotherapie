@@ -862,7 +862,10 @@
         margin: 15, // mm, sur chaque page (y compris les pages suivantes d'un devis long)
         filename: pdfFileName(),
         image: { type:'jpeg', quality:0.96 },
-        html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
+        // windowWidth = largeur utile SANS la barre de défilement : la copie invisible que photographie la
+        // bibliothèque n'a pas de barre ; avec la largeur par défaut (barre comprise), la feuille y était
+        // centrée 7,5 px plus à droite (barre Windows de 15 px) → PDF décalé et coupé à droite.
+        html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff', windowWidth:document.documentElement.clientWidth },
         jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
         // devis long : jamais de coupure au milieu d'une ligne, du total, des conditions ou des signatures
         pagebreak: { mode:['css'], avoid:['tr','.d-total-block','.d-pay','.d-conditions','.d-sign','.d-foot'] }
