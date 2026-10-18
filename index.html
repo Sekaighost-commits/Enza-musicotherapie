@@ -1061,6 +1061,9 @@
       max-height: 300px
     }
 
+    .faq-link, .pro-link a { color: var(--green-dark); text-decoration: underline; text-underline-offset: 3px }
+    .faq-link:hover, .pro-link a:hover { color: var(--green) }
+    .pro-link { margin-top: 1.4rem; font-size: .84rem; color: var(--slate-mid) }
     .faq-answer p {
       padding-bottom: 1.5rem;
       font-size: 0.95rem
@@ -1439,6 +1442,54 @@
   ]
 }
   </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Faut-il savoir jouer d'un instrument ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolument pas. La musicothérapie ne requiert aucune compétence musicale préalable. Nous utilisons la musique comme outil thérapeutique, pas comme discipline artistique. L'important est votre présence et votre ouverture."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "La musicothérapie est-elle remboursée ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, les séances ne sont malheureusement pas remboursées par l'assurance maladie obligatoire. Cependant, un remboursement partiel peut s'effectuer via les avantages complémentaires des mutuelles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Combien de séances sont nécessaires ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cela varie selon les objectifs et la sensibilité de chacun. Un soulagement notable est souvent perceptible dès les premières séances. Un suivi en profondeur se déroule généralement sur plusieurs mois."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Intervenez-vous en établissements de santé ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dans le cadre de ma formation, je peux intervenir ponctuellement en structures (maisons de repos, écoles spécialisées, centres de soin) dans la région de Tournai. N'hésitez pas à me contacter pour en discuter."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Est-ce que vous vous déplacez pour les séances individuelles ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Je me déplace moyennant un supplément en fonction du lieu de la séance."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 
 <body>
@@ -1649,6 +1700,7 @@
     </div>
     <div style="margin-top:3rem" class="fade-up">
       <a href="#contact" class="btn btn-primary">Réserver une séance</a>
+      <p class="pro-link">Vous êtes un professionnel ou un établissement ? <a href="professionnels.html">Informations dédiées →</a></p>
     </div>
   </section>
 
@@ -1689,7 +1741,7 @@
       <span class="featured-label">— Article à la une</span>
       <h3>Pourquoi la musicothérapie ?</h3>
       <p>Une présentation accessible de la musicothérapie, de ses fondements théoriques et de ce qu'elle peut apporter dans un parcours de soin. Comprendre pour mieux accueillir.</p>
-      <a href="article-une.html" class="ressource-link">Lire l'article →</a>
+      <a href="article-pourquoi-musicotherapie.html" class="ressource-link">Lire l'article →</a>
     </div>
   </section>
 
@@ -1791,6 +1843,7 @@
             <p>Dans le cadre de ma formation, je peux intervenir ponctuellement en structures (maisons de repos, écoles
               spécialisées, centres de soin) dans la région de Tournai. N'hésitez pas à me contacter pour en discuter.
             </p>
+            <p><a href="professionnels.html" class="faq-link">Informations pour les professionnels et établissements →</a></p>
           </div>
         </div>
         <div class="faq-item">
@@ -1871,6 +1924,7 @@
     <ul class="footer-links">
       <li><a href="#hero">Accueil</a></li>
       <li><a href="blog.html">Ressources</a></li>
+      <li><a href="professionnels.html">Professionnels</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="mentions-legales.html">Mentions légales</a></li>
     </ul>
@@ -1958,6 +2012,11 @@
           : `Lire d'autres témoignages (${hiddenItems.length})`;
       });
     })();
+
+    // Lien « Demander une intervention » (page Professionnels) : type de demande présélectionné
+    if (new URLSearchParams(location.search).get('demande') === 'etablissement') {
+      document.getElementById('seance').value = 'Intervention en établissement';
+    }
 
     // Envoi formulaire vers Make webhook
     document.getElementById('contact-form').addEventListener('submit', async function(e) {

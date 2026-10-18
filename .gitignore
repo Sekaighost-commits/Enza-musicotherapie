@@ -1,4 +1,6 @@
 *.pdf
+# fiche téléchargeable depuis la page Professionnels
+!fiche-professionnels.pdf
 .worktrees
 .superpowers/
 
