@@ -25,7 +25,7 @@ Site vitrine d'Enza Duhem, musicothérapeute indépendante en Belgique. Il exist
 3. **Bâtir la confiance** (approche, témoignages, présence humaine).
 4. **Convertir** : amener le visiteur à **réserver / demander une séance** via le formulaire de contact.
 
-**Succès** = nombre de demandes de contact qualifiées et de réservations de séances découverte. La conversion principale est la prise de rendez-vous ; la newsletter est un objectif secondaire de nurturing.
+**Succès** = nombre de demandes de contact qualifiées et de réservations de séances (individuelles, ateliers, pack découverte). La conversion principale est la prise de rendez-vous ; la newsletter est un objectif secondaire de nurturing.
 
 ## Brand Personality
 

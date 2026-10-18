@@ -531,7 +531,7 @@
     const wrap=$('items');
     const row=document.createElement('div');
     row.className='item-row';
-    row.innerHTML=`<label class="i-f i-f-desc"><span class="i-l">Description</span><input class="i-desc" placeholder="Ex. : Atelier collectif (1h)" value="${esc(desc)}"></label>
+    row.innerHTML=`<label class="i-f i-f-desc"><span class="i-l">Description</span><input class="i-desc" placeholder="Ex. : Atelier collectif (1h30)" value="${esc(desc)}"></label>
       <label class="i-f"><span class="i-l">Quantité</span><input class="i-qte" inputmode="decimal" autocomplete="off" value="${esc(qte)}"></label>
       <label class="i-f"><span class="i-l">Prix unitaire (€)</span><input class="i-pu" inputmode="decimal" autocomplete="off" placeholder="0" value="${esc(pu)}"></label>
       <button type="button" class="del" aria-label="Supprimer la ligne" title="Supprimer" onclick="this.parentNode.remove();render()">×</button>`;
@@ -1258,7 +1258,7 @@
   loadEmitter();
   initDocMeta();
   $('d_cond').value=DOC.devis.cond;
-  addItem('Atelier collectif de musicothérapie (1h)','1','');
+  addItem('Atelier collectif de musicothérapie (1h30)','1','');
   document.querySelectorAll('.editor input, .editor textarea').forEach(i=>i.addEventListener('input',render));
   document.querySelectorAll('input[name=doctype]').forEach(r=>r.addEventListener('change',()=>setMode(r.value)));
   window.addEventListener('afterprint',()=>{ if(PENDING_PRINT){ const st=PENDING_PRINT; PENDING_PRINT=null; recordDoc('print',st); } });
