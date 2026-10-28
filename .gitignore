@@ -10,3 +10,6 @@ fiche-professionnels.src.html
 fiche-professionnels.html
 # Archives des critiques de design
 .impeccable/
+
+# Supports « stages » (offre, mot aux parents, fiche de retour, message) : pas des pages du site
+supports/
