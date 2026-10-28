@@ -1103,6 +1103,8 @@
       color: var(--slate-light)
     }
 
+    .form-optional { text-transform: none; letter-spacing: 0.02em; opacity: 0.8 }
+
     .form-group input,
     .form-group textarea,
     .form-group select {
@@ -1894,6 +1896,20 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="5" placeholder="Parlez-moi de vous et de ce qui vous amène…"></textarea>
           </div>
+          <div class="form-group">
+            <label for="decouverte">Comment avez-vous découvert mon travail&nbsp;? <span class="form-optional">(facultatif)</span></label>
+            <select id="decouverte" name="decouverte">
+              <option value="">Je préfère ne pas répondre</option>
+              <option>Recherche Google</option>
+              <option>Fiche Google / Google Maps</option>
+              <option>Facebook ou Instagram</option>
+              <option>Un proche m'en a parlé</option>
+              <option>Un professionnel (médecin, sage-femme, école…)</option>
+              <option>Flyer ou affiche</option>
+              <option>Stage, atelier ou événement</option>
+              <option>Autre</option>
+            </select>
+          </div>
           <button type="submit" class="btn btn-primary" style="align-self:flex-start">Envoyer ma demande</button>
         </form>
       </div>
@@ -2018,6 +2034,24 @@
       document.getElementById('seance').value = 'Intervention en établissement';
     }
 
+    // Origine de la visite, calculée au moment de l'envoi — sans cookie ni stockage.
+    // Partielle : si la personne a d'abord navigué sur le site, seule la page précédente est connue.
+    function sourceVisite() {
+      const utm = new URLSearchParams(location.search).get('utm_source');
+      if (utm) return 'Lien suivi : ' + utm;                     // QR codes des flyers, fiches, profils…
+      if (!document.referrer) return 'Accès direct (adresse tapée, favori, application)';
+      let ref;
+      try { ref = new URL(document.referrer); } catch (e) { return 'Inconnue'; }
+      const h = ref.hostname.replace(/^www\./, '');
+      if (h === location.hostname.replace(/^www\./, '')) return 'Site (depuis ' + (ref.pathname || '/') + ')';
+      if (/(^|\.)google\./.test(h)) return 'Google';
+      if (/(^|\.)(facebook\.com|fb\.com|fb\.me)$/.test(h)) return 'Facebook';
+      if (/(^|\.)instagram\.com$/.test(h)) return 'Instagram';
+      if (/(^|\.)linkedin\.com$|(^|\.)lnkd\.in$/.test(h)) return 'LinkedIn';
+      if (/(^|\.)bing\.com$/.test(h)) return 'Bing';
+      return h;
+    }
+
     // Envoi formulaire vers Make webhook
     document.getElementById('contact-form').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -2031,7 +2065,9 @@
           nom: document.getElementById('nom').value,
           email: document.getElementById('email').value,
           seance: document.getElementById('seance').value,
-          message: document.getElementById('message').value
+          message: document.getElementById('message').value,
+          decouverte: document.getElementById('decouverte').value,
+          source_auto: sourceVisite()
         };
         const res = await fetch('https://hook.eu1.make.com/t49mt94ic5390otj94a5stnm1saf96gh', {
           method: 'POST',
