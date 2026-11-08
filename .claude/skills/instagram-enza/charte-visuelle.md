@@ -26,6 +26,8 @@ Chaque image a un **texte alternatif** (description courte de ce qu'on voit, pou
 - **Jamais** : fausses personnes réalistes, faux patients, fausses séances, faux témoignages.
 - Tout contenu créé ou nettement modifié par IA est **déclaré** : `isAiGenerated: true` dans `instagramData` (voir `metricool.md`).
 - Le skill doit fonctionner **sans** générateur d'images : typographie, photos d'Enza, photos libres de droits. L'IA reste un complément.
+- **Générateur branché : Higgsfield** (connecteur « le Higgsfield »), plan gratuit, environ 10 crédits. Annoncer le coût à l'utilisateur avant de générer (`balance`, puis `get_cost: true`). Sur ce plan, le modèle utilisable est `z_image` (0,15 crédit, format 3:4) ; `gpt_image_2_5` demande un abonnement payant. Il arrive que `z_image` refuse une image de plus quand on en envoie plusieurs d'un coup (limite de débit) : relancer cette image seule.
+- Un fond IA sort souvent vert menthe : le **recolorer** dans le vert du thème (niveaux de gris, puis `ImageOps.colorize` autour de `--fond`) et le recadrer en 4:5 (`ImageOps.fit`) avant de le passer à `rendre(..., {"fond": ...})`.
 
 ## La musique
 
@@ -49,4 +51,4 @@ Au moindre doute, on écarte l'image : une belle photo libre de droits vaut mieu
 2. Si l'utilisateur a activé un générateur d'images, ajouter des variantes avec des fonds IA discrets.
 3. Enza choisit. Reporter son choix dans `theme.css`, copier les visuels retenus dans `references-style\`.
 
-Fait le 8 novembre 2026 : variante B retenue (planche dans `posts\2026-11-10-test-de-style\`). Les fonds IA discrets restent à tester dans ce style quand le générateur d'images sera utilisable.
+Fait le 8 novembre 2026 : variante B retenue (planche dans `posts\2026-11-10-test-de-style\`). Quatre fonds IA discrets dans ce style (ombres de feuilles, papier, feuillage flou, aquarelle) sont dans `posts\2026-11-10-test-de-style\fonds-ia\`, en attente du choix d'Enza.
