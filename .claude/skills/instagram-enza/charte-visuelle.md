@@ -2,8 +2,8 @@
 
 ## Le style
 
-- **Point de départ** : le style des posts actuels d'Enza (fond vert pâle, plante, gros titre clair) et la palette du site (verts sauge et forêt, crème).
-- Polices et couleurs vivent dans `gabarits/theme.css` : c'est le **seul** fichier à modifier après le test de style. Les gabarits (`couverture.html`, `diapo.html`, `fin.html`, `story.html`) n'ont pas à changer.
+- **Style retenu par Enza (test de style du 8 novembre 2026) : variante B, « proche des posts actuels ».** Fond vert tendre, grand titre crème en police bâton étroite (Oswald) avec une ombre verte, texte en DM Sans. Les titres des diapos intérieures sont en vert foncé, pour rester lisibles. La dernière diapo est en vert feuille foncé avec le texte en crème. Référence : `references-style\variante-B.jpg` dans le dossier de travail.
+- Polices et couleurs vivent dans `gabarits/theme.css` : c'est le **seul** fichier à modifier si le style évolue. Les gabarits (`couverture.html`, `diapo.html`, `fin.html`, `story.html`) n'ont pas à changer.
 - Calme, aéré, lisible sur un téléphone, accessible aux personnes âgées : texte courant à 44 px au moins sur une image de 1080 px de large, contraste confortable.
 - Logo : uniquement les tracés exacts de `logo_Enza.svg` (racine du site).
 
@@ -49,4 +49,4 @@ Au moindre doute, on écarte l'image : une belle photo libre de droits vaut mieu
 2. Si l'utilisateur a activé un générateur d'images, ajouter des variantes avec des fonds IA discrets.
 3. Enza choisit. Reporter son choix dans `theme.css`, copier les visuels retenus dans `references-style\`.
 
-Remarque : dans la police actuelle des titres (Cormorant Garamond), l'accent circonflexe (« être ») est haut et pointu. À montrer à Enza lors du test.
+Fait le 8 novembre 2026 : variante B retenue (planche dans `posts\2026-11-10-test-de-style\`). Les fonds IA discrets restent à tester dans ce style quand le générateur d'images sera utilisable.

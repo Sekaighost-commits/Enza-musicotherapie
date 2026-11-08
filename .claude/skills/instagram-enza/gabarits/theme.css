@@ -1,20 +1,23 @@
 /* Thème des visuels Instagram d'Enza.
    SEUL fichier à modifier après le test de style (polices et couleurs).
-   --polices : familles qui DOIVENT être chargées ; sinon le rendu s'arrête (PoliceManquante). */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=block");
+   --polices : familles qui DOIVENT être chargées ; sinon le rendu s'arrête (PoliceManquante).
+   Style choisi par Enza au test de style du 8 novembre 2026 : variante B, « proche des posts actuels »
+   (vert tendre, grand titre crème bâton avec ombre). Référence : references-style\variante-B.jpg. */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Oswald:wght@500;600&display=block");
 
 :root {
-  --polices: "DM Sans", "Cormorant Garamond";
-  --police-titre: "Cormorant Garamond", serif;
+  --polices: "DM Sans", "Oswald";
+  --police-titre: "Oswald", sans-serif;
   --police-texte: "DM Sans", sans-serif;
 
-  --fond: #E8F0E9;        /* vert très pâle (site) */
-  --fond-fonce: #1a3028;  /* vert forêt */
-  --encre: #1a3028;       /* titres */
-  --texte: #3D4A52;       /* texte courant (ardoise) */
-  --accent: #3d7558;      /* vert principal */
+  --fond: #CFE0A8;        /* vert tendre (posts actuels d'Enza) */
+  --fond-fonce: #3d5a2a;  /* vert feuille foncé (dernière diapo) */
+  --encre: #FBF6E3;       /* titres crème */
+  --ombre-titre: 0 3px 0 #6f8f45, 0 6px 18px rgba(40, 60, 20, .35);
+  --texte: #33402a;       /* texte courant (olive très foncé) */
+  --accent: #3d5a2a;      /* sous-titres, adresse du site */
   --sauge: #7A9E7E;
-  --creme: #F7F5F0;
+  --creme: #FBF6E3;
 
   --marge: 96px;          /* zone de sécurité : rien d'important plus près du bord */
 }
@@ -41,6 +44,7 @@ body {
   font-family: var(--police-titre);
   font-weight: 600;
   color: var(--encre);
+  text-shadow: var(--ombre-titre);
   line-height: 1.05;
   overflow-wrap: normal;
 }
@@ -55,19 +59,20 @@ body {
 
 /* Couverture : un grand titre centré */
 .couverture { justify-content: center; text-align: center; }
-.couverture .titre { font-size: 132px; margin-top: auto; }
+.couverture .titre { font-size: 150px; line-height: 1.02; margin-top: auto; }
 .couverture .pied { text-align: center; }
 
-/* Diapo : titre + texte explicatif, centrés dans la hauteur (l'adresse reste en bas) */
-.diapo .titre { font-size: 76px; margin-top: auto; }
+/* Diapo : titre + texte explicatif, centrés dans la hauteur (l'adresse reste en bas).
+   Titre en vert foncé : le crème sur vert tendre ne se lit bien qu'en très grand (couverture, story). */
+.diapo .titre { font-size: 76px; color: var(--accent); text-shadow: none; margin-top: auto; }
 
 /* Fin : invitation douce + rappel + adresse du site */
 .fin { background: var(--fond-fonce); color: var(--creme); }
-.fin .titre { font-size: 88px; color: var(--creme); margin-top: auto; }
+.fin .titre { font-size: 88px; color: var(--creme); text-shadow: none; margin-top: auto; }
 .fin .texte, .fin .rappel { color: var(--creme); }
 .fin .pied { color: var(--fond); }
 
 /* Story 1080 × 1920 : haut et bas masqués par l'interface d'Instagram */
 .story { padding-top: 260px; padding-bottom: 260px; justify-content: center; text-align: center; }
-.story .titre { font-size: 104px; }
+.story .titre { font-size: 124px; line-height: 1.02; }
 .story .pied { margin-top: 64px; }
