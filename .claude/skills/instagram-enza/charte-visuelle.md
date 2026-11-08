@@ -2,7 +2,8 @@
 
 ## Le style
 
-- **Style retenu par Enza (test de style du 8 novembre 2026) : variante B, « proche des posts actuels ».** Fond vert tendre, grand titre crème en police bâton étroite (Oswald) avec une ombre verte, texte en DM Sans. Les titres des diapos intérieures sont en vert foncé, pour rester lisibles. La dernière diapo est en vert feuille foncé avec le texte en crème. Référence : `references-style\variante-B.jpg` dans le dossier de travail.
+- **Style retenu par Enza (test de style du 8 novembre 2026) : variante B4.** C'est la variante B, « proche des posts actuels », sur un fond d'aquarelle vert tendre, avec une branche de feuilles en bas à droite. Le grand titre est crème, en police bâton étroite (Oswald), avec une ombre verte ; le texte est en DM Sans. Les titres des diapos intérieures sont en vert foncé, pour rester lisibles. La dernière diapo est en vert feuille foncé, avec le texte en crème et sans aquarelle. Références : `references-style\` dans le dossier de travail.
+- **Le fond aquarelle est le fond par défaut** de la couverture, des diapos et des stories (`--fond-image` dans `theme.css`, fichier `gabarits/fonds/aquarelle.jpg`). Il a été créé par IA puis recoloré : **tout post qui l'utilise est déclaré `isAiGenerated: true`**. Une photo passée dans le champ `fond` le remplace.
 - Polices et couleurs vivent dans `gabarits/theme.css` : c'est le **seul** fichier à modifier si le style évolue. Les gabarits (`couverture.html`, `diapo.html`, `fin.html`, `story.html`) n'ont pas à changer.
 - Calme, aéré, lisible sur un téléphone, accessible aux personnes âgées : texte courant à 44 px au moins sur une image de 1080 px de large, contraste confortable.
 - Logo : uniquement les tracés exacts de `logo_Enza.svg` (racine du site).
@@ -51,4 +52,4 @@ Au moindre doute, on écarte l'image : une belle photo libre de droits vaut mieu
 2. Si l'utilisateur a activé un générateur d'images, ajouter des variantes avec des fonds IA discrets.
 3. Enza choisit. Reporter son choix dans `theme.css`, copier les visuels retenus dans `references-style\`.
 
-Fait le 8 novembre 2026 : variante B retenue (planche dans `posts\2026-11-10-test-de-style\`). Quatre fonds IA discrets dans ce style (ombres de feuilles, papier, feuillage flou, aquarelle) sont dans `posts\2026-11-10-test-de-style\fonds-ia\`, en attente du choix d'Enza.
+Fait le 8 novembre 2026 : variante B retenue (planche dans `posts\2026-11-10-test-de-style\`). Quatre fonds IA discrets ont ensuite été testés dans ce style (`posts\2026-11-10-test-de-style\fonds-ia\`). Enza a choisi **B4, l'aquarelle**, devenue le fond par défaut.

@@ -41,14 +41,14 @@ attendre_en_ligne(urls)   # True quand toutes les images répondent ; sinon NE P
   "smartLinkData": {"ids": []},
   "descendants": [],
   "hasNotReadNotes": false,
-  "instagramData": {"type": "POST", "showReelOnFeed": true, "isAiGenerated": false},
+  "instagramData": {"type": "POST", "showReelOnFeed": true, "isAiGenerated": true},
   "facebookData": {"type": "POST"}
 }
 ```
 
 - Carrousel : plusieurs URL dans `media` (10 au maximum), un texte alternatif par image, dans le même ordre.
 - **Story** : `instagramData.type` et `facebookData.type` à `"STORY"`, une seule image 1080 × 1920, et **pas de texte** (une story n'a pas de légende).
-- `isAiGenerated: true` dès qu'une image a été créée ou nettement modifiée par IA.
+- `isAiGenerated: true` dès qu'une image a été créée ou nettement modifiée par IA. C'est le cas du **fond aquarelle par défaut** des gabarits : tout post fait avec `couverture.html`, `diapo.html` ou `story.html` sans photo dans le champ `fond` est donc à `true`. `false` seulement si aucune image du post ne contient d'IA (par exemple vraies photos seules, ou flyer).
 - Noter dans le journal l'**uuid** renvoyé et l'adresse du post dans Metricool (`plannerUrl`).
 
 **Après le brouillon** : relire le post avec `getScheduledPosts` (même période, `timezone: "Europe/Paris"`) et vérifier qu'il est **toujours en brouillon** (`"draft": true`). Sinon, le repasser immédiatement en brouillon avec `updateScheduledPost` et prévenir l'utilisateur. Si les adresses des médias pointent vers Metricool (`static.metricool.com/...`) et plus vers `musicotherapeute-hainaut.be`, Metricool a gardé sa copie : retirer tout de suite les médias du site (`medias.retirer(lot)` puis déploiement). Sinon, attendre la publication.

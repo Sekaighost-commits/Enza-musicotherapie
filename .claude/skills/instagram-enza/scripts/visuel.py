@@ -3,7 +3,8 @@
     from visuel import rendre, rendre_carrousel
     rendre(GABARITS / "couverture.html", {"titre": "Pour qui ?"}, Path("couverture.jpg"))
 
-Champs : titre, sous_titre, texte, pied (adresse du site par défaut), fond (chemin d'une image).
+Champs : titre, sous_titre, texte, pied (adresse du site par défaut), fond (chemin d'une image ;
+sans lui, le fond par défaut du thème, --fond-image dans theme.css).
 Le rendu s'arrête avec DebordementTexte si un texte sort de son cadre ou de l'image,
 et avec PoliceManquante si une police du thème n'a pas pu être chargée.
 """
@@ -90,7 +91,8 @@ def _remplir(gabarit: Path, champs: dict) -> str:
         # Apostrophes : la valeur va dans un attribut style="…" entre guillemets doubles.
         valeurs["fond_css"] = f"url('{chemin.as_uri()}')"
     else:
-        valeurs["fond_css"] = "none"
+        # Sans image fournie : le fond par défaut du thème (--fond-image dans theme.css), sinon rien.
+        valeurs["fond_css"] = "var(--fond-image, none)"
     valeurs["base"] = gabarit.resolve().parent.as_uri() + "/"
     return modele.safe_substitute(valeurs)
 

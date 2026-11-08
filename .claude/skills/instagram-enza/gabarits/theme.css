@@ -11,6 +11,9 @@
   --police-texte: "DM Sans", sans-serif;
 
   --fond: #CFE0A8;        /* vert tendre (posts actuels d'Enza) */
+  /* Fond par défaut (variante B4 choisie par Enza) : aquarelle créée par IA, recolorée.
+     Tout post qui l'utilise est déclaré « isAiGenerated: true » dans Metricool. */
+  --fond-image: url("fonds/aquarelle.jpg");
   --fond-fonce: #3d5a2a;  /* vert feuille foncé (dernière diapo) */
   --encre: #FBF6E3;       /* titres crème */
   --ombre-titre: 0 3px 0 #6f8f45, 0 6px 18px rgba(40, 60, 20, .35);

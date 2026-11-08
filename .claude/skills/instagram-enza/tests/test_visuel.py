@@ -1,4 +1,6 @@
 """Tests du rendu des visuels (scripts/visuel.py)."""
+import re
+import shutil
 import sys
 import tempfile
 import unittest
@@ -63,6 +65,24 @@ class TestVisuel(unittest.TestCase):
             r, g, b = im.getpixel((540, 20))
         self.assertGreater(r, 200)
         self.assertLess(g, 60)
+
+    def test_fond_par_defaut_du_theme(self):  # style B4 : le thème fournit le fond quand le post n'en donne pas
+        g2 = self.tmp / "gabarits-fond-defaut"
+        shutil.copytree(G, g2)
+        Image.new("RGB", (100, 100), (0, 0, 255)).save(g2 / "bleu.png")
+        with open(g2 / "theme.css", "a", encoding="utf-8") as f:
+            f.write('\n:root { --fond-image: url("bleu.png"); }\n')
+        p = rendre(g2 / "couverture.html", {"titre": "Test"}, self.tmp / "fond-defaut.jpg")
+        with Image.open(p) as im:
+            r, g, b = im.getpixel((540, 20))
+        self.assertGreater(b, 200)
+        self.assertLess(r, 60)
+
+    def test_fond_du_theme_present(self):
+        css = (G / "theme.css").read_text(encoding="utf-8")
+        m = re.search(r'--fond-image:\s*url\("([^"]+)"\)', css)
+        self.assertIsNotNone(m, "theme.css doit définir --fond-image")
+        self.assertTrue((G / m.group(1)).is_file(), f"fichier introuvable : {m.group(1)}")
 
     def test_promesse_refusee_dans_un_visuel(self):  # relecture finale, Important 2
         with self.assertRaises(TexteInterdit):
