@@ -1,26 +1,35 @@
-/* Thème des visuels Instagram d'Enza.
-   SEUL fichier à modifier après le test de style (polices et couleurs).
+/* Thème des visuels Instagram d'Enza : polices, couleurs et les 8 « visages » (mises en page).
    --polices : familles qui DOIVENT être chargées ; sinon le rendu s'arrête (PoliceManquante).
-   Style choisi par Enza au test de style du 8 novembre 2026 : variante B, « proche des posts actuels »
-   (vert tendre, grand titre crème bâton avec ombre). Référence : references-style\variante-B.jpg. */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Oswald:wght@500;600&display=block");
+   Histoire : style B4 choisi au test de style du 8 novembre 2026 (aquarelle vert tendre, titre crème),
+   puis, le même jour, 8 visages variés validés par l'utilisateur pour que les posts ne se ressemblent pas.
+   Le tableau des visages est dans charte-visuelle.md. */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Oswald:wght@500;600&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=block");
 
 :root {
-  --polices: "DM Sans", "Oswald";
+  --polices: "DM Sans", "Oswald", "Fraunces";
   --police-titre: "Oswald", sans-serif;
   --police-texte: "DM Sans", sans-serif;
+  --police-citation: "Fraunces", serif;     /* italique : citations, idées reçues */
 
-  --fond: #CFE0A8;        /* vert tendre (posts actuels d'Enza) */
-  /* Fond par défaut (variante B4 choisie par Enza) : aquarelle créée par IA, recolorée.
-     Tout post qui l'utilise est déclaré « isAiGenerated: true » dans Metricool. */
-  --fond-image: url("fonds/aquarelle.jpg");
-  --fond-fonce: #3d5a2a;  /* vert feuille foncé (dernière diapo) */
-  --encre: #FBF6E3;       /* titres crème */
-  --ombre-titre: 0 3px 0 #6f8f45, 0 6px 18px rgba(40, 60, 20, .35);
-  --texte: #33402a;       /* texte courant (olive très foncé) */
-  --accent: #3d5a2a;      /* sous-titres, adresse du site */
-  --sauge: #7A9E7E;
+  /* Couleurs (contrastes vérifiés pour une lecture confortable) */
+  --tendre: #CFE0A8;      /* vert tendre (posts actuels d'Enza) */
+  --fond: var(--tendre);
   --creme: #FBF6E3;
+  --foret: #2f4a22;       /* fonds foncés : dernière diapo, citation, « en réalité » */
+  --fond-fonce: var(--foret);
+  --accent: #3d5a2a;      /* vert feuille : titres et textes verts sur fond clair */
+  --texte: #33402a;       /* texte courant (olive très foncé) */
+  --encre: #FBF6E3;       /* titres crème des couvertures aquarelle */
+  --ombre-titre: 0 3px 0 #6f8f45, 0 6px 18px rgba(40, 60, 20, .35);
+  --sauge: #7A9E7E;
+  --sauge-fonce: #5E8565; /* grands mots sur crème */
+  --miel: #C8963E;        /* doré des bols chantants : décor sur fond foncé uniquement */
+  --miel-fonce: #A87A2C;  /* grands mots, pastilles numérotées */
+  --miel-texte: #8C6118;  /* petits textes dorés sur crème */
+
+  /* Fonds par défaut, créés par IA puis recolorés : tout post qui les montre est déclaré
+     « isAiGenerated: true » dans Metricool (voir charte-visuelle.md). */
+  --fond-image: url("fonds/aquarelle.jpg");
 
   --marge: 96px;          /* zone de sécurité : rien d'important plus près du bord */
 }
@@ -36,7 +45,7 @@ body {
   color: var(--texte);
   -webkit-font-smoothing: antialiased;
 }
-[data-cadre]:empty { display: none; }
+[data-cadre]:empty { display: none !important; }  /* champ non rempli : rien n'apparaît (même une étape) */
 
 .page {
   position: absolute; inset: 0;
@@ -53,30 +62,116 @@ body {
 }
 .titre, .sous-titre { text-wrap: balance; }  /* lignes équilibrées : pas de mot seul en fin de titre */
 .sous-titre { font-size: 44px; line-height: 1.35; color: var(--accent); margin-top: 32px; }
-.texte { font-size: 44px; line-height: 1.45; margin-top: 48px; }
+.texte { font-size: 44px; line-height: 1.45; margin-top: 48px; text-wrap: pretty; }  /* pas de mot seul en dernière ligne */
 .pied {
   margin-top: auto;
   font-size: 30px; letter-spacing: .06em;
   color: var(--accent);
 }
 .rappel { font-size: 30px; line-height: 1.4; color: var(--texte); font-style: normal; margin-top: 40px; }
+.label {
+  font-weight: 600; font-size: 28px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent);
+}
 
-/* Couverture : un grand titre centré */
+/* ---------- Visage « aquarelle » : couverture, diapo, story ---------- */
 .couverture { justify-content: center; text-align: center; }
 .couverture .titre { font-size: 150px; line-height: 1.02; margin-top: auto; }
 .couverture .pied { text-align: center; }
 
-/* Diapo : titre + texte explicatif, centrés dans la hauteur (l'adresse reste en bas).
-   Titre en vert foncé : le crème sur vert tendre ne se lit bien qu'en très grand (couverture, story). */
+/* Diapo : titre vert foncé (le crème sur vert tendre ne se lit bien qu'en très grand) */
 .diapo .titre { font-size: 76px; color: var(--accent); text-shadow: none; margin-top: auto; }
-
-/* Fin : invitation douce + rappel + adresse du site */
-.fin { background: var(--fond-fonce); color: var(--creme); }
-.fin .titre { font-size: 88px; color: var(--creme); text-shadow: none; margin-top: auto; }
-.fin .texte, .fin .rappel { color: var(--creme); }
-.fin .pied { color: var(--fond); }
 
 /* Story 1080 × 1920 : haut et bas masqués par l'interface d'Instagram */
 .story { padding-top: 260px; padding-bottom: 260px; justify-content: center; text-align: center; }
 .story .titre { font-size: 124px; line-height: 1.02; }
 .story .pied { margin-top: 64px; }
+
+/* Variantes de couleur (champ « variante ») pour couverture, diapo et story : sans aquarelle */
+body.creme, body.tendre, body.foret { --fond-image: none; }
+body.creme { background-color: var(--creme); }
+body.tendre { background-color: var(--tendre); }
+body.foret { background-color: var(--foret); color: var(--creme); }
+body.creme .titre, body.tendre .titre { color: var(--accent); text-shadow: none; }
+body.foret .titre { color: var(--creme); text-shadow: none; }
+body.foret .sous-titre, body.foret .texte { color: var(--creme); }
+body.foret .pied { color: var(--tendre); }
+
+/* ---------- Dernière diapo : invitation douce + rappel + adresse ---------- */
+.fin { background: var(--foret); color: var(--creme); }
+.fin .titre { font-size: 88px; color: var(--creme); text-shadow: none; margin-top: auto; }
+.fin .texte, .fin .rappel { color: var(--creme); }
+.fin .pied { color: var(--tendre); }
+
+/* ---------- Visage « idée reçue / en réalité » ---------- */
+.idee-recue .haut { bottom: auto; height: 560px; background: var(--creme); padding-bottom: 40px; }
+.idee-recue .bas { top: 560px; background: var(--foret); padding-top: 88px; }
+.idee-recue .haut .label { color: var(--miel-texte); }
+.idee-recue .idee {
+  font-family: var(--police-citation); font-style: italic; font-size: 100px; line-height: 1.1;
+  color: var(--accent); margin-top: 28px; text-wrap: balance;
+}
+.idee-recue .bas .label { color: var(--tendre); }
+.idee-recue .bas .titre { font-size: 92px; color: var(--creme); text-shadow: none; margin-top: 28px; }
+.idee-recue .bas .texte { font-size: 42px; color: var(--tendre); margin-top: 32px; }
+.idee-recue .bas .pied { color: var(--tendre); }
+
+/* ---------- Visage « chiffre géant » ---------- */
+.chiffre .nombre {
+  font-family: var(--police-titre); font-weight: 600; font-size: 560px; line-height: .92;
+  color: var(--accent);
+}
+.chiffre .titre { font-size: 104px; color: var(--accent); text-shadow: none; margin-top: auto; }
+.chiffre .texte { margin-top: 20px; }
+.chiffre .pied { margin-top: 64px; }
+
+/* ---------- Visage « phrase forte » (citation) ---------- */
+body.citation { background-color: var(--foret); color: var(--creme); }
+.citation .filet { margin-top: auto; width: 140px; height: 8px; border-radius: 4px; background: var(--miel); }
+.citation .phrase {
+  font-family: var(--police-citation); font-style: italic; font-size: 84px; line-height: 1.2;
+  color: var(--creme); text-wrap: balance; margin-top: 56px;
+}
+.citation .label { margin-top: auto; color: var(--tendre); }
+.citation .pied { margin-top: 24px; color: var(--tendre); }
+
+/* ---------- Visage « exercice en étapes » ---------- */
+body.etapes { --fond-image: url("fonds/ombres.jpg"); }
+.etapes .page { padding-top: 150px; }
+.etapes .titre { font-size: 132px; color: var(--accent); text-shadow: none; margin-top: 20px; }
+.etapes .liste { list-style: none; margin-top: 64px; display: grid; gap: 40px; counter-reset: etape; }
+.etapes .liste li { display: flex; align-items: center; gap: 36px; font-size: 48px; line-height: 1.25; }
+.etapes .liste li::before {
+  counter-increment: etape; content: counter(etape);
+  flex: none; width: 96px; height: 96px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--miel-fonce); color: var(--creme);
+  font-family: var(--police-titre); font-weight: 600; font-size: 56px;
+}
+
+/* ---------- Visage « mots empilés » ---------- */
+body.mots { background-color: var(--creme); }
+.mots .pile { margin-top: auto; }
+.mots .pile .titre {
+  font-size: 170px; line-height: 1.02; text-transform: uppercase; text-shadow: none; color: var(--accent);
+}
+.mots .pile .titre:nth-child(2) { color: var(--miel-fonce); }
+.mots .pile .titre:nth-child(3) { color: var(--sauge-fonce); }
+.mots .texte { margin-top: 44px; }
+
+/* ---------- Visage « photo en arche » ---------- */
+body.arche { background-color: var(--tendre); }
+.arche .titre { font-size: 104px; color: var(--accent); text-shadow: none; margin-top: 16px; }
+.arche .photo-arche {
+  display: block; flex: none; width: 740px; height: 640px; margin: 48px auto 0;
+  object-fit: cover; border-radius: 370px 370px 36px 36px;
+}
+.arche .texte { font-size: 40px; line-height: 1.4; text-align: center; margin-top: 40px; text-wrap: balance; }
+.arche .pied { text-align: center; }
+
+/* ---------- Visage « photo de la salle + bandeau » ---------- */
+.photo-plein { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo-bandeau .page { padding: 64px; justify-content: flex-end; }
+.photo-bandeau .bandeau { background: var(--creme); border-radius: 32px; padding: 56px 64px 60px; }
+.photo-bandeau .label { color: var(--miel-texte); }
+.photo-bandeau .titre { font-size: 92px; color: var(--accent); text-shadow: none; margin-top: 20px; }

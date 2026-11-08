@@ -82,7 +82,73 @@ class TestVisuel(unittest.TestCase):
         css = (G / "theme.css").read_text(encoding="utf-8")
         m = re.search(r'--fond-image:\s*url\("([^"]+)"\)', css)
         self.assertIsNotNone(m, "theme.css doit définir --fond-image")
-        self.assertTrue((G / m.group(1)).is_file(), f"fichier introuvable : {m.group(1)}")
+        for chemin in re.findall(r'url\("(fonds/[^"]+)"\)', css):  # tous les fonds du thème
+            self.assertTrue((G / chemin).is_file(), f"fichier introuvable : {chemin}")
+
+    # --- Les 8 visages (variété du 8 novembre 2026) ---
+    def _photo(self, couleur=(120, 90, 60)):
+        p = self.tmp / f"photo-{couleur[0]}-{couleur[1]}-{couleur[2]}.jpg"
+        if not p.exists():
+            Image.new("RGB", (800, 1000), couleur).save(p)
+        return str(p)
+
+    def test_nouveaux_gabarits(self):
+        cas = {
+            "idee-recue.html": {"idee": "Il faut être musicien.", "titre": "Aucune compétence musicale n’est nécessaire.",
+                                "texte": "On écoute, on joue, on chante comme on peut."},
+            "chiffre.html": {"chiffre": "0", "titre": "compétence musicale",
+                             "texte": "nécessaire pour venir en musicothérapie."},
+            "citation.html": {"citation": "Même quand les mots se font rares, une mélodie familière peut encore "
+                                          "faire naître un sourire.", "label": "Musique et personnes âgées"},
+            "etapes.html": {"label": "Une pause pour soi", "titre": "Une minute d’écoute", "etape1": "Installez-vous",
+                            "etape2": "Fermez les yeux", "etape3": "Comptez les sons autour de vous",
+                            "etape4": "Rouvrez les yeux doucement"},
+            "mots.html": {"mot1": "Écouter", "mot2": "Jouer", "mot3": "Chanter", "mot4": "Improviser",
+                          "texte": "Quatre façons de vivre la musicothérapie."},
+            "arche.html": {"label": "Coulisses", "titre": "Les bols chantants", "photo": self._photo(),
+                           "texte": "Un son qui dure, qui vibre, qu’on sent autant qu’on l’entend."},
+            "photo.html": {"label": "Dans la salle d’Enza", "titre": "Comment se passe une première séance ?",
+                           "photo": self._photo()},
+        }
+        for nom, champs in cas.items():
+            with self.subTest(gabarit=nom):
+                p = rendre(G / nom, champs, self.tmp / nom.replace(".html", ".jpg"))
+                with Image.open(p) as im:
+                    self.assertEqual(im.size, (1080, 1350))
+
+    def test_etapes_vides_masquees(self):  # une étape non remplie ne doit pas laisser de pastille numérotée
+        p = rendre(G / "etapes.html", {"titre": "Test", "etape1": "Un", "etape2": "Deux"}, self.tmp / "etapes-2.jpg")
+        with Image.open(p) as im:
+            pastilles, dans = 0, False
+            for y in range(250, 1300):
+                r, g, b = im.getpixel((104, y))  # bord gauche des pastilles, à côté du chiffre
+                miel = r > 140 and 90 < g < 150 and b < 90  # pastille dorée (#A87A2C)
+                if miel and not dans:
+                    pastilles += 1
+                dans = miel
+        self.assertEqual(pastilles, 2)
+
+    def test_photo_obligatoire(self):
+        with self.assertRaises(ValueError):
+            rendre(G / "arche.html", {"titre": "Sans photo"}, self.tmp / "sans-photo.jpg")
+
+    def test_photo_visible(self):
+        p = rendre(G / "photo.html", {"titre": "Test", "photo": self._photo((255, 0, 0))}, self.tmp / "photo-rouge.jpg")
+        with Image.open(p) as im:
+            r, g, b = im.getpixel((540, 150))
+        self.assertGreater(r, 200)
+        self.assertLess(g, 60)
+
+    def test_variante_creme(self):
+        p = rendre(G / "diapo.html", {"titre": "Titre", "texte": "Texte", "variante": "creme"}, self.tmp / "creme.jpg")
+        with Image.open(p) as im:
+            r, g, b = im.getpixel((20, 20))
+        self.assertGreater(min(r, g), 235)  # crème #FBF6E3, pas le vert de l'aquarelle
+        self.assertGreater(b, 210)
+
+    def test_variante_inconnue(self):
+        with self.assertRaises(ValueError):
+            rendre(G / "diapo.html", {"titre": "Titre", "variante": "violet"}, self.tmp / "violet.jpg")
 
     def test_promesse_refusee_dans_un_visuel(self):  # relecture finale, Important 2
         with self.assertRaises(TexteInterdit):

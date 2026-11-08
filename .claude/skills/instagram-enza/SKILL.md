@@ -40,7 +40,7 @@ Public, ton et anti-références : lire `PRODUCT.md` à la racine du site. Ne pa
 | `scripts/legende.py` | vérificateur de légende (`python scripts/legende.py legende.txt [--sante]`) |
 | `scripts/visuel.py` | rendu des visuels (`rendre`, `rendre_carrousel`) à partir de `gabarits/` |
 | `scripts/medias.py` | mise en ligne des médias (`preparer`, `attendre_en_ligne`, `retirer`) |
-| `gabarits/theme.css` | polices et couleurs, seul fichier à modifier après le test de style |
+| `gabarits/` | les 8 visages (`photo`, `idee-recue`, `chiffre`, `citation`, `etapes`, `mots`, `arche`, aquarelle) + `gabarits/fin.html` ; `gabarits/theme.css` : polices, couleurs et mises en page |
 
 **Dossier de travail** (hors du site, le même pour toutes les sessions) : `C:\Users\Sekai\Documents\Instagram-Enza\`
 - `a-deposer\` : photos, vidéos et enregistrements envoyés par Enza ;
@@ -53,9 +53,9 @@ S'il manque, créer ce dossier et ses sous-dossiers, et `journal.md` avec l'en-t
 ## « Prépare la semaine »
 
 1. Lire `journal.md` et `themes.md`.
-2. Proposer **2 ou 3 sujets** : pour chacun, le thème, le format et l'idée en une phrase. Respecter les parts des thèmes sur les 12 derniers posts, éviter un sujet traité récemment, et faire inviter plus clairement à prendre contact environ un post sur trois. L'utilisateur choisit. Journal : `proposé`.
+2. Proposer **2 ou 3 sujets** : pour chacun, le thème, le format, le **visage** (`charte-visuelle.md`) et l'idée en une phrase. Respecter les parts des thèmes sur les 12 derniers posts, éviter un sujet traité récemment, et faire inviter plus clairement à prendre contact environ un post sur trois. **Varier** : jamais deux posts de suite avec le même visage, en alternant clair, foncé et photo. Au moindre doute sur la variété, montrer une planche des couvertures prévues à côté des derniers posts. L'utilisateur choisit. Journal : `proposé`.
 3. Pour chaque post retenu, créer `posts\AAAA-MM-JJ-sujet\` et écrire `legende.txt`, puis lancer `python scripts/legende.py legende.txt` (ajouter `--sante` si le post parle de santé ou de difficultés). Corriger jusqu'à **zéro BLOQUANT**, et examiner chaque ATTENTION.
-4. Fabriquer les visuels avec `scripts/visuel.py` (`rendre` ou `rendre_carrousel`). En cas de `DebordementTexte`, raccourcir le texte, ne jamais réduire la police jusqu'à l'illisible. En cas de `PoliceManquante`, vérifier la connexion.
+4. Fabriquer les visuels avec `scripts/visuel.py` (`rendre` ou `rendre_carrousel`), avec le gabarit du visage choisi, en variant aussi les diapos d'un carrousel. En cas de `DebordementTexte`, raccourcir le texte, ne jamais réduire la police jusqu'à l'illisible. En cas de `PoliceManquante`, vérifier la connexion.
 5. **Contrôle qualité** de chaque image en taille réelle (liste dans `charte-visuelle.md`), puis écrire un texte alternatif par image.
 6. Montrer à l'utilisateur les images, la légende et les textes alternatifs, et corriger s'il le demande.
 7. Déposer le **brouillon** dans Metricool en suivant `metricool.md`, vérifier qu'il apparaît **toujours en brouillon**, puis, si Metricool en a gardé une copie (adresses `static.metricool.com`), retirer les médias du site. Journal : `brouillon`.

@@ -4,7 +4,9 @@
     rendre(GABARITS / "couverture.html", {"titre": "Pour qui ?"}, Path("couverture.jpg"))
 
 Champs : titre, sous_titre, texte, pied (adresse du site par défaut), fond (chemin d'une image ;
-sans lui, le fond par défaut du thème, --fond-image dans theme.css).
+sans lui, le fond par défaut du thème, --fond-image dans theme.css), variante (aquarelle, creme,
+tendre, foret), photo (chemin, pour photo.html et arche.html), cadrage (position de la photo, « 50% 30% »).
+Chaque gabarit a ses propres champs : voir le tableau des visages dans charte-visuelle.md.
 Le rendu s'arrête avec DebordementTexte si un texte sort de son cadre ou de l'image,
 et avec PoliceManquante si une police du thème n'a pas pu être chargée.
 """
@@ -22,7 +24,11 @@ from legende import verifier  # noqa: E402
 FORMATS = {"post": (1080, 1350), "story": (1080, 1920)}
 MAX_DIAPOS = 10
 GABARITS = Path(__file__).resolve().parents[1] / "gabarits"
-DEFAUTS = {"pied": "musicotherapeute-hainaut.be"}
+DEFAUTS = {"pied": "musicotherapeute-hainaut.be", "cadrage": "50% 50%"}
+# Champs qui ne sont pas du texte affiché : jamais passés au contrôle des promesses.
+CHAMPS_TECHNIQUES = {"fond", "photo", "cadrage", "variante"}
+# Couleur de fond d'une couverture, d'une diapo ou d'une story (vide = aquarelle par défaut).
+VARIANTES = {"", "aquarelle", "creme", "tendre", "foret"}
 
 _CONTROLE_JS = """
 async () => {
@@ -72,7 +78,7 @@ class TexteInterdit(Exception):
 
 
 def _controler_textes(champs: dict) -> None:
-    texte = " ".join(str(v) for cle, v in champs.items() if cle != "fond")
+    texte = " ".join(str(v) for cle, v in champs.items() if cle not in CHAMPS_TECHNIQUES)
     for r in verifier(texte):
         if r.regle == "promesse":
             raise TexteInterdit(r.message)
@@ -83,8 +89,15 @@ def _remplir(gabarit: Path, champs: dict) -> str:
     valeurs = {k: "" for k in modele.get_identifiers()}
     valeurs.update({k: v for k, v in DEFAUTS.items() if k in valeurs})
     for cle, valeur in champs.items():
-        if cle != "fond":
+        if cle not in ("fond", "photo"):
             valeurs[cle] = html.escape(str(valeur), quote=True)
+    variante = str(champs.get("variante", ""))
+    if variante not in VARIANTES:
+        raise ValueError(f"Variante inconnue : {variante!r} (possibles : {', '.join(sorted(VARIANTES - {''}))})")
+    if "photo" in valeurs:
+        if not champs.get("photo"):
+            raise ValueError(f"Le gabarit {gabarit.name} demande une photo (champ « photo »).")
+        valeurs["photo"] = html.escape(Path(champs["photo"]).resolve(strict=True).as_uri(), quote=True)
     fond = champs.get("fond")
     if fond:
         chemin = Path(fond).resolve(strict=True)
