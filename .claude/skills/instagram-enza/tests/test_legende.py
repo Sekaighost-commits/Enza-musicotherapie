@@ -66,6 +66,11 @@ class TestLegende(unittest.TestCase):
         self.assertNotIn("typographie", regles("Pour qui ? Rendez-vous à 10:30."))
         self.assertIn("urgence", regles("Dernière chance, dépêchez-vous !!!"))
 
+    def test_premiere_ligne_sans_point(self):  # un retour à la ligne termine aussi la première phrase
+        t = "Les séances et les tarifs, à jour 🌿\n\n" + "Séance individuelle : 50 € (60 min, à domicile) " * 4
+        self.assertNotIn("apercu_coupe", regles(t))
+        self.assertIn("apercu_coupe", regles("x" * 130 + "\nSuite."))
+
     def test_apercu(self):
         self.assertEqual(apercu("Court."), "Court.")
         self.assertTrue(apercu("x" * 200).endswith("… plus"))

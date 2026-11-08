@@ -85,7 +85,7 @@ def verifier(texte: str, sante: bool = False) -> list[Resultat]:
     mot = _cherche(URGENCES, t)
     if mot:
         res.append(Resultat("ATTENTION", "urgence", f"« {mot} » : pas de fausse urgence, on invite sans presser."))
-    fin = re.search(r"[.!?…](?:\s|$)", t)
+    fin = re.search(r"[.!?…](?:\s|$)|\n", t)
     premiere = t[:fin.end()] if fin else t
     if len(premiere.strip()) > APERCU:
         res.append(Resultat("ATTENTION", "apercu_coupe",
