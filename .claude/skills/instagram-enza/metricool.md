@@ -51,8 +51,8 @@ attendre_en_ligne(urls)   # True quand toutes les images répondent ; sinon NE P
 - `isAiGenerated: true` dès qu'une image a été créée ou nettement modifiée par IA.
 - Noter dans le journal l'**uuid** renvoyé et l'adresse du post dans Metricool (`plannerUrl`).
 
-**Après le brouillon** : relire le post avec `getScheduledPosts` (même période, `timezone: "Europe/Paris"`). Si les adresses des médias pointent vers Metricool et plus vers `musicotherapeute-hainaut.be`, Metricool a gardé sa copie : on peut retirer tout de suite les médias du site (`medias.retirer(lot)` puis déploiement). Sinon, attendre la publication.
-*Constat lors du premier brouillon : à compléter.*
+**Après le brouillon** : relire le post avec `getScheduledPosts` (même période, `timezone: "Europe/Paris"`). Si les adresses des médias pointent vers Metricool (`static.metricool.com/...`) et plus vers `musicotherapeute-hainaut.be`, Metricool a gardé sa copie : retirer tout de suite les médias du site (`medias.retirer(lot)` puis déploiement). Sinon, attendre la publication.
+**Constat du premier brouillon (8 novembre 2026)** : Metricool copie les médias **dès la création du brouillon**. Les images ne restent donc en ligne sur le site que quelques minutes.
 
 ## 3. Programmer après « Enza a validé »
 

@@ -57,7 +57,7 @@ S'il manque, créer ce dossier et ses sous-dossiers, et `journal.md` avec l'en-t
 4. Fabriquer les visuels avec `scripts/visuel.py` (`rendre` ou `rendre_carrousel`). En cas de `DebordementTexte`, raccourcir le texte, ne jamais réduire la police jusqu'à l'illisible. En cas de `PoliceManquante`, vérifier la connexion.
 5. **Contrôle qualité** de chaque image en taille réelle (liste dans `charte-visuelle.md`), puis écrire un texte alternatif par image.
 6. Montrer à l'utilisateur les images, la légende et les textes alternatifs, et corriger s'il le demande.
-7. Déposer le **brouillon** dans Metricool en suivant `metricool.md`. Journal : `brouillon`.
+7. Déposer le **brouillon** dans Metricool en suivant `metricool.md`, vérifier qu'il apparaît, puis retirer les médias du site (Metricool en garde une copie). Journal : `brouillon`.
 8. Dire à l'utilisateur qu'Enza peut regarder les brouillons dans l'app Metricool. Si Metricool lui est inaccessible, l'utilisateur lui envoie les images.
 
 ## « Enza a validé »
@@ -65,7 +65,7 @@ S'il manque, créer ce dossier et ses sous-dossiers, et `journal.md` avec l'en-t
 1. Identifier le post concerné à partir du journal et de `getScheduledPosts`. Si plusieurs brouillons sont possibles, demander lequel : la validation vaut pour **un** post précis.
 2. Choisir l'heure avec `getBestTimeToPostByNetwork` autour de la date prévue, puis passer le brouillon en programmé (`metricool.md`). Annoncer à l'utilisateur la date et l'heure. Journal : `programmé`.
 3. Si Enza demande une correction, corriger, mettre à jour le brouillon et attendre une nouvelle validation.
-4. Une fois le post publié et les médias copiés par Metricool, retirer les médias du site (`metricool.md`).
+4. Vérifier que les médias ne sont plus sur le site (ils ont dû être retirés après le brouillon, voir `metricool.md`).
 
 ## « Bilan du mois »
 
