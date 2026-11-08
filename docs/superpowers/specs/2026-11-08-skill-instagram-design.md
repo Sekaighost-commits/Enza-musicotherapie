@@ -89,7 +89,7 @@ Chaque post part aussi sur la page Facebook d'Enza (déjà reliée à Metricool)
 ### Déroulé
 1. **« Prépare la semaine »** : Claude consulte le journal des posts, propose 2 ou 3 sujets en équilibrant les thèmes ; l'utilisateur choisit.
 2. **Fabrication** : visuels + texte, contrôle qualité, aperçu montré à l'utilisateur.
-3. **Brouillons Metricool** : dépôt en brouillon (rien de public). Enza les voit dans l'app Metricool ; s'il y a des corrections, Claude les applique.
+3. **Brouillons Metricool** : dépôt en brouillon (rien de public). Enza se connecte elle-même à Metricool sur son téléphone (confirmé par l'utilisateur) et voit les brouillons tels qu'ils paraîtront ; s'il y a des corrections, Claude les applique.
 4. **« Enza a validé »** : Claude programme **ce post-là** à la meilleure heure (`getBestTimeToPostByNetwork`). Jamais de programmation sans cette phrase de l'utilisateur pour le post concerné.
 5. **« Bilan du mois »** : statistiques Metricool + demandes de contact venues d'Instagram ; propositions d'ajustement des thèmes. Les demandes arrivent dans Notion (champs « Découvert via » et « Source auto ») : tant que Notion n'est pas relié à Claude, l'utilisateur donne ces chiffres.
 
@@ -123,5 +123,5 @@ Chaque post part aussi sur la page Facebook d'Enza (déjà reliée à Metricool)
 - Emplacement du skill : `.claude/skills/instagram-enza/` dans le dépôt, versionné avec le projet.
 - Dossier de travail (matière d'Enza, visuels, aperçus, journal) **hors du dépôt**, à un chemin fixe partagé par toutes les sessions : `C:\Users\Sekai\Documents\Instagram-Enza\`.
 - Dossier public des médias : `medias-instagram/` à la racine du site, exclu dans `robots.txt`.
-- Si Enza ne peut pas ouvrir Metricool, l'aperçu lui est envoyé par l'utilisateur (image ou PDF de chaque post) ; la règle « rien sans son accord » ne change pas.
+- Si Metricool est un jour indisponible pour Enza, l'aperçu lui est envoyé par l'utilisateur (image de chaque post) ; la règle « rien sans son accord » ne change pas.
 - La formulation exacte du rappel « ne remplace pas » et du texte de bio est proposée par Claude, validée par Enza au premier lot.
