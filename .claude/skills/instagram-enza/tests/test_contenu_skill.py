@@ -9,13 +9,17 @@ DOSSIER_TRAVAIL = Path.home() / "Documents" / "Instagram-Enza"   # journal.md vi
 
 ATTENDUS = {
     "SKILL.md": ["name: instagram-enza", "PRODUCT.md", "Enza a validé", "prépare la semaine", "bilan du mois",
-                 "Instagram-Enza", "en français"],
+                 "Instagram-Enza", "en français",
+                 "toujours en brouillon",                    # relecture finale, Important 4
+                 "si Metricool en a gardé une copie"],       # relecture finale, Minor 5 regradé
     "regles-contenu.md": ["ne remplace pas l'avis d'un médecin ou d'un spécialiste", "en formation",
                           "guérir", "0800 32 123", "107", "112", "accord écrit"],
     "themes.md": ["Comprendre", "Pour qui", "Ce que dit la recherche", "Une pause pour soi", "Coulisses"],
     "charte-visuelle.md": ["visage", "1080", "1350", "1920", "isAiGenerated", "libres de droits"],
     "metricool.md": ["getBrandSettings", "draft", "updateScheduledPost", "getBestTimeToPostByNetwork",
-                     "mediaAltText", "attendre_en_ligne"],
+                     "mediaAltText", "attendre_en_ligne",
+                     "toujours en brouillon",                           # relecture finale, Important 4
+                     "`updateScheduledPost` n'a pas de paramètre `date`"],  # relecture finale, Minor 4 regradé
     "reponses-types.md": ["utm_source=instagram", "utm_source=facebook", "0800 32 123"],
 }
 

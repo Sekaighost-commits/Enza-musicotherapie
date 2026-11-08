@@ -36,6 +36,19 @@ class TestLegende(unittest.TestCase):
                   "C'est efficace contre l'insomnie.", "On va traiter vos angoisses."]:
             self.assertIn("promesse", bloquants(t), t)
 
+    def test_promesse_formes_conjuguees(self):  # relecture finale, Important 2
+        for t in ["Elle s'est sentie guérie.", "Des patientes guéries.", "Vous guérirez.", "Elle guérissait.",
+                  "La musique vous soignera.", "Il a été soigné.", "Un trouble traité.", "On traitera l'angoisse."]:
+            self.assertIn("promesse", bloquants(t), t)
+        for t in ["Les soignants sont formés.", "Choisir soigneusement.", "Un guéridon.", "Un traitement."]:
+            self.assertNotIn("promesse", regles(t), t)
+
+    def test_rappel_sante_detecte_sans_option(self):  # relecture finale, Important 3
+        attention = {r.regle for r in verifier("Le deuil se vit aussi en musique.") if r.niveau == "ATTENTION"}
+        self.assertIn("rappel", attention)
+        self.assertNotIn("rappel", regles("Le deuil se vit aussi en musique. " + RAPPEL))
+        self.assertNotIn("rappel", regles("Le deuil. Elle ne remplace pas un avis médical.", sante=True))
+
     def test_soins_palliatifs_et_traitement_autorises(self):
         t = "En soins palliatifs, la musique apaise. " + RAPPEL + " Elle ne remplace pas un traitement."
         self.assertNotIn("promesse", regles(t, sante=True))

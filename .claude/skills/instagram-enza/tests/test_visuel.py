@@ -9,7 +9,7 @@ from PIL import Image
 RACINE_SKILL = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RACINE_SKILL / "scripts"))
 
-from visuel import DebordementTexte, PoliceManquante, rendre, rendre_carrousel  # noqa: E402
+from visuel import DebordementTexte, PoliceManquante, TexteInterdit, rendre, rendre_carrousel  # noqa: E402
 
 G = RACINE_SKILL / "gabarits"
 
@@ -54,6 +54,20 @@ class TestVisuel(unittest.TestCase):
         self.assertEqual([p.name for p in ps], ["01.jpg", "02.jpg"])
         with self.assertRaises(ValueError):
             rendre_carrousel([(G / "diapo.html", {})] * 11, self.tmp / "trop")
+
+    def test_image_de_fond_visible(self):  # relecture finale, Important 1
+        rouge = self.tmp / "rouge.png"
+        Image.new("RGB", (100, 100), (255, 0, 0)).save(rouge)
+        p = rendre(G / "couverture.html", {"titre": "Test", "fond": str(rouge)}, self.tmp / "fond.jpg")
+        with Image.open(p) as im:
+            r, g, b = im.getpixel((540, 20))
+        self.assertGreater(r, 200)
+        self.assertLess(g, 60)
+
+    def test_promesse_refusee_dans_un_visuel(self):  # relecture finale, Important 2
+        with self.assertRaises(TexteInterdit):
+            rendre(G / "diapo.html", {"titre": "Bienfaits", "texte": "La musique peut guérir l'anxiété."},
+                   self.tmp / "promesse.jpg")
 
     def test_police_manquante(self):
         g = self.tmp / "police-inexistante.html"

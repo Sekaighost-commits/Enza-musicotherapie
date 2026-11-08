@@ -22,14 +22,19 @@ MAX_HASHTAGS = 5
 MAX_CARACTERES = 2200
 APERCU = 125
 
+_FORMES = r"(?:er|e|es|ent|ons|ez|é|ée|és|ées|er(?:a|ai|as|ons|ez|ont|ait|aient)|ait|aient)"
 PROMESSES = [
-    r"\bguéri(?:r|s|t|ssons|ssez|ssent|son|sons|ra|rai|rait|ront)?\b",
-    r"\bsoign(?:er|e|es|ent|ons|ez)\b",          # « soins palliatifs » reste autorisé
-    r"\btrait(?:er|e|es|ent|ons|ez)\b",           # « traitement » reste autorisé
+    r"\bguéri(?!don)\w*",                          # guérir, guérie, guérirez, guérison… (pas « guéridon »)
+    r"\bsoign" + _FORMES + r"\b",                  # « soins palliatifs », « soignants », « soigneusement » restent permis
+    r"\btrait" + _FORMES + r"\b",                  # « traitement » reste permis
     r"\befficaces?\s+contre\b",
     r"\bmiracle\w*",
     r"\bmiraculeu\w*",
 ]
+# Mots qui signalent un post « santé » : sans rappel, on prévient même sans --sante.
+SANTE = re.compile(r"\b(?:deuil|anxi(?:été|eux|euse)s?|stress|burn-?out|dépression|alzheimer|maladies?|douleurs?|"
+                   r"fin\s+de\s+vie|palliatifs?|troubles?|insomnies?|angoisses?|autisme|handicaps?|cancers?|démence)\b",
+                   re.IGNORECASE)
 URGENCES = [r"derni[eè]re\s+chance", r"offre\s+limitée", r"\bdépêchez", r"!!!"]
 HASHTAG = re.compile(r"(?<!\S)#(?=[^\W\d_])\w+")
 PONCTUATION_COLLEE = re.compile(r"[^\s\d  ][?!;:](?!//)")
@@ -58,11 +63,17 @@ def verifier(texte: str, sante: bool = False) -> list[Resultat]:
     if mot:
         res.append(Resultat("BLOQUANT", "promesse",
                             f"« {mot} » : promesse de guérison. Écrire plutôt accompagner, soutenir, apaiser, aider à exprimer."))
-    if sante and not (re.search(r"ne\s+remplace\s+pas", t, re.IGNORECASE)
-                      and re.search(r"médecin|spécialiste", t, re.IGNORECASE)):
+    rappel = (re.search(r"ne\s+remplace\s+pas", t, re.IGNORECASE)
+              and re.search(r"médecin|spécialiste|médical", t, re.IGNORECASE))
+    sujet_sante = SANTE.search(t)
+    if sante and not rappel:
         res.append(Resultat("BLOQUANT", "rappel",
                             "Rappel manquant : « La musicothérapie accompagne, elle ne remplace pas "
                             "l'avis d'un médecin ou d'un spécialiste. »"))
+    elif sujet_sante and not rappel:
+        res.append(Resultat("ATTENTION", "rappel",
+                            f"Le texte parle de santé (« {sujet_sante.group(0)} ») : ajouter le rappel médical "
+                            "et relancer avec --sante."))
     tags = HASHTAG.findall(t)
     if len(tags) > MAX_HASHTAGS:
         res.append(Resultat("BLOQUANT", "hashtags",

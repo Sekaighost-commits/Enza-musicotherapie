@@ -51,17 +51,17 @@ attendre_en_ligne(urls)   # True quand toutes les images répondent ; sinon NE P
 - `isAiGenerated: true` dès qu'une image a été créée ou nettement modifiée par IA.
 - Noter dans le journal l'**uuid** renvoyé et l'adresse du post dans Metricool (`plannerUrl`).
 
-**Après le brouillon** : relire le post avec `getScheduledPosts` (même période, `timezone: "Europe/Paris"`). Si les adresses des médias pointent vers Metricool (`static.metricool.com/...`) et plus vers `musicotherapeute-hainaut.be`, Metricool a gardé sa copie : retirer tout de suite les médias du site (`medias.retirer(lot)` puis déploiement). Sinon, attendre la publication.
+**Après le brouillon** : relire le post avec `getScheduledPosts` (même période, `timezone: "Europe/Paris"`) et vérifier qu'il est **toujours en brouillon** (`"draft": true`). Sinon, le repasser immédiatement en brouillon avec `updateScheduledPost` et prévenir l'utilisateur. Si les adresses des médias pointent vers Metricool (`static.metricool.com/...`) et plus vers `musicotherapeute-hainaut.be`, Metricool a gardé sa copie : retirer tout de suite les médias du site (`medias.retirer(lot)` puis déploiement). Sinon, attendre la publication.
 **Constat du premier brouillon (8 novembre 2026)** : Metricool copie les médias **dès la création du brouillon**. Les images ne restent donc en ligne sur le site que quelques minutes.
 
 ## 3. Programmer après « Enza a validé »
 
 1. `getBestTimeToPostByNetwork` (`socialNetwork: "instagram"`, sur le jour prévu ou la semaine) : choisir le meilleur créneau.
 2. `getScheduledPosts` pour récupérer l'`id`, l'`uuid` et **tout** le contenu du brouillon.
-3. `updateScheduledPost` avec le contenu complet inchangé, sauf `draft: false` et la nouvelle date (`date` + `publicationDate`). La mise à jour change l'`id`, garder l'`uuid`.
+3. `updateScheduledPost` (`id`, `uuid`, `blogId`, `info`) avec le contenu complet inchangé, sauf `draft: false` et la nouvelle date dans `info.publicationDate`. Attention : `updateScheduledPost` n'a pas de paramètre `date` (contrairement à `createScheduledPost`). La mise à jour change l'`id`, garder l'`uuid`.
 4. Annoncer à l'utilisateur la date et l'heure. Journal : `programmé`.
 
-Une correction demandée par Enza se fait aussi avec `updateScheduledPost`, en gardant `draft: true`, puis on attend une nouvelle validation.
+Une correction demandée par Enza se fait aussi avec `updateScheduledPost`, en écrivant explicitement `"draft": true` dans `info` (la valeur par défaut est `false` : l'oublier programmerait le post). Relire ensuite avec `getScheduledPosts` : le post doit être **toujours en brouillon**. Puis on attend une nouvelle validation. Pour un visuel corrigé, utiliser un nouveau nom de lot (par exemple `…-v2`) : le cache du site peut servir l'ancienne image pendant 10 minutes.
 
 ## 4. Bilan du mois
 

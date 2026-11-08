@@ -9,10 +9,14 @@ et avec PoliceManquante si une police du thème n'a pas pu être chargée.
 """
 import html
 import string
+import sys
 import tempfile
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from legende import verifier  # noqa: E402
 
 FORMATS = {"post": (1080, 1350), "story": (1080, 1920)}
 MAX_DIAPOS = 10
@@ -62,6 +66,17 @@ class PoliceManquante(Exception):
     """Une police du thème n'a pas été chargée (connexion ? nom de police ?)."""
 
 
+class TexteInterdit(Exception):
+    """Le texte d'un visuel contient une promesse de guérison (mêmes règles que legende.py)."""
+
+
+def _controler_textes(champs: dict) -> None:
+    texte = " ".join(str(v) for cle, v in champs.items() if cle != "fond")
+    for r in verifier(texte):
+        if r.regle == "promesse":
+            raise TexteInterdit(r.message)
+
+
 def _remplir(gabarit: Path, champs: dict) -> str:
     modele = string.Template(gabarit.read_text(encoding="utf-8"))
     valeurs = {k: "" for k in modele.get_identifiers()}
@@ -72,7 +87,8 @@ def _remplir(gabarit: Path, champs: dict) -> str:
     fond = champs.get("fond")
     if fond:
         chemin = Path(fond).resolve(strict=True)
-        valeurs["fond_css"] = f'url("{chemin.as_uri()}")'
+        # Apostrophes : la valeur va dans un attribut style="…" entre guillemets doubles.
+        valeurs["fond_css"] = f"url('{chemin.as_uri()}')"
     else:
         valeurs["fond_css"] = "none"
     valeurs["base"] = gabarit.resolve().parent.as_uri() + "/"
@@ -103,6 +119,7 @@ def _navigateur(format: str):
 
 def rendre(gabarit: Path, champs: dict[str, str], sortie: Path, format: str = "post") -> Path:
     largeur, hauteur = _navigateur(format)
+    _controler_textes(champs)
     with sync_playwright() as p:
         b = p.chromium.launch()
         try:
@@ -116,6 +133,8 @@ def rendre_carrousel(diapos: list[tuple[Path, dict[str, str]]], dossier: Path, f
     if len(diapos) > MAX_DIAPOS:
         raise ValueError(f"{len(diapos)} diapos : {MAX_DIAPOS} maximum par carrousel.")
     largeur, hauteur = _navigateur(format)
+    for _, champs in diapos:
+        _controler_textes(champs)
     dossier = Path(dossier)
     with sync_playwright() as p:
         b = p.chromium.launch()
