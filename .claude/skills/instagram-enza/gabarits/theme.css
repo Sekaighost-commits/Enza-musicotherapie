@@ -1,0 +1,73 @@
+/* Thème des visuels Instagram d'Enza.
+   SEUL fichier à modifier après le test de style (polices et couleurs).
+   --polices : familles qui DOIVENT être chargées ; sinon le rendu s'arrête (PoliceManquante). */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=block");
+
+:root {
+  --polices: "DM Sans", "Cormorant Garamond";
+  --police-titre: "Cormorant Garamond", serif;
+  --police-texte: "DM Sans", sans-serif;
+
+  --fond: #E8F0E9;        /* vert très pâle (site) */
+  --fond-fonce: #1a3028;  /* vert forêt */
+  --encre: #1a3028;       /* titres */
+  --texte: #3D4A52;       /* texte courant (ardoise) */
+  --accent: #3d7558;      /* vert principal */
+  --sauge: #7A9E7E;
+  --creme: #F7F5F0;
+
+  --marge: 96px;          /* zone de sécurité : rien d'important plus près du bord */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  background-color: var(--fond);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: var(--police-texte);
+  color: var(--texte);
+  -webkit-font-smoothing: antialiased;
+}
+[data-cadre]:empty { display: none; }
+
+.page {
+  position: absolute; inset: 0;
+  padding: var(--marge);
+  display: flex; flex-direction: column;
+}
+.titre {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  color: var(--encre);
+  line-height: 1.05;
+  overflow-wrap: normal;
+}
+.sous-titre { font-size: 44px; line-height: 1.35; color: var(--accent); margin-top: 32px; }
+.texte { font-size: 44px; line-height: 1.45; margin-top: 48px; }
+.pied {
+  margin-top: auto;
+  font-size: 30px; letter-spacing: .06em;
+  color: var(--accent);
+}
+.rappel { font-size: 30px; line-height: 1.4; color: var(--texte); font-style: normal; margin-top: 40px; }
+
+/* Couverture : un grand titre centré */
+.couverture { justify-content: center; text-align: center; }
+.couverture .titre { font-size: 132px; margin-top: auto; }
+.couverture .pied { text-align: center; }
+
+/* Diapo : titre + texte explicatif */
+.diapo .titre { font-size: 76px; }
+
+/* Fin : invitation douce + rappel + adresse du site */
+.fin { background: var(--fond-fonce); color: var(--creme); }
+.fin .titre { font-size: 88px; color: var(--creme); margin-top: auto; }
+.fin .texte, .fin .rappel { color: var(--creme); }
+.fin .pied { color: var(--fond); }
+
+/* Story 1080 × 1920 : haut et bas masqués par l'interface d'Instagram */
+.story { padding-top: 260px; padding-bottom: 260px; justify-content: center; text-align: center; }
+.story .titre { font-size: 104px; }
+.story .pied { margin-top: 64px; }
