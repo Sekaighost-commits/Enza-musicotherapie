@@ -51,6 +51,7 @@ body {
   line-height: 1.05;
   overflow-wrap: normal;
 }
+.titre, .sous-titre { text-wrap: balance; }  /* lignes équilibrées : pas de mot seul en fin de titre */
 .sous-titre { font-size: 44px; line-height: 1.35; color: var(--accent); margin-top: 32px; }
 .texte { font-size: 44px; line-height: 1.45; margin-top: 48px; }
 .pied {
