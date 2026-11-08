@@ -58,8 +58,8 @@ body {
 .couverture .titre { font-size: 132px; margin-top: auto; }
 .couverture .pied { text-align: center; }
 
-/* Diapo : titre + texte explicatif */
-.diapo .titre { font-size: 76px; }
+/* Diapo : titre + texte explicatif, centrés dans la hauteur (l'adresse reste en bas) */
+.diapo .titre { font-size: 76px; margin-top: auto; }
 
 /* Fin : invitation douce + rappel + adresse du site */
 .fin { background: var(--fond-fonce); color: var(--creme); }
