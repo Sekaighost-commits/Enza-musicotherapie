@@ -124,6 +124,7 @@ body.foret .pied { color: var(--tendre); }
 .chiffre .titre { font-size: 104px; color: var(--accent); text-shadow: none; margin-top: auto; }
 .chiffre .texte { margin-top: 20px; }
 .chiffre .pied { margin-top: 64px; }
+body.chiffre.foret .nombre { color: var(--tendre); }  /* variante foncée */
 
 /* ---------- Visage « phrase forte » (citation) ---------- */
 body.citation { background-color: var(--foret); color: var(--creme); }
@@ -153,7 +154,7 @@ body.etapes { --fond-image: url("fonds/ombres.jpg"); }
 body.mots { background-color: var(--creme); }
 .mots .pile { margin-top: auto; }
 .mots .pile .titre {
-  font-size: 170px; line-height: 1.02; text-transform: uppercase; text-shadow: none; color: var(--accent);
+  font-size: 170px; line-height: 1.14; text-transform: uppercase; text-shadow: none; color: var(--accent);
 }
 .mots .pile .titre:nth-child(2) { color: var(--miel-fonce); }
 .mots .pile .titre:nth-child(3) { color: var(--sauge-fonce); }

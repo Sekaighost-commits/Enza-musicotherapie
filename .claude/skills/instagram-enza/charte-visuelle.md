@@ -14,7 +14,7 @@
 |---|---|---|---|---|
 | 1. Photo de la salle + bandeau | `photo.html` | `photo`, `cadrage`, `label`, `titre` | Coulisses, Pour qui | non |
 | 2. Idée reçue / En réalité | `idee-recue.html` | `idee`, `titre`, `texte` | Comprendre | non |
-| 3. Chiffre géant | `chiffre.html` | `chiffre` (1 à 3 caractères), `titre`, `texte` | Comprendre, Recherche | non |
+| 3. Chiffre géant | `chiffre.html` | `chiffre` (1 à 3 caractères), `titre`, `texte`, `variante` (`foret` pour un fond foncé) | Comprendre, Recherche | non |
 | 4. Phrase forte | `citation.html` | `citation`, `label` | Pour qui, Recherche | non |
 | 5. Exercice en étapes | `etapes.html` | `label`, `titre`, `etape1` à `etape5` | Une pause pour soi | **oui** (ombres de feuilles) |
 | 6. Mots empilés | `mots.html` | `mot1` à `mot4`, `texte` | Comprendre | non |

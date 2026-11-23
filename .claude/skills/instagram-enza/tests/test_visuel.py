@@ -146,6 +146,13 @@ class TestVisuel(unittest.TestCase):
         self.assertGreater(min(r, g), 235)  # crème #FBF6E3, pas le vert de l'aquarelle
         self.assertGreater(b, 210)
 
+    def test_chiffre_variante_foret(self):  # chiffre géant sur fond foncé, chiffre en vert tendre
+        p = rendre(G / "chiffre.html", {"chiffre": "26", "titre": "études", "variante": "foret"}, self.tmp / "chiffre-foret.jpg")
+        with Image.open(p) as im:
+            self.assertLess(max(im.getpixel((20, 20))), 100)                     # fond vert forêt
+            clairs = sum(1 for x in range(96, 700, 4) if min(im.getpixel((x, 360))) > 140)
+        self.assertGreater(clairs, 10)                                           # le chiffre ressort en clair
+
     def test_variante_inconnue(self):
         with self.assertRaises(ValueError):
             rendre(G / "diapo.html", {"titre": "Titre", "variante": "violet"}, self.tmp / "violet.jpg")

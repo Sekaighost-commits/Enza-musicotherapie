@@ -37,6 +37,7 @@ Toujours « **musicothérapeute en formation** », comme sur le site. Jamais « 
 ## 6. La recherche
 
 - Un résultat d'étude est **résumé honnêtement**, avec sa source (auteurs ou organisme, année), et sans exagération : « une revue d'études suggère que… », jamais « la science prouve que… ».
+- **Vérifier avant d'affirmer** : lire la page ou l'étude citée. N'écrire « avec ses sources » que si la page en donne vraiment, et ne rien affirmer au nom d'Enza (son vécu, ce qu'on lui demande) qui ne soit pas sur le site ou dit par elle.
 - Les sources sérieuses déjà citées sur le site (page Professionnels, articles) sont un bon point de départ.
 
 ## 7. L'invitation à réserver
