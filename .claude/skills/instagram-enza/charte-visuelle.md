@@ -22,7 +22,7 @@
 | 8. Aquarelle | `couverture.html`, `diapo.html`, `story.html` | `titre`, `sous_titre`, `texte`, `variante` | tous | **oui**, sauf `variante` `creme`, `tendre` ou `foret` |
 | Dernière diapo | `fin.html` | `titre`, `texte` (rappel médical inclus) | tous | non |
 
-- **Photos** : celles de la salle d'Enza sont dans `a-deposer\salle-enza\` (piano, bols chantants, ukulélé, plantes, sans visage). `cadrage` règle la partie visible de la photo, par exemple `50% 40%` (horizontal, vertical). Vérifier qu'aucune étiquette, aucun câble ou objet personnel ne gêne.
+- **Photos** : celles de la salle d'Enza sont dans `a-deposer\salle-enza\` (piano, bols chantants, ukulélé, plantes, sans visage). L'instrument noir rond posé sur l'étagère est un **steel drum** (jamais « tambour à languettes »). Enza utilise en séance le steel drum, la kalimba et les bols chantants (confirmé le 23 novembre 2026). `cadrage` règle la partie visible de la photo, par exemple `50% 40%` (horizontal, vertical). Vérifier qu'aucune étiquette, aucun câble ou objet personnel ne gêne.
 - **Fond IA** : un post est déclaré `isAiGenerated: true` dès qu'**une** de ses images montre un fond IA (aquarelle ou ombres de feuilles). Un carrousel fait seulement de visages « non » reste à `false`.
 - **Grille du profil** : Instagram montre les posts recadrés en 3:4 (34 px coupés de chaque côté). La marge de 96 px protège le texte. Ne jamais placer un mot important près des bords.
 - Calme, aéré, lisible sur un téléphone, accessible aux personnes âgées : texte courant à 44 px au moins sur une image de 1080 px de large, contraste confortable.
