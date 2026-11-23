@@ -1,6 +1,6 @@
 # Thèmes
 
-2 à 3 posts par semaine, soit environ 10 à 12 par mois. Parts à respecter sur les 12 derniers posts du journal :
+**2 posts par semaine, le jeudi et le dimanche à 18 h** (choix du 23 novembre 2026 ; avant : lundi, jeudi, dimanche, mais le dimanche et le lundi se suivaient), soit 8 ou 9 par mois. Un troisième post seulement si l'utilisateur le demande, plutôt le mardi. Parts à respecter sur les 12 derniers posts du journal :
 
 | Thème | Part | Idée |
 |---|---|---|

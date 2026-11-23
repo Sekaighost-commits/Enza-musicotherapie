@@ -18,7 +18,7 @@
 | 4. Phrase forte | `citation.html` | `citation`, `label` | Pour qui, Recherche | non |
 | 5. Exercice en étapes | `etapes.html` | `label`, `titre`, `etape1` à `etape5` | Une pause pour soi | **oui** (ombres de feuilles) |
 | 6. Mots empilés | `mots.html` | `mot1` à `mot4`, `texte` | Comprendre | non |
-| 7. Photo en arche | `arche.html` | `label`, `titre` (une ligne), `photo`, `cadrage`, `texte` | Coulisses, Pour qui | non |
+| 7. Photo en arche | `arche.html` | `label`, `titre` (une ligne), `photo`, `cadrage`, `texte`, `variante` (`foret` pour un fond foncé) | Coulisses, Pour qui | non |
 | 8. Aquarelle | `couverture.html`, `diapo.html`, `story.html` | `titre`, `sous_titre`, `texte`, `variante` | tous | **oui**, sauf `variante` `creme`, `tendre` ou `foret` |
 | Dernière diapo | `fin.html` | `titre`, `texte` (rappel médical inclus) | tous | non |
 

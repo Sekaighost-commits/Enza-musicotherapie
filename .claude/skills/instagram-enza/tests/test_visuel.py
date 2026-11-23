@@ -153,6 +153,14 @@ class TestVisuel(unittest.TestCase):
             clairs = sum(1 for x in range(96, 700, 4) if min(im.getpixel((x, 360))) > 140)
         self.assertGreater(clairs, 10)                                           # le chiffre ressort en clair
 
+    def test_arche_variante_foret(self):  # photo en arche sur fond foncé, titre en clair
+        p = rendre(G / "arche.html", {"titre": "Trois instruments", "photo": self._photo(), "variante": "foret"},
+                   self.tmp / "arche-foret.jpg")
+        with Image.open(p) as im:
+            self.assertLess(max(im.getpixel((20, 20))), 100)                     # fond vert forêt
+            clairs = sum(1 for y in range(96, 330, 3) for x in range(96, 900, 6) if min(im.getpixel((x, y))) > 180)
+        self.assertGreater(clairs, 50)                                           # le titre ressort en clair
+
     def test_variante_inconnue(self):
         with self.assertRaises(ValueError):
             rendre(G / "diapo.html", {"titre": "Titre", "variante": "violet"}, self.tmp / "violet.jpg")
